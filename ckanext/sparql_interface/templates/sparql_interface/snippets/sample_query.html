@@ -72,44 +72,35 @@ WHERE {
 
 <!--Federated Query with Wiki Data-->
 <textarea id="fed_query_wiki_data_text" style="display:none">
-PREFIX adms: <http://www.w3.org/ns/adms#>
-PREFIX dcat: <http://www.w3.org/ns/dcat#>
-PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX gsp: <http://www.opengis.net/ont/geosparql#>
-PREFIX hydra: <http://www.w3.org/ns/hydra/core#>
-PREFIX locn: <http://www.w3.org/ns/locn#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX schema: <http://schema.org/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX spdx: <http://spdx.org/rdf/terms#>
-PREFIX time: <http://www.w3.org/2006/time>
-PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-PREFIX xml: <http://www.w3.org/XML/1998/namespace>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-PREFIX wikibase: <http://wikiba.se/ontology#>
-PREFIX bd: <http://www.bigdata.com/rdf#>
+    # Look up datasets for one or more InChIKeys
+PREFIX dcat:   <http://www.w3.org/ns/dcat#>
+PREFIX dct:    <http://purl.org/dc/terms/>
+PREFIX prov:   <http://www.w3.org/ns/prov#>
+PREFIX cheminf:<http://semanticscience.org/resource/CHEMINF_>
 
-SELECT ?Dataset ?Title ?Description ?keyword ?pubchemId ?wikidataItem ?wikidataItemLabel
+SELECT DISTINCT ?inchikey ?ds ?title ?formula
 WHERE {
-  ?Dataset a dcat:Dataset .
-  ?Dataset dct:description ?Description ;
-           dct:title ?Title ;
-           dcat:keyword ?keyword.
-    FILTER STRSTARTS(?keyword, "InChI=")
-	SERVICE <https://query.wikidata.org/sparql> {
-    	?wikidataItem wdt:P234 ?keyword .
-    	?wikidataItem  wdt:P662 ?pubchemId.
-    SERVICE wikibase:label {
-      bd:serviceParam wikibase:language "en". ?wikidataItem rdfs:label ?wikidataItemLabel
-    }
-  	}
+  VALUES ?inchikey {
+    "QFCORKHZKILASC-UHFFFAOYSA-N"   # example from your Chemotion TTL
+    # "XXXXXXXXXXXXXX-UHFFFAOYSA-N"  # add more if you like
+  }
+
+  ?ds a dcat:Dataset ;
+      dct:title ?title ;
+      dct:relation ?sample .
+
+  # Sample carries CHEMINF annotations as dct:relation blank nodes
+  ?sample dct:relation ?annKey .
+  ?annKey a cheminf:000059 ;               # InChIKey
+          prov:value ?inchikey .
+
+  OPTIONAL {
+    ?sample dct:relation ?annFormula .
+    ?annFormula a cheminf:000037 ;         # IUPAC chemical formula
+               prov:value ?formula .
+  }
 }
-LIMIT 10
+ORDER BY ?inchikey ?title
 
  </textarea>
 

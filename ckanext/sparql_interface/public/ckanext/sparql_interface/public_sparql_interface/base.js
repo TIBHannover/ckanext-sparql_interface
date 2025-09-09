@@ -17,7 +17,7 @@ $(document).ready(function () {
 
     $('#fed_query_wiki_data').on('click', function (e) {
         e.preventDefault();
-        openTabWithQuery("Federated Query with Wiki Data", $('#fed_query_wiki_data_text').val());
+        openTabWithQuery("Find Datasets by InChiKey", $('#fed_query_wiki_data_text').val());
     });
 
     $('#nr_of_datasets').on('click', function (e) {

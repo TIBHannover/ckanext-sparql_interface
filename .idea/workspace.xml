@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="style: Removed Beta; going public and prod">
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chore: Removed Beta; going public and prod">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base_ts_tab.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base_ts_tab_notusig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/sample_query.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/sample_query.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -390,7 +392,23 @@
       <option name="project" value="LOCAL" />
       <updated>1757074110479</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="chore: Removed Beta; going public and prod">
+      <option name="closed" value="true" />
+      <created>1757074838137</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1757074838137</updated>
+    </task>
+    <task id="LOCAL-00039" summary="chore: Removed Beta; going public and prod">
+      <option name="closed" value="true" />
+      <created>1757074876016</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1757074876017</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -405,7 +423,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tab-feature with sample buttons" />
     <MESSAGE value="sample query corrections" />
     <MESSAGE value="added number of datasets query" />
     <MESSAGE value="tab changes" />
@@ -430,6 +447,7 @@
     <MESSAGE value="Adding llm_query html" />
     <MESSAGE value="test: removing llm feature for the prod" />
     <MESSAGE value="style: Removed Beta; going public and prod" />
-    <option name="LAST_COMMIT_MESSAGE" value="style: Removed Beta; going public and prod" />
+    <MESSAGE value="chore: Removed Beta; going public and prod" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: Removed Beta; going public and prod" />
   </component>
 </project>

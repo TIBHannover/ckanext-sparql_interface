@@ -403,3 +403,57 @@ function queryHref() {
     }
     return respuesta;
 }
+
+// LLM query JS
+const llm_form = document.getElementById("llm"),
+      loader = document.querySelector("#loading");
+
+function displayLoading() {
+    loader.classList.add("display");
+}
+
+function hideLoading() {
+    loader.classList.remove("display");
+}
+
+for (var pair of data.entries()) {
+    console.log(pair[0]+ ': ' + pair[1]);
+}
+
+
+llm_form.onsubmit = async function (event) {
+    event.preventDefault();
+    displayLoading();
+
+    let data = new FormData();
+    data.append("question", document.getElementById("question").value)
+    data.append("apikey", document.getElementById("apikey").value)
+// Check if fetching of api works and is being sent to the backend
+    for (var pair of data.entries()) {
+    console.log(pair[0]+ ': ' + pair[1]);
+}
+
+    let query = await fetch("llm", {method: "POST", body: data})
+        .then(res => { hideLoading(); return res.text(); })
+        .catch(err => console.error(err));
+
+    tab = yasgui.getTab();
+    tab.setName("LLM Query");
+    tab.setQuery(query);
+    tab.query();
+};
+
+const question_elem = document.getElementById("question"),
+      submit_btn = document.getElementById("llm_submit"),
+      questions = document.querySelectorAll('.question');
+
+function handleClick(question) {
+    question_elem.value = question;
+    submit_btn.click();
+}
+
+questions.forEach(function(element) {
+   element.addEventListener('click', function() {
+       handleClick(element.textContent || element.innerText);
+   });
+});
