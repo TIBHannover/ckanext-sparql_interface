@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     $('#crc-1368').on('click', function (e) {
         e.preventDefault();
-        openTabWithQuery("Summary of Temperature Parameters", $('#crc-1368').val());
+        openTabWithQuery("Summary of Temperature Parameters", $('#crc-1368_text').val());
     });
 
     // On page load, check if a query hash is present in the URL
