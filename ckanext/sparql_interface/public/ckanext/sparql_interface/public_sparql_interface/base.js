@@ -25,6 +25,11 @@ $(document).ready(function () {
         openTabWithQuery("Number of Datasets", $('#nr_of_datasets_text').val());
     });
 
+    $('#crc-1368').on('click', function (e) {
+        e.preventDefault();
+        openTabWithQuery("Summary of Temperature Parameters", $('#crc-1368').val());
+    });
+
     // On page load, check if a query hash is present in the URL
     var queryHash = getQueryHashFromURL();
     if (queryHash) {

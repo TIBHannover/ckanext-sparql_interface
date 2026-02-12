@@ -135,3 +135,44 @@ WHERE {
 ?Dataset a dcat:Dataset .
 }
 </textarea>
+
+<textarea id="crc-1368" style="display:none;">
+    PREFIX prop: <https://service.tib.eu/sfb1368/wiki/Property-3A>
+PREFIX swivt: <http://semantic-mediawiki.org/swivt/1.0#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?ProtocolType ?Title ?Parameter ?Count ?Min ?Max ?Avg
+WHERE {
+  {
+    SELECT ?ProtocolType ?Title ?Parameter
+      (COUNT(?numericValue) AS ?countRaw)
+      (MIN(?numericValue) AS ?minRaw)
+      (MAX(?numericValue) AS ?maxRaw)
+      (AVG(?numericValue) AS ?avgRaw)
+    WHERE {
+      ?assignment ?parameter ?value .
+      ?assignment swivt:masterPage ?record .
+      ?record prop:BelongsToProtocol ?protocol .
+      ?protocol prop:ProtocolType ?protocolType .
+      ?protocolType prop:hasDescription ?title .
+      ?parameterWiki prop:SpecifiedBySMWProperty prop:TemperatureUnit .
+      FILTER(STRAFTER(STR(?parameter), "https://service.tib.eu/sfb1368/wiki/Property-3A") = STRAFTER(STR(?parameterWiki), "https://service.tib.eu/sfb1368/wiki/"))
+
+      BIND(IF(ISIRI(?value), STRAFTER(STR(?value), "https://service.tib.eu/sfb1368/wiki/"), STR(?value)) AS ?cleanValue)
+      BIND(REPLACE(?cleanValue, "_.*", "") AS ?numericPart)
+      FILTER(REGEX(?numericPart, "^[0-9.]+$"))
+      BIND(xsd:decimal(?numericPart) AS ?numericValue)
+
+      BIND(STRAFTER(STR(?protocolType), "https://service.tib.eu/sfb1368/wiki/") AS ?ProtocolType)
+      BIND(STR(?title) AS ?Title)
+      BIND(STRAFTER(STR(?parameter), "https://service.tib.eu/sfb1368/wiki/Property-3A") AS ?Parameter)
+    }
+    GROUP BY ?ProtocolType ?Title ?Parameter
+  }
+  BIND(STR(?countRaw) AS ?Count)
+  BIND(STR(?minRaw) AS ?Min)
+  BIND(STR(?maxRaw) AS ?Max)
+  BIND(STR(?avgRaw) AS ?Avg)
+}
+ORDER BY ?ProtocolType ?Parameter
+</textarea>
