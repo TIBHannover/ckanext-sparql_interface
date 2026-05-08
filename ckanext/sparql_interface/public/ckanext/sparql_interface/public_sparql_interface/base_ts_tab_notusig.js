@@ -202,6 +202,54 @@ function createFedOrkgTab() {
     switchTab(tabId);
 }
 
+function createFindDatasetTwo() {
+    // Check if a tab with this name already exists
+    if ($('[data-tab-id="find_datasets_by_ikey_two_tab"]').length > 0) {
+        switchTab('find_datasets_by_ikey_two_tab');  // Switch to the existing tab if it exists
+        return;
+    }
+
+    editorCount++;
+    const tabId = 'find_datasets_by_ikey_two_tab';
+
+    // Create tab button with an 'x' for closing
+    const tabButton = $('<div class="btn-group tab-class me-1" role="group" aria-label="Basic radio toggle button group"></div>')
+        .append($('<button type="button" class="btn custom-btn"></button>')
+            .text('Fed Query with Wiki')
+            .attr('data-tab-id', tabId)
+            .on('click', function() {
+                switchTab(tabId);
+            })
+            .on('dblclick', function() {
+                renameTab(this);
+            })
+        )
+        .append($('<span class="btn btn-outline-success">x</span>')
+            .on('click', function(e) {
+                e.stopPropagation();
+                removeTab(tabId);
+            })
+        );
+
+    $('#tabs_container').append(tabButton);
+
+    // Create a new div for the editor
+    const editorDiv = $('<div></div>').attr('id', tabId).css('display', 'none');
+    $('#editors_container').append(editorDiv);
+
+    // Initialize CodeMirror on the 'title_with_inchi' <textarea>
+    const editor = CodeMirror.fromTextArea(document.getElementById('find_datasets_by_ikey_two_text'), {
+        mode: "application/x-sparql-query",
+        lineNumbers: true
+    });
+
+    editorDiv.append(editor.getWrapperElement());
+    editors[tabId] = editor;
+
+    // Switch to the new tab
+    switchTab(tabId);
+}
+
 
 function createNrDatasets() {
     // Check if a tab with this name already exists

@@ -138,5 +138,39 @@ WHERE {
 
 
 <textarea id="find_datasets_by_ikey_two_text" style="display:none">
+PREFIX dcat:    <http://www.w3.org/ns/dcat#>
+PREFIX dct:     <http://purl.org/dc/terms/>
+PREFIX prov:    <http://www.w3.org/ns/prov#>
+PREFIX cheminf: <http://semanticscience.org/resource/CHEMINF_>
+PREFIX bfo:     <http://purl.obolibrary.org/obo/BFO_>
+PREFIX sio:     <http://semanticscience.org/resource/SIO_>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
 
+SELECT DISTINCT ?ds ?title ?publisherName ?formula
+WHERE {
+  VALUES (?annType ?identifier) {
+    (cheminf:000059 "WJCNZQLZVWNLKY-UHFFFAOYSA-N")
+  }
+
+  ?ds a dcat:Dataset ;
+      dct:title ?title ;
+      dct:publisher ?publisher ;
+      dct:subject ?sample .
+
+  ?publisher foaf:name ?publisherName .
+
+  ?sample bfo:0000051 ?molecule .
+
+  ?molecule sio:000008 ?ann .
+
+  ?ann a ?annType ;
+       prov:value ?identifier .
+
+  OPTIONAL {
+    ?molecule sio:000008 ?annFormula .
+    ?annFormula a cheminf:000042 ;
+                prov:value ?formula .
+  }
+}
+LIMIT 100
 </textarea>

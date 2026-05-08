@@ -17,7 +17,12 @@ $(document).ready(function () {
 
     $('#find_datasets_by_ikey').on('click', function (e) {
         e.preventDefault();
-        openTabWithQuery("Find Datasets by InChiKey", $('#find_datasets_by_ikey_text').val());
+        openTabWithQuery("Find Datasets by InChiKey (DCAT_AP_PLUS)", $('#find_datasets_by_ikey_text').val());
+    });
+
+    $('#find_datasets_by_ikey_two').on('click', function (e) {
+        e.preventDefault();
+        openTabWithQuery("Find Datasets by InChiKey (ChemDCAT_AP)", $('#find_datasets_by_ikey_two_text').val());
     });
 
     $('#nr_of_datasets').on('click', function (e) {

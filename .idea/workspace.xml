@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chore: added a query button for crc-1368">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/helpers.py" afterDir="false" />
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: renamed fed query to inchi and dropdown">
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base_ts_tab_notusig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base_ts_tab_notusig.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/hash_query.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/hash_query.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/sample_query.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/sample_query.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -422,7 +419,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757074876017</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="chg: renamed fed query to inchi and dropdown">
+      <option name="closed" value="true" />
+      <created>1778249218005</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1778249218005</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -437,7 +442,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="sample query corrections" />
     <MESSAGE value="added number of datasets query" />
     <MESSAGE value="tab changes" />
     <MESSAGE value="css changes for buttons and sparl block" />
@@ -462,6 +466,7 @@
     <MESSAGE value="test: removing llm feature for the prod" />
     <MESSAGE value="style: Removed Beta; going public and prod" />
     <MESSAGE value="chore: Removed Beta; going public and prod" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: Removed Beta; going public and prod" />
+    <MESSAGE value="chg: renamed fed query to inchi and dropdown" />
+    <option name="LAST_COMMIT_MESSAGE" value="chg: renamed fed query to inchi and dropdown" />
   </component>
 </project>
