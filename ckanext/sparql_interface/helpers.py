@@ -56,6 +56,32 @@ def sparqlQuery(data_structure):
 
 
 
+@helper
+def sparql_endpoint_options():
+    raw = p.toolkit.config.get(
+        'ckanext.sparql_interface.endpoints',
+        'DBpedia|https://dbpedia.org/sparql'
+    )
+
+    endpoints = []
+    for item in raw.split(','):
+        label, url = item.strip().split('|', 1)
+        endpoints.append({
+            'label': label.strip(),
+            'url': url.strip()
+        })
+
+    return endpoints
+
+
+@helper
+def default_sparql_endpoint_url():
+    return p.toolkit.config.get(
+        'ckanext.sparql_interface.default_endpoint',
+        'https://dbpedia.org/sparql'
+    )
+
+
 
 
 

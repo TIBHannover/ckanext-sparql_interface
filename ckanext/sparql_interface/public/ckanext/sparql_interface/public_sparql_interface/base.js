@@ -15,9 +15,9 @@ $(document).ready(function () {
         openTabWithQuery("Title & Description", $('#title_with_inchi_text').val());
     });
 
-    $('#fed_query_wiki_data').on('click', function (e) {
+    $('#find_datasets_by_ikey').on('click', function (e) {
         e.preventDefault();
-        openTabWithQuery("Find Datasets by InChiKey", $('#fed_query_wiki_data_text').val());
+        openTabWithQuery("Find Datasets by InChiKey", $('#find_datasets_by_ikey_text').val());
     });
 
     $('#nr_of_datasets').on('click', function (e) {

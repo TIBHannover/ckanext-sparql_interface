@@ -57,10 +57,19 @@
     <h1> <i class="fa fa-flask" aria-hidden="true"></i>&nbsp;SPARQL Editor  </h1>
 <div class="control-group control-full" {% if h.sparql_hide_endpoint_url() %} style="display:none; " {% endif %}>
 
-       <p> <b> Current SPARQL Server: </b> <a href="{{ h.sparql_endpoint_url() }}">{{ h.sparql_endpoint_url() }} </a> </p>
-           <input id="field-sparql-server" type="hidden" name="sparql-server" value="{{h.sparql_endpoint_url()}}"
-                  placeholder="{{ _('Add the URL of the SPARQL service. For example:') }} {{h.sparql_endpoint_url()}}" >
-   </div>
+       <p>
+            <b>Current SPARQL Server:</b>
+        </p>
+
+    <select id="field-sparql-server" name="sparql-server">
+        {% for endpoint in h.sparql_endpoint_options() %}
+            <option value="{{ endpoint.url }}"
+                {% if endpoint.url == h.sparql_endpoint_url() %}selected{% endif %}>
+                {{ endpoint.label }}
+            </option>
+        {% endfor %}
+        </select>
+</div>
 
     <br>
 
@@ -68,13 +77,15 @@
 <!--<button type="submit" name="" id="title_with_inchi" class="sample-query-button">-->
 <!--    Title & Description-->
 <!--</button>-->
-    <button type="submit" id="fed_query_wiki_data" class="sample-query-button">
-    Find datasets by InChIKey
+    <button type="submit" id="find_datasets_by_ikey" class="sample-query-button">
+    Find datasets by InChIKey (DCAT-AP-PLUS)
     </button>
 
     <button type="submit" id="nr_of_datasets" class="sample-query-button">
        Number of Datasets
     </button>
+
+
 
 <br><br>
 <label class="control-label" for="field-sparql-server">{{ _('SPARQL Query') }}</label> <abbr
@@ -159,19 +170,36 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function() {
-    const yasguiContainer = document.getElementById('yasgui');  // Make sure you have a <div id="yasgui">
+$(document).ready(function() {
+    const yasguiContainer = document.getElementById('yasgui');
+    const endpointSelect = document.getElementById('field-sparql-server');
 
-    // Initialize Yasgui
     const yasgui = new Yasgui(yasguiContainer, {
         requestConfig: {
-            endpoint: "{{ h.sparql_endpoint_url() }}",
-             endpointInput: false
+            endpoint: endpointSelect.value,
+            endpointInput: false
         },
         showControlBar: false
     });
 
+    endpointSelect.addEventListener('change', function () {
+        const selectedEndpoint = this.value;
 
+        yasgui.getTab().setRequestConfig({
+            endpoint: selectedEndpoint
+        });
+
+        // Optional: send selected endpoint to backend
+        fetch('{{ h.url_for("sparql_interface.index") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                endpoint: selectedEndpoint
+            })
+        });
+    });
 });
 
 </script>

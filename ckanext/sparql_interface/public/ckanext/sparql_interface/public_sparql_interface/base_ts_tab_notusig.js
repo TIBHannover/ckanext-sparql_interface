@@ -21,7 +21,7 @@ $(document).ready(function() {
     });
 
     // Event listener for the "Fed Query with Wiki" button
-    $('button#fed_query_wiki_data').on('click', function(e) {
+    $('button#find_datasets_by_ikey').on('click', function(e) {
         e.preventDefault();  // Prevent default form submission if the button is inside a form
         createFedOrkgTab();
     });
@@ -156,13 +156,13 @@ function createInchiTab() {
 
 function createFedOrkgTab() {
     // Check if a tab with this name already exists
-    if ($('[data-tab-id="fed_query_wiki_data_tab"]').length > 0) {
-        switchTab('fed_query_wiki_data_tab');  // Switch to the existing tab if it exists
+    if ($('[data-tab-id="find_datasets_by_ikey_tab"]').length > 0) {
+        switchTab('find_datasets_by_ikey_tab');  // Switch to the existing tab if it exists
         return;
     }
 
     editorCount++;
-    const tabId = 'fed_query_wiki_data_tab';
+    const tabId = 'find_datasets_by_ikey_tab';
 
     // Create tab button with an 'x' for closing
     const tabButton = $('<div class="btn-group tab-class me-1" role="group" aria-label="Basic radio toggle button group"></div>')
@@ -190,7 +190,7 @@ function createFedOrkgTab() {
     $('#editors_container').append(editorDiv);
 
     // Initialize CodeMirror on the 'title_with_inchi' <textarea>
-    const editor = CodeMirror.fromTextArea(document.getElementById('fed_query_wiki_data_text'), {
+    const editor = CodeMirror.fromTextArea(document.getElementById('find_datasets_by_ikey_text'), {
         mode: "application/x-sparql-query",
         lineNumbers: true
     });

@@ -70,8 +70,8 @@ WHERE {
 } LIMIT 10
 </textarea>
 
-<!--Federated Query with Wiki Data-->
-<textarea id="fed_query_wiki_data_text" style="display:none">
+<!--Find Datasets by InChiKey in DCAT_AP_PLUS Data-->
+<textarea id="find_datasets_by_ikey_text" style="display:none">
     # Look up datasets for one or more InChIKeys
 PREFIX dcat:   <http://www.w3.org/ns/dcat#>
 PREFIX dct:    <http://purl.org/dc/terms/>
@@ -134,4 +134,9 @@ SELECT COUNT (?Dataset)
 WHERE {
 ?Dataset a dcat:Dataset .
 }
+</textarea>
+
+
+<textarea id="find_datasets_by_ikey_two_text" style="display:none">
+
 </textarea>
