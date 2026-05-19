@@ -31,7 +31,7 @@ def sparql_query_SPARQLWrapper(data_structure):
 
     # TODO: Add Credentials must be removed. Test Purpose only
     sparql = SPARQLWrapper(server_url)
-    sparql.setCredentials("admin", "NFDI4ChemFuseki")
+    sparql.setCredentials("readonly", "one2rule4all")
     sparql.setQuery(query_string)
     sparql.setReturnFormat(JSON)
 
@@ -91,8 +91,8 @@ def sparqlQuery_veryNew(data_structure):
     logger.debug("server: " + server)
 
     # Add credentials for basic authentication
-    username = 'admin'  # Replace with your username
-    password = 'NFDI4ChemFuseki'  # Replace with your password
+    username = 'readonly'  # Replace with your username
+    password = 'one2rule4all'  # Replace with your password
     auth = base64.b64encode(f'{username}:{password}'.encode('utf-8')).decode('utf-8')
     logger.debug(f'auth:{auth}')
     headers = {'Authorization': f'Basic {auth}'}
@@ -192,8 +192,8 @@ def sparqlQuery(data_structure):
     # logger.debug("querypart: " + querypart)
 
     server_oauth = p.toolkit.request.params.get('server')
-    username = 'admin'  # Replace with your username
-    password = 'NFDI4ChemFuseki'  # Replace with your password
+    username = 'readonly'  # Replace with your username
+    password = 'one2rule4all'  # Replace with your password
     server = f"http://{username}:{password}@{server_oauth}"
     logger.debug("server: " + server)
 
@@ -298,8 +298,8 @@ def sparqlQueryold(data_structure):
 
     # Add Credentials for authentication
 
-    username = 'admin'
-    password = 'NFDI4ChemFuseki'
+    username = 'readonly'
+    password = 'one2rule4all'
     auth = base64.b64encode(f'{username}:{password}'.encode('utf-8')).decode('utf-8')
     headers = {'Authorization': f'Basic {auth}'}
 

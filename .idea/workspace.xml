@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chore: added a query button for crc-1368">
-      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" afterDir="false" />
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: renamed fed query to inchi and dropdown">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/i18n/en/LC_MESSAGES/ckanext-sparql_interface.mo" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/i18n/en/LC_MESSAGES/ckanext-sparql_interface.mo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -31,10 +38,14 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/TIBHannover/ckanext-sparql_interface.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/bhavin2897/ckanext-sparql_interface.git&quot;,
     &quot;accountId&quot;: &quot;849dcb34-4f2c-4d7e-bd9c-4840c703f903&quot;
   }
 }</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -50,7 +61,8 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "crc-sfb",
-    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-sparql_interface/ckanext/sparql_interface/models"
+    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-sparql_interface/ckanext/sparql_interface/models",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -77,6 +89,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ckanext/sparql_interface/helpers.py" />
       <option name="PARAMETERS" value="" />
@@ -91,7 +104,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-3944b0c99280-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.127" />
+        <option value="bundled-python-sdk-d9fa9deec7cb-d902c0275401-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-252.23892.515" />
       </set>
     </attachedChunks>
   </component>
@@ -405,13 +418,13 @@
       <option name="project" value="LOCAL" />
       <updated>1757074876017</updated>
     </task>
-    <task id="LOCAL-00040" summary="chore: added a query button for crc-1368">
+    <task id="LOCAL-00040" summary="chg: renamed fed query to inchi and dropdown">
       <option name="closed" value="true" />
-      <created>1770887644337</created>
+      <created>1778249218005</created>
       <option name="number" value="00040" />
       <option name="presentableId" value="LOCAL-00040" />
       <option name="project" value="LOCAL" />
-      <updated>1770887644337</updated>
+      <updated>1778249218005</updated>
     </task>
     <option name="localTasksCounter" value="41" />
     <servers />
@@ -452,7 +465,7 @@
     <MESSAGE value="test: removing llm feature for the prod" />
     <MESSAGE value="style: Removed Beta; going public and prod" />
     <MESSAGE value="chore: Removed Beta; going public and prod" />
-    <MESSAGE value="chore: added a query button for crc-1368" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: added a query button for crc-1368" />
+    <MESSAGE value="chg: renamed fed query to inchi and dropdown" />
+    <option name="LAST_COMMIT_MESSAGE" value="chg: renamed fed query to inchi and dropdown" />
   </component>
 </project>
