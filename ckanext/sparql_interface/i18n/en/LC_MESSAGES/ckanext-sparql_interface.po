@@ -86,3 +86,9 @@ msgstr "CSV Format"
 #: ckanext/sparql_interface/templates/sparql_interface/index.html:88
 msgid "Enlace permanente a esta Query (para guardar la Query)"
 msgstr "Permanent Link for this Query (To save your Query)"
+
+msgid "Private"
+msgstr "Private"
+
+msgid "Public"
+msgstr "Public"
