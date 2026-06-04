@@ -22,7 +22,7 @@ $(document).ready(function () {
 
     $('#find_datasets_by_ikey_two').on('click', function (e) {
         e.preventDefault();
-        openTabWithQuery("Find Datasets by InChiKey (ChemDCAT_AP)", $('#find_datasets_by_ikey_two_text').val());
+        openTabWithQuery("Summary of Sample Information", $('#find_datasets_by_ikey_two_text').val());
     });
 
     $('#nr_of_datasets').on('click', function (e) {

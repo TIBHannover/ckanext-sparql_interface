@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: sparql credentials">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="feat: summary sample button">
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +47,65 @@
     <commands />
     <urls />
   </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.3203518082337133" />
+      <entry key="MS500" value="3.548222849151896" />
+      <entry key="S2" value="8.361321113957992" />
+      <entry key="S5" value="12.77215523637898" />
+      <entry key="S10" value="16.30674442986809" />
+      <entry key="S30" value="20.648784327195234" />
+      <entry key="S60" value="22.193154931046724" />
+      <entry key="M2" value="23.094650225627397" />
+      <entry key="M5" value="24.58349486074793" />
+      <entry key="M10" value="26.758210425652077" />
+      <entry key="M15" value="28.150995215584825" />
+      <entry key="M30" value="30.141923157265904" />
+      <entry key="H1" value="31.441566804036082" />
+      <entry key="H2" value="32.18536334930326" />
+      <entry key="H4" value="32.583410818464586" />
+      <entry key="D1" value="32.92924396139041" />
+      <entry key="W1" value="32.98985906538941" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.136913512396797" />
+      <entry key="MS500" value="3.4312567874188162" />
+      <entry key="S2" value="8.286934642175867" />
+      <entry key="S5" value="12.724998660761644" />
+      <entry key="S10" value="16.275115441901562" />
+      <entry key="S30" value="20.634584903518082" />
+      <entry key="S60" value="22.185373238339373" />
+      <entry key="M2" value="23.09056071034506" />
+      <entry key="M5" value="24.581760968010105" />
+      <entry key="M10" value="26.757283886355197" />
+      <entry key="M15" value="28.15035284289307" />
+      <entry key="M30" value="30.141584513527672" />
+      <entry key="H1" value="31.441391817021014" />
+      <entry key="H2" value="32.18527423861256" />
+      <entry key="H4" value="32.583365830875636" />
+      <entry key="D1" value="32.929236400908785" />
+      <entry key="W1" value="32.98985798375492" />
+    </decayedShown>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -55,23 +114,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Python.helpers.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/usr/lib/ckan/default/src/ckanext-chemstructure_search&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Python.helpers.executor": "Debug",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "sfb1153",
+    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-chemstructure_search",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ckanext/sparql_interface/models" />
@@ -449,7 +508,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779429801495</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="feat: summary sample button">
+      <option name="closed" value="true" />
+      <created>1780572863654</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1780572863654</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -467,7 +534,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="css changes for buttons and sparl block" />
     <MESSAGE value="default query added" />
     <MESSAGE value="css sample query buttons" />
     <MESSAGE value="css submit query button" />
@@ -492,6 +558,7 @@
     <MESSAGE value="chg: renamed fed query to inchi and dropdown" />
     <MESSAGE value="chg: new username password" />
     <MESSAGE value="chg: sparql credentials" />
-    <option name="LAST_COMMIT_MESSAGE" value="chg: sparql credentials" />
+    <MESSAGE value="feat: summary sample button" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: summary sample button" />
   </component>
 </project>
