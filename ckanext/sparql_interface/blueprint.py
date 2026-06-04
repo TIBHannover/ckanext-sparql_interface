@@ -36,9 +36,7 @@ def old_query():
 def query_page():
     respuesta = utils_sparqlQuery('')
 
-    # YASGUI expects SPARQL JSON directly, not a rendered CKAN HTML page.
-    # direct_link=1 means this route is being used as a backend proxy endpoint.
-    if request.params.get('direct_link') == '1':
+    if request.values.get('direct_link') == '1':
         return jsonify(respuesta)
 
     if isinstance(respuesta, Response):

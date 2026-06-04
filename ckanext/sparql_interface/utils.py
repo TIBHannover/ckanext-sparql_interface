@@ -19,8 +19,10 @@ def sparql_query_SPARQLWrapper(data_structure):
     c = p.toolkit.c
     c.direct_link = p.toolkit.request.params.get('direct_link')
 
-    query_string = p.toolkit.request.params.get('query')
-    server_url = p.toolkit.request.params.get('server')
+    request_values = p.toolkit.request.values
+
+    query_string = request_values.get('query')
+    server_url = request_values.get('server')
     logger.debug("SPARQL proxy server_url: %s", server_url)
 
     if not query_string:
