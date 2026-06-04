@@ -178,9 +178,15 @@ $(document).ready(function() {
     const yasguiContainer = document.getElementById('yasgui');
     const endpointSelect = document.getElementById('field-sparql-server');
 
+    function getCkanProxyEndpoint() {
+    return '{{ h.url_for("sparql_interface.query_page") }}'
+        + '?direct_link=1'
+        + '&server=' + encodeURIComponent(endpointSelect.value);
+    }
+
     const yasgui = new Yasgui(yasguiContainer, {
         requestConfig: {
-            endpoint: '{{ h.url_for("sparql_interface.query_page") }}',
+            endpoint: getCkanProxyEndpoint(),
             endpointInput: false
         },
         showControlBar: false
@@ -190,7 +196,7 @@ $(document).ready(function() {
         const selectedEndpoint = this.value;
 
         yasgui.getTab().setRequestConfig({
-            endpoint: selectedEndpoint
+            endpoint: getCkanProxyEndpoint()
         });
 
         // Optional: send selected endpoint to backend

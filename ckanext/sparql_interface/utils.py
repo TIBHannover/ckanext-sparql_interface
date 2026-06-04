@@ -21,6 +21,7 @@ def sparql_query_SPARQLWrapper(data_structure):
 
     query_string = p.toolkit.request.params.get('query')
     server_url = p.toolkit.request.params.get('server')
+    logger.debug("SPARQL proxy server_url: %s", server_url)
 
     if not query_string:
         logger.error("No query provided")

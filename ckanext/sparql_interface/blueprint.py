@@ -31,13 +31,23 @@ def old_index():
 def old_query():
 
     return h.redirect_to('sparql_interface.query_page')
-@sparql.route(u'/sparql_interface/query')
+
+@sparql.route(u'/sparql_interface/query', methods=['GET', 'POST'])
 def query_page():
-        respuesta=utils_sparqlQuery('')
-        if isinstance(respuesta, Response) or request.params.get('direct_link')=='1':
-            return respuesta
-        else:
-            return render('sparql_interface/query.html', extra_vars={'results':respuesta, 'direct_link':'0'})
+    respuesta = utils_sparqlQuery('')
+
+    # YASGUI expects SPARQL JSON directly, not a rendered CKAN HTML page.
+    # direct_link=1 means this route is being used as a backend proxy endpoint.
+    if request.params.get('direct_link') == '1':
+        return jsonify(respuesta)
+
+    if isinstance(respuesta, Response):
+        return respuesta
+
+    return render(
+        'sparql_interface/query.html',
+        extra_vars={'results': respuesta, 'direct_link': '0'}
+    )
 
 
 #to save the query when "Save Query" button is clicked
