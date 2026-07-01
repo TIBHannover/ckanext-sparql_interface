@@ -44,25 +44,34 @@ def query_page():
 @sparql.route(u'/sparql_interface/save', methods=['POST'])
 def save_sparql_query():
     # Parse the incoming JSON request
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
     sparql_query = data.get('query')
 
     if not sparql_query:
         return jsonify({"error": "No SPARQL query provided"}), 400
 
-    # Convert the SPARQL query to a short hash using SHA-256
-    query_hash = hashlib.sha256(sparql_query.encode('utf-8')).hexdigest()[:32]
-    url_query_hash = 'http://localhost:5000/sparql/' + query_hash
-    timestamp = datetime.now()
-
-    sparql_db_table.create(timestamp, sparql_query, query_hash )
-    logger.info(f'sending it to Database')
     try:
+        # Convert the SPARQL query to a short hash using SHA-256
+        query_hash = hashlib.sha256(
+            sparql_query.encode('utf-8')
+        ).hexdigest()[:32]
+
+        # Build a production-safe URL instead of hardcoding localhost:5000
+        url_query_hash = h.url_for(
+            'sparql_interface.retrieve_sparql_query_template',
+            query_hash=query_hash,
+            _external=True
+        )
+
+        timestamp = datetime.now()
+
+        sparql_db_table.create(timestamp, sparql_query, query_hash)
+        logger.info('Saved SPARQL query hash to database: %s', query_hash)
 
         return jsonify({"hash": url_query_hash}), 200
 
     except Exception as e:
-        # Handle any errors that occur during saving
+        logger.exception('Failed to save SPARQL query')
         return jsonify({"error": str(e)}), 500
 
 
