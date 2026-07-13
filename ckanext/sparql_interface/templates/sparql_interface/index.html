@@ -185,18 +185,24 @@ $(document).ready(function() {
     }
 
     const yasgui = new Yasgui(yasguiContainer, {
+        persistenceId: null,
+        populateFromUrl: false,
         requestConfig: {
             endpoint: getCkanProxyEndpoint(),
-            endpointInput: false
+            endpointInput: false,
+            method: 'POST'
         },
         showControlBar: false
     });
+    window.sparqlInterfaceYasgui = yasgui;
+    window.sparqlInterfaceProxyEndpoint = getCkanProxyEndpoint;
 
     endpointSelect.addEventListener('change', function () {
         const selectedEndpoint = this.value;
 
         yasgui.getTab().setRequestConfig({
-            endpoint: getCkanProxyEndpoint()
+            endpoint: getCkanProxyEndpoint(),
+            method: 'POST'
         });
 
         // Optional: send selected endpoint to backend
@@ -216,4 +222,3 @@ $(document).ready(function() {
 
 
 {% endblock %}
-

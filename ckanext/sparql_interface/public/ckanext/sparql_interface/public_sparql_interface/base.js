@@ -41,14 +41,22 @@ $(document).ready(function () {
         editorCount++;
         const tabId = 'editor' + editorCount;
 
-        // Clear the YASGUI container
         if (!yasgui) {
-            $('#yasgui').empty(); // Optional: only on first creation
+            yasgui = window.sparqlInterfaceYasgui || null;
+        }
+
+        if (!yasgui) {
+            var endpoint = window.sparqlInterfaceProxyEndpoint
+                ? window.sparqlInterfaceProxyEndpoint()
+                : '/sparql_interface/query?direct_link=1&server=' + encodeURIComponent($('#field-sparql-server').val());
             yasgui = new Yasgui(document.getElementById('yasgui'), {
-                requestConfig: { endpoint: "{{ h.sparql_endpoint_url() }}", endpointInput: false, method: "POST" },
+                persistenceId: null,
+                populateFromUrl: false,
+                requestConfig: { endpoint: endpoint, endpointInput: false, method: "POST" },
                 showControlBar: false
             });
-                }
+            window.sparqlInterfaceYasgui = yasgui;
+        }
 
 
         let tab = yasgui.addTab(true); // 'true' to activate the tab

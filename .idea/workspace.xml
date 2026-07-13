@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="feat: summary sample button">
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: new username password">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/blueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/blueprint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" afterDir="false" />
     </list>
@@ -15,7 +17,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="171" />
+    <option name="cachedIndexableFilesCount" value="175" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -28,7 +30,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="crc-sfb" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,35 +41,35 @@
     &quot;assignee&quot;: &quot;bhavin2897&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/TIBHannover/ckanext-sparql_interface.git&quot;,
-    &quot;accountId&quot;: &quot;849dcb34-4f2c-4d7e-bd9c-4840c703f903&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/TIBHannover/ckanext-sparql_interface.git",
+    "accountId": "849dcb34-4f2c-4d7e-bd9c-4840c703f903"
   }
-}</component>
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.3203518082337133" />
-      <entry key="MS500" value="3.548222849151896" />
-      <entry key="S2" value="8.361321113957992" />
-      <entry key="S5" value="12.77215523637898" />
-      <entry key="S10" value="16.30674442986809" />
-      <entry key="S30" value="20.648784327195234" />
-      <entry key="S60" value="22.193154931046724" />
-      <entry key="M2" value="23.094650225627397" />
-      <entry key="M5" value="24.58349486074793" />
-      <entry key="M10" value="26.758210425652077" />
-      <entry key="M15" value="28.150995215584825" />
-      <entry key="M30" value="30.141923157265904" />
-      <entry key="H1" value="31.441566804036082" />
-      <entry key="H2" value="32.18536334930326" />
-      <entry key="H4" value="32.583410818464586" />
-      <entry key="D1" value="32.92924396139041" />
-      <entry key="W1" value="32.98985906538941" />
+      <entry key="MS100" value="1.0000631876955552" />
+      <entry key="MS500" value="1.1945376116012807" />
+      <entry key="S2" value="5.716682548740772" />
+      <entry key="S5" value="18.626690244862946" />
+      <entry key="S10" value="37.63612081951569" />
+      <entry key="S30" value="81.68186397151953" />
+      <entry key="S60" value="107.48073159650684" />
+      <entry key="M2" value="125.56514279956842" />
+      <entry key="M5" value="142.79987385708472" />
+      <entry key="M10" value="155.77085756426538" />
+      <entry key="M15" value="162.67311641928367" />
+      <entry key="M30" value="171.7821222172093" />
+      <entry key="H1" value="177.4330508803408" />
+      <entry key="H2" value="180.59197869289628" />
+      <entry key="H4" value="182.26350006820033" />
+      <entry key="D1" value="183.70595131788593" />
+      <entry key="W1" value="183.95787801452698" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -89,23 +91,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.136913512396797" />
-      <entry key="MS500" value="3.4312567874188162" />
-      <entry key="S2" value="8.286934642175867" />
-      <entry key="S5" value="12.724998660761644" />
-      <entry key="S10" value="16.275115441901562" />
-      <entry key="S30" value="20.634584903518082" />
-      <entry key="S60" value="22.185373238339373" />
-      <entry key="M2" value="23.09056071034506" />
-      <entry key="M5" value="24.581760968010105" />
-      <entry key="M10" value="26.757283886355197" />
-      <entry key="M15" value="28.15035284289307" />
-      <entry key="M30" value="30.141584513527672" />
-      <entry key="H1" value="31.441391817021014" />
-      <entry key="H2" value="32.18527423861256" />
-      <entry key="H4" value="32.583365830875636" />
-      <entry key="D1" value="32.929236400908785" />
-      <entry key="W1" value="32.98985798375492" />
+      <entry key="MS100" value="0.9659924928291737" />
+      <entry key="MS500" value="1.183170168524146" />
+      <entry key="S2" value="5.6940286928491695" />
+      <entry key="S5" value="18.59736977033706" />
+      <entry key="S10" value="37.606558073171854" />
+      <entry key="S30" value="81.6604872057304" />
+      <entry key="S60" value="107.4667020428716" />
+      <entry key="M2" value="125.5569422847609" />
+      <entry key="M5" value="142.79597842605136" />
+      <entry key="M10" value="155.76857917038183" />
+      <entry key="M15" value="162.6714683836666" />
+      <entry key="M30" value="171.78120973064455" />
+      <entry key="H1" value="177.432566568637" />
+      <entry key="H2" value="180.5917286141096" />
+      <entry key="H4" value="182.26337292298876" />
+      <entry key="D1" value="183.70592982332676" />
+      <entry key="W1" value="183.957874936288" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -120,18 +122,13 @@
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
     "Python.helpers.executor": "Debug",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "sfb1153",
-    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-chemstructure_search",
+    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-sparql_interface/ckanext/sparql_interface/models",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -173,7 +170,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-c59985aa861c-c2ffad84badb-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.24374.152" />
+        <option value="bundled-python-sdk-50341a9f1f9c-c2ffad84badb-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.26222.68" />
       </set>
     </attachedChunks>
   </component>
@@ -503,39 +500,7 @@
       <option name="project" value="LOCAL" />
       <updated>1779174548931</updated>
     </task>
-    <task id="LOCAL-00042" summary="chg: sparql credentials">
-      <option name="closed" value="true" />
-      <created>1779429801495</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1779429801495</updated>
-    </task>
-    <task id="LOCAL-00043" summary="feat: summary sample button">
-      <option name="closed" value="true" />
-      <created>1780572863654</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1780572863654</updated>
-    </task>
-    <task id="LOCAL-00044" summary="feat: summary sample button">
-      <option name="closed" value="true" />
-      <created>1780573849526</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1780573849526</updated>
-    </task>
-    <task id="LOCAL-00045" summary="feat: summary sample button">
-      <option name="closed" value="true" />
-      <created>1780574720242</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1780574720242</updated>
-    </task>
-    <option name="localTasksCounter" value="46" />
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -553,6 +518,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="tab changes" />
+    <MESSAGE value="css changes for buttons and sparl block" />
     <MESSAGE value="default query added" />
     <MESSAGE value="css sample query buttons" />
     <MESSAGE value="css submit query button" />
@@ -576,8 +543,6 @@
     <MESSAGE value="chore: Removed Beta; going public and prod" />
     <MESSAGE value="chg: renamed fed query to inchi and dropdown" />
     <MESSAGE value="chg: new username password" />
-    <MESSAGE value="chg: sparql credentials" />
-    <MESSAGE value="feat: summary sample button" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: summary sample button" />
+    <option name="LAST_COMMIT_MESSAGE" value="chg: new username password" />
   </component>
 </project>

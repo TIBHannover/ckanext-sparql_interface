@@ -3,7 +3,7 @@ import requests
 import os
 # import openai
 import time
-from flask import Blueprint, redirect, url_for, jsonify, render_template
+from flask import Blueprint, redirect, url_for, jsonify, render_template, make_response
 from datetime import datetime
 from ckan.plugins.toolkit import c, render, request
 import ckan.plugins.toolkit as tk
@@ -17,6 +17,14 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 sparql = Blueprint(u'sparql_interface', __name__)
+
+
+def _disable_cache(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.headers['Surrogate-Control'] = 'no-store'
+    return response
 
 
 @sparql.route(u'/sparql')
@@ -37,15 +45,16 @@ def query_page():
     respuesta = utils_sparqlQuery('')
 
     if request.values.get('direct_link') == '1':
-        return jsonify(respuesta)
+        return _disable_cache(jsonify(respuesta))
 
     if isinstance(respuesta, Response):
-        return respuesta
+        return _disable_cache(respuesta)
 
-    return render(
+    response = make_response(render(
         'sparql_interface/query.html',
         extra_vars={'results': respuesta, 'direct_link': '0'}
-    )
+    ))
+    return _disable_cache(response)
 
 
 #to save the query when "Save Query" button is clicked
@@ -171,8 +180,6 @@ def llm():
                 raise RuntimeError(f"HTTP error occurred: {http_err}")
         except Exception as err:
             raise RuntimeError(f"An error occurred: {err}")
-
-
 
 
 

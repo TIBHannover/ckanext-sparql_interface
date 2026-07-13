@@ -37,6 +37,7 @@ def sparql_query_SPARQLWrapper(data_structure):
     sparql.setCredentials("readonly", "one2rule4all")
     sparql.setQuery(query_string)
     sparql.setReturnFormat(JSON)
+    sparql.setMethod("POST")
 
     try:
         response = sparql.query()
@@ -355,4 +356,3 @@ def sparqlQueryold(data_structure):
     else:
         data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
         return data
-
