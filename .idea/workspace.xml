@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: new username password">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/blueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/blueprint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" afterDir="false" />
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="fix: cacheing issue doesn't rerun query">
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base_styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,23 +50,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000631876955552" />
-      <entry key="MS500" value="1.1945376116012807" />
-      <entry key="S2" value="5.716682548740772" />
-      <entry key="S5" value="18.626690244862946" />
-      <entry key="S10" value="37.63612081951569" />
-      <entry key="S30" value="81.68186397151953" />
-      <entry key="S60" value="107.48073159650684" />
-      <entry key="M2" value="125.56514279956842" />
-      <entry key="M5" value="142.79987385708472" />
-      <entry key="M10" value="155.77085756426538" />
-      <entry key="M15" value="162.67311641928367" />
-      <entry key="M30" value="171.7821222172093" />
-      <entry key="H1" value="177.4330508803408" />
-      <entry key="H2" value="180.59197869289628" />
-      <entry key="H4" value="182.26350006820033" />
-      <entry key="D1" value="183.70595131788593" />
-      <entry key="W1" value="183.95787801452698" />
+      <entry key="MS100" value="1.9061476440606415" />
+      <entry key="MS500" value="3.5189354864429605" />
+      <entry key="S2" value="11.438456069241253" />
+      <entry key="S5" value="21.038442121768934" />
+      <entry key="S10" value="30.873361170332625" />
+      <entry key="S30" value="74.8285569237828" />
+      <entry key="S60" value="115.56507194176395" />
+      <entry key="M2" value="155.29454881434845" />
+      <entry key="M5" value="199.8810314700087" />
+      <entry key="M10" value="224.33768697935156" />
+      <entry key="M15" value="238.2347822178734" />
+      <entry key="M30" value="274.5094559728885" />
+      <entry key="H1" value="327.4161367223706" />
+      <entry key="H2" value="377.7039748723232" />
+      <entry key="H4" value="413.111050753372" />
+      <entry key="D1" value="449.7539247102467" />
+      <entry key="W1" value="456.80170025439577" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -91,23 +88,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9659924928291737" />
-      <entry key="MS500" value="1.183170168524146" />
-      <entry key="S2" value="5.6940286928491695" />
-      <entry key="S5" value="18.59736977033706" />
-      <entry key="S10" value="37.606558073171854" />
-      <entry key="S30" value="81.6604872057304" />
-      <entry key="S60" value="107.4667020428716" />
-      <entry key="M2" value="125.5569422847609" />
-      <entry key="M5" value="142.79597842605136" />
-      <entry key="M10" value="155.76857917038183" />
-      <entry key="M15" value="162.6714683836666" />
-      <entry key="M30" value="171.78120973064455" />
-      <entry key="H1" value="177.432566568637" />
-      <entry key="H2" value="180.5917286141096" />
-      <entry key="H4" value="182.26337292298876" />
-      <entry key="D1" value="183.70592982332676" />
-      <entry key="W1" value="183.957874936288" />
+      <entry key="MS100" value="1.8522468038017972" />
+      <entry key="MS500" value="3.4843988938867385" />
+      <entry key="S2" value="11.390984438509921" />
+      <entry key="S5" value="21.006919641708315" />
+      <entry key="S10" value="30.853158264901797" />
+      <entry key="S30" value="74.81677622626758" />
+      <entry key="S60" value="115.55676348313382" />
+      <entry key="M2" value="155.28907772551702" />
+      <entry key="M5" value="199.87817317037118" />
+      <entry key="M10" value="224.33605277341817" />
+      <entry key="M15" value="238.23359666179203" />
+      <entry key="M30" value="274.50869970582585" />
+      <entry key="H1" value="327.41562219438265" />
+      <entry key="H2" value="377.7036495487777" />
+      <entry key="H4" value="413.11086361882354" />
+      <entry key="D1" value="449.7538892477042" />
+      <entry key="W1" value="456.8016950701713" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -500,7 +497,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779174548931</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="fix: cacheing issue doesn't rerun query">
+      <option name="closed" value="true" />
+      <created>1783944460864</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1783944460864</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -518,7 +523,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="tab changes" />
     <MESSAGE value="css changes for buttons and sparl block" />
     <MESSAGE value="default query added" />
     <MESSAGE value="css sample query buttons" />
@@ -543,6 +547,7 @@
     <MESSAGE value="chore: Removed Beta; going public and prod" />
     <MESSAGE value="chg: renamed fed query to inchi and dropdown" />
     <MESSAGE value="chg: new username password" />
-    <option name="LAST_COMMIT_MESSAGE" value="chg: new username password" />
+    <MESSAGE value="fix: cacheing issue doesn't rerun query" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: cacheing issue doesn't rerun query" />
   </component>
 </project>
