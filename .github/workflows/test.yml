@@ -29,7 +29,7 @@ jobs:
       image: ckan/ckan-dev:${{ matrix.ckan-version }}
     services:
       solr:
-        image: ckan/ckan-solr:${{ matrix.ckan-version }}-solr9
+        image: ckan/ckan-solr:2.10-solr9
         options: --health-cmd='curl --silent --fail http://localhost:8983/solr/admin/ping' --health-interval=10s --health-timeout=5s --health-retries=5
       postgres:
         image: ckan/ckan-postgres-dev:${{ matrix.ckan-version }}
