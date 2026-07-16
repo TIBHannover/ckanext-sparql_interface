@@ -1,115 +1,85 @@
-# CKAN Sparql Interface Extension
-##### Forked from [OpenDataGIS/ckanext-sparql_interface](https://github.com/OpenDataGIS/ckanext-sparql_interface)
+# CKAN SPARQL Interface Extension
 
-NOTE: The ``ckanext-sparql_interface`` extension was tested using ``Virtuoso sparql instances``
-Modifying for the compatibility of [NFDI4Chem Search Service](https://search.nfdi4chem.de/)
+Forked from [OpenDataGIS/ckanext-sparql_interface](https://github.com/OpenDataGIS/ckanext-sparql_interface).
+
+This extension adds a YASGUI-based SPARQL editor to CKAN and proxies query execution to configured SPARQL endpoints.
 
 - **Version:** 2.1.0
 - **Status:** Development
-- **CKAN Version:** >= 2.9
+- **Tested CKAN version:** 2.10.7
+- **Python:** 3.9
 
-This version has been evolved from the original 1.01, to made it work with ckan 2.8 and python 3.9
-
-## Description
-
-An Extension to include Sparql Interface Editor in the CKAN instances.
-Current Developement on NFDI4Chem Sparql Interface 
-## Requeriments
-The extension use:
-
-- [`CodeMirror`](http://codemirror.net/) for the code editor in the browser.
-- ADDED yasgui script
-
-- May be extended to use [`SPARQLWrapper`](http://sparql-wrapper.sourceforge.net/) library - SPARQL Endpoint interface to Python
+The extension has primarily been tested with Virtuoso SPARQL endpoints and is maintained for the NFDI4Chem Search Service.
 
 ## Installation
 
-To install ckanext-sparql_interface:
+Activate your CKAN virtual environment, then install the extension in editable mode:
 
-1. Activate your CKAN virtual environment, for example:
+```bash
+git clone https://github.com/OpenDataGIS/ckanext-sparql_interface.git
+cd ckanext-sparql_interface
+pip install -r requirements.txt
+pip install -e .
+```
 
-     `. /usr/lib/ckan/default/bin/activate`
+Add the plugin to your CKAN configuration:
 
-2. Clone the source and install it on the virtualenv
+```ini
+ckan.plugins = sparql_interface
+```
 
-    ```
-    git clone https://github.com/OpenDataGIS/ckanext-sparql_interface.git
-    cd ckanext-sparql_interface
-    pip install -e .
-	pip install -r requirements.txt
-    pip install openai
-    ```
+Apply CKAN and plugin database migrations in your CKAN environment:
 
-3. Add `sparql_interface` to the `ckan.plugins` setting in your CKAN
-   config file (by default the config file is located at
-   `/etc/ckan/default/ckan.ini`).
-   
-4. In order to let the English and other languajes profiles work, it is 
-   absolutely mandatory to make the directory `/ckan/ckan/public/base/i18n`
-   writable by the ckan user. Preferably, `www-data <ckan-user>` CKAN WILL NOT START IF YOU DON'T DO SO! 
-   
-5. Add configuration to the CKAN configuration file as required. See below.
-   
-6. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu:
+```bash
+ckan -c /etc/ckan/default/ckan.ini db upgrade
+ckan -c /etc/ckan/default/ckan.ini db pending-migrations --apply
+```
 
-     `sudo service apache2 reload`
-  
 ## Configuration
 
-In your ``ckan.ini`` file set 
+Required or commonly used options:
+
+```ini
+ckanext.sparql_interface.endpoint_url = https://dbpedia.org/sparql
+ckanext.sparql_interface.endpoints = DBpedia|https://dbpedia.org/sparql,NFDI4Chem|https://example.org/sparql
+ckanext.sparql_interface.hide_endpoint_url = false
 ```
-	ckanext.sparql_interface.endpoint_url = <your default endpoint url>    (defaults to http://dbpedia.org/sparql)
-	ckanext.sparql_interface.hide_endpoint_url = (true | false)    (defaults to false)
-	ckanext.sparql_interface.openai_api_key = gk_**** (You need to add GROQ API key before using this feature in your conf file)
+
+`ckanext.sparql_interface.endpoints` is a comma-separated list of `Label|URL` values shown in the endpoint selector. If omitted, DBpedia is used as the default example endpoint.
+
+The `/llm` route is optional and disabled unless an API key is configured. Do not commit real secrets.
+
+```ini
+ckanext.sparql_interface.groq_api_key = <set with environment-specific secret management>
+ckanext.sparql_interface.llm_model = llama-3.3-70b-versatile
 ```
-  
-## Use
-Go to:
 
-    http://[Custom URL]/sparql_interface/
+The legacy `ckanext.sparql_interface.openai_api_key` key is still read as a fallback for existing deployments, but new deployments should use `ckanext.sparql_interface.groq_api_key`.
 
-Querys work in:
+## Public Routes
 
-	http://[Custom URL]/sparql_interface/query?query=
+- `/sparql` renders the YASGUI SPARQL interface.
+- `/sparql_interface` redirects to `/sparql`.
+- `/sparql_interface/query` executes SPARQL queries when `query` and `server` input is provided.
+- `/sparql_interface/save` stores a query and returns a permanent `/sparql/<hash>` URL.
+- `/sparql/<hash>` renders the saved query in the editor.
 
-To send code through ``http`` to the sparql interface:
+## Development and Tests
 
-	http://[Custom URL]/sparql_interface/index?view_code=
+The repository includes `test.ini` for CKAN pytest runs. In a CKAN 2.10.7 Docker test environment:
+
+```bash
+pip install -r requirements.txt
+pip install -e .
+ckan -c test.ini db upgrade
+ckan -c test.ini db pending-migrations --apply
+pytest --ckan-ini=test.ini --cov=ckanext.sparql_interface --disable-warnings ckanext/sparql_interface/tests
+```
+
+GitHub Actions runs the same extension test target inside `ckan/ckan-dev:2.10.7` with PostgreSQL, Solr, and Redis services.
 
 ## Notes
 
-To configure your own custom example query in [`templates/sparql_interface/index.html`](ckanext/sparql_interface/templates/sparql_interface/index.html) template 
+To configure custom sample queries, edit `ckanext/sparql_interface/templates/sparql_interface/snippets/sample_query.html`.
 
-```
-	<!-- Line 57, After-->
-	<textarea id="sparql_code" name="sparql_code"  resize="both">
-	<!-- Here replace the query-->
-	    ...
-	</textarea>
-```
-
-To change the default prefixes, edit `prefixes` in [`public/ckanext/sparql_interface/public_sparql_interface/base.js`](ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js)
-```
-var prefixes = "PREFIX void: <http://rdfs.org/ns/void#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX vann: <http://purl.org/vocab/vann/> PREFIX teach: <http://linkedscience.org/teach/ns#>"
-```
-
-### BETA Version:
-#### Natrual Language to SPAQRL query converted using LLM
-Using LLM from Llama we have used simpole text questions for spaqrl queries, so that user do not have to worry about the spaqrl language. He can simple ask questions on the QUESTION bar. 
-
-This is from GROQ Inc., which runs on a free API Tool. Its important that it is limited to fewer questions and you need to parse your own API key before using this plugin to the Configuration file.
-
-## Changelog
-
-- Version: 1.01: Fix Bugs 
-- Version: 2.0: Adapted to ckan 2.9 and internationalized
-- Version: 2.0.1: Minor fixes
-- Version: 2.1.0: Natural Language to SPAQRL Text (TESTING ONLY)
-- Version: 2.2.0: Going to the production server without the LLM feature 
-
-
-
-ToDos
-=====
-
-* externalize configuration of default query
+To change default prefixes used by frontend helpers, edit `prefixes` in `ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js`.

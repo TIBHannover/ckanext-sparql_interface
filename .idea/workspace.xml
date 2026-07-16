@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="add: notificaion for user to execute" />
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="add: notificaion for user to execute">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/blueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/blueprint.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="sfb1153" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -35,35 +38,35 @@
     &quot;assignee&quot;: &quot;bhavin2897&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/TIBHannover/ckanext-sparql_interface.git",
-    "accountId": "849dcb34-4f2c-4d7e-bd9c-4840c703f903"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TIBHannover/ckanext-sparql_interface.git&quot;,
+    &quot;accountId&quot;: &quot;849dcb34-4f2c-4d7e-bd9c-4840c703f903&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0026432490279433" />
-      <entry key="MS500" value="2.7028788674809894" />
-      <entry key="S2" value="15.371187315718275" />
-      <entry key="S5" value="32.428041157652544" />
-      <entry key="S10" value="46.835786969696244" />
-      <entry key="S30" value="64.80688459634344" />
-      <entry key="S60" value="81.73750375773467" />
-      <entry key="M2" value="122.90793155363444" />
-      <entry key="M5" value="204.078698474907" />
-      <entry key="M10" value="258.8632216640744" />
-      <entry key="M15" value="286.1779332547408" />
-      <entry key="M30" value="337.40660383308864" />
-      <entry key="H1" value="399.0331959919374" />
-      <entry key="H2" value="454.93213234793376" />
-      <entry key="H4" value="493.84707254410216" />
-      <entry key="D1" value="533.9781756765486" />
-      <entry key="W1" value="541.6890915883868" />
+      <entry key="MS100" value="1.9160897798059842" />
+      <entry key="MS500" value="5.39066638394532" />
+      <entry key="S2" value="14.760132706592058" />
+      <entry key="S5" value="21.386166483079407" />
+      <entry key="S10" value="24.7372154343753" />
+      <entry key="S30" value="27.463284447677815" />
+      <entry key="S60" value="28.537174671813922" />
+      <entry key="M2" value="32.022848048409735" />
+      <entry key="M5" value="57.471365841302145" />
+      <entry key="M10" value="121.35545515213089" />
+      <entry key="M15" value="175.25182742372658" />
+      <entry key="M30" value="279.0469889736723" />
+      <entry key="H1" value="384.95149794256923" />
+      <entry key="H2" value="473.8611377187978" />
+      <entry key="H4" value="534.5661500995069" />
+      <entry key="D1" value="596.9619255172671" />
+      <entry key="W1" value="608.959613104148" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -85,23 +88,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9752252599938528" />
-      <entry key="MS500" value="2.6879474569450728" />
-      <entry key="S2" value="15.348474236854905" />
-      <entry key="S5" value="32.4069915079941" />
-      <entry key="S10" value="46.81920174692466" />
-      <entry key="S30" value="64.79857480224271" />
-      <entry key="S60" value="81.73211921988943" />
-      <entry key="M2" value="122.90380302783323" />
-      <entry key="M5" value="204.07588365159407" />
-      <entry key="M10" value="258.8614006090313" />
-      <entry key="M15" value="286.1765627555292" />
-      <entry key="M30" value="337.40572390747934" />
-      <entry key="H1" value="399.03261027615275" />
-      <entry key="H2" value="454.93176764266013" />
-      <entry key="H4" value="493.8468643159892" />
-      <entry key="D1" value="533.9781364398973" />
-      <entry key="W1" value="541.6890858576049" />
+      <entry key="MS100" value="1.8195590002726236" />
+      <entry key="MS500" value="5.3351731997364285" />
+      <entry key="S2" value="14.701471777762682" />
+      <entry key="S5" value="21.341139668054794" />
+      <entry key="S10" value="24.708225219810608" />
+      <entry key="S30" value="27.451734881305537" />
+      <entry key="S60" value="28.531068017013446" />
+      <entry key="M2" value="32.01922730332916" />
+      <entry key="M5" value="57.468704329510786" />
+      <entry key="M10" value="121.35324963172337" />
+      <entry key="M15" value="175.24995369934481" />
+      <entry key="M30" value="279.0456725295247" />
+      <entry key="H1" value="384.9506248691285" />
+      <entry key="H2" value="473.8606019023198" />
+      <entry key="H4" value="534.5658464930315" />
+      <entry key="D1" value="596.9618686046446" />
+      <entry key="W1" value="608.9596047976255" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -116,13 +119,17 @@
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
     "Python.helpers.executor": "Debug",
+    "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "sfb1153",
-    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-sparql_interface/ckanext/sparql_interface/models",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "migration/ckan-2.10",
+    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-downloadall",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -510,7 +517,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783946969714</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="add: notificaion for user to execute">
+      <option name="closed" value="true" />
+      <created>1783947696503</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1783947696503</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

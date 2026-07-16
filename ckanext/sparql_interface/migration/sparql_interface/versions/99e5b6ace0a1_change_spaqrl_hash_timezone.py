@@ -17,8 +17,21 @@ depends_on = None
 
 
 def upgrade():
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    if not inspector.has_table('sparql_query_hash'):
+        return
+
+    columns = {
+        column['name']: column
+        for column in inspector.get_columns('sparql_query_hash')
+    }
+    timestamp = columns.get('timestamp')
+    if timestamp is None or isinstance(timestamp['type'], sa.TIMESTAMP):
+        return
+
     op.alter_column('sparql_query_hash', 'timestamp',
-                    existing_type=sa.Integer(),
+                    existing_type=timestamp['type'],
                     type_=sa.TIMESTAMP(),
                     nullable=False,
                     postgresql_using="timestamp::timestamp")

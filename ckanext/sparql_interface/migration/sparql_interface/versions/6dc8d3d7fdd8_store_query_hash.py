@@ -17,6 +17,11 @@ depends_on = None
 
 
 def upgrade():
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    if inspector.has_table('sparql_query_hash'):
+        return
+
     op.create_table('sparql_query_hash',
                     sa.Column('id', sa.Integer, primary_key=True, nullable=False),
                     sa.Column('timestamp', sa.TIMESTAMP(), nullable=False),

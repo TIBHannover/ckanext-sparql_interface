@@ -1,13 +1,8 @@
-# encoding: utf-8
 import requests
-import os
-# import openai
-import time
-from flask import Blueprint, redirect, url_for, jsonify, render_template, make_response
+from flask import Blueprint, redirect, url_for, jsonify, render_template, make_response, request
 from datetime import datetime
-from ckan.plugins.toolkit import c, render, request
+from ckan.plugins.toolkit import render
 import ckan.plugins.toolkit as tk
-import ckan.lib.helpers as h
 from ckanext.sparql_interface.utils import sparql_query_SPARQLWrapper as utils_sparqlQuery
 from ckanext.sparql_interface.models.query_hash import SparqlQueryHash as sparql_db_table
 from flask import Response
@@ -33,15 +28,17 @@ def index():
 
 @sparql.route(u'/sparql_interface')
 def old_index():
-    return h.redirect_to('sparql_interface.index')
+    return redirect(url_for('sparql_interface.index'))
 
 @sparql.route(u'/query')
 def old_query():
-
-    return h.redirect_to('sparql_interface.query_page')
+    return redirect(url_for('sparql_interface.query_page'))
 
 @sparql.route(u'/sparql_interface/query', methods=['GET', 'POST'])
 def query_page():
+    if not request.values.get('query') and not request.values.get('server'):
+        return redirect(url_for('sparql_interface.index'))
+
     respuesta = utils_sparqlQuery('')
 
     if request.values.get('direct_link') == '1':
@@ -60,16 +57,18 @@ def query_page():
 #to save the query when "Save Query" button is clicked
 @sparql.route(u'/sparql_interface/save', methods=['POST'])
 def save_sparql_query():
-    # Parse the incoming JSON request
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
     sparql_query = data.get('query')
 
     if not sparql_query:
         return jsonify({"error": "No SPARQL query provided"}), 400
 
-    # Convert the SPARQL query to a short hash using SHA-256
     query_hash = hashlib.sha256(sparql_query.encode('utf-8')).hexdigest()[:32]
-    url_query_hash = 'http://localhost:5000/sparql/' + query_hash
+    url_query_hash = url_for(
+        'sparql_interface.retrieve_sparql_query_template',
+        query_hash=query_hash,
+        _external=True
+    )
     timestamp = datetime.now()
 
     sparql_db_table.create(timestamp, sparql_query, query_hash )
@@ -85,7 +84,6 @@ def save_sparql_query():
 
 # Retrieve the SPARQL query from the database when URL hash is given
 def retrieve_sparql_query(query_hash):
-    #return h.redirect_to('sparql_interface.index')
     try:
         # Retrieve the record from the database using the query hash
         sparql_record = sparql_db_table.get_hash_format(query_hash_format=query_hash)
@@ -123,63 +121,45 @@ Instructions:
 Question:
 """
 
-# # OPENAI_API_KEY = "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"
-# API_KEY_DEFAULT = tk.config.get('ckanext.sparql_interface.openai_api_key')
-# logger.debug(API_KEY_DEFAULT)
-
-
 @sparql.route(u'/llm', methods=['GET','POST'])
 def llm():
 
     question = request.values.get('question', None)
     if question is None:
-        raise ValueError('ERROR: No question passed.')
-    elif len(question) > 128:
-        raise ValueError('ERROR: Your question exceeds 128 characters.')
-    else:
-        api_key = request.values.get('apikey', None)
-        logger.debug(f"THE API KEY {api_key}")
-        if api_key is None:
-            api_key=API_KEY_DEFAULT
-            logger.debug(f"Default API KEY {api_key}")
+        return jsonify({"error": "No question passed."}), 400
+    if len(question) > 128:
+        return jsonify({"error": "Your question exceeds 128 characters."}), 400
 
+    api_key = request.values.get('apikey') or tk.config.get(
+        'ckanext.sparql_interface.groq_api_key'
+    ) or tk.config.get('ckanext.sparql_interface.openai_api_key')
+    if not api_key:
+        return jsonify({"error": "LLM integration is not configured."}), 503
+
+    try:
+        import openai
+    except ImportError:
+        return jsonify({"error": "LLM integration dependency is not installed."}), 503
+
+    try:
         client = openai.OpenAI(
             base_url="https://api.groq.com/openai/v1",
             api_key=api_key
-
         )
-
         chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"{prompt}\n{question}",
-                }
-            ],
-            model="llama-3.3-70b-versatile",
+            messages=[{
+                "role": "user",
+                "content": f"{prompt}\n{question}",
+            }],
+            model=tk.config.get(
+                'ckanext.sparql_interface.llm_model',
+                'llama-3.3-70b-versatile'
+            ),
         )
-
-        # data = {
-        #     "model": "gpt-3.5-turbo",
-        #     "messages": [
-        #         {"role": "user", "content": f"{prompt}\n{question}"}
-        #     ]
-        # }
-
-
-        try:
-            response = chat_completion.choices[0].message.content
-            logger.debug(response)
-            content=response
-            return content
-
-        except requests.exceptions.HTTPError as http_err:
-            if response.status_code == 429:
-                return None
-            else:
-                raise RuntimeError(f"HTTP error occurred: {http_err}")
-        except Exception as err:
-            raise RuntimeError(f"An error occurred: {err}")
-
-
-
+        return chat_completion.choices[0].message.content
+    except requests.exceptions.HTTPError as http_err:
+        logger.warning("LLM HTTP error: %s", http_err)
+        return jsonify({"error": "LLM service returned an HTTP error."}), 502
+    except Exception as err:
+        logger.exception("LLM request failed")
+        return jsonify({"error": "LLM request failed."}), 502

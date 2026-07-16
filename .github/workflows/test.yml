@@ -20,7 +20,7 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        ckan-version: ["2.9"]
+        ckan-version: ["2.10.7"]
       fail-fast: false
 
     name: CKAN ${{ matrix.ckan-version }}
@@ -60,7 +60,7 @@ jobs:
         sed -i -e 's/use = config:.*/use = config:\/srv\/app\/src\/ckan\/test-core.ini/' test.ini
     - name: Setup extension (CKAN >= 2.9)
       run: |
-        ckan -c test.ini db init
+        ckan -c test.ini db upgrade
         ckan -c test.ini db pending-migrations --apply
     - name: Run tests
-      run: pytest --ckan-ini=test.ini --cov=ckanext.harvest --disable-warnings ckanext/harvest/tests
+      run: pytest --ckan-ini=test.ini --cov=ckanext.sparql_interface --disable-warnings ckanext/sparql_interface/tests

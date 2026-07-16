@@ -16,9 +16,6 @@ logger = getLogger(__name__)
 def sparql_query_SPARQLWrapper(data_structure):
     logger.debug("Entering sparql_query_SPARQLWrapper")
 
-    c = p.toolkit.c
-    c.direct_link = p.toolkit.request.params.get('direct_link')
-
     request_values = p.toolkit.request.values
 
     query_string = request_values.get('query')
@@ -54,7 +51,6 @@ def sparql_query_SPARQLWrapper(data_structure):
             return "Error: Received an HTML page instead of JSON data. Check your credentials and endpoint URL."
 
         results = response.convert()
-        c.sparql_query = query_string
         # logger.debug(f'Results from Wrapper: {results}')
         return results
     except Exception as e:
@@ -64,11 +60,10 @@ def sparql_query_SPARQLWrapper(data_structure):
 
 def sparqlQuery_veryNew(data_structure):
     logger.debug("Entering sparqlQuery")
-    c = p.toolkit.c
-    c.direct_link = p.toolkit.request.params.get('direct_link')
+    request_values = p.toolkit.request.values
 
     # Determine the format for the response
-    response_format = p.toolkit.request.params.get('type_response_query', 'json')
+    response_format = request_values.get('type_response_query', 'json')
     if response_format == 'json':
         format = "application/json"
     elif response_format == 'turtle':
@@ -82,7 +77,7 @@ def sparqlQuery_veryNew(data_structure):
     logger.debug("Format: " + format)
 
     params_query = {
-        "query": p.toolkit.request.params.get('query'),
+        "query": request_values.get('query'),
         "debug": "off",
         "timeout": "",
         "format": format,
@@ -91,7 +86,7 @@ def sparqlQuery_veryNew(data_structure):
     }
 
     querypart = urllib.parse.urlencode(params_query)
-    server = p.toolkit.request.params.get('server')
+    server = request_values.get('server')
     logger.debug("server: " + server)
 
     # Add credentials for basic authentication
@@ -159,7 +154,7 @@ def sparqlQuery_veryNew(data_structure):
             response.content_type = "application/javascript"
             return response
         elif response_format == 'query':
-            return "data.upf.edu/sparql?view_code=" + p.toolkit.request.params.get('query')
+            return "data.upf.edu/sparql?view_code=" + request_values.get('query')
         else:
             data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
             return data
@@ -167,24 +162,23 @@ def sparqlQuery_veryNew(data_structure):
 
 def sparqlQuery(data_structure):
     logger.debug("Entering sparqlQuery")
-    c = p.toolkit.c
-    c.direct_link = p.toolkit.request.params.get('direct_link')
+    request_values = p.toolkit.request.values
 
-    if p.toolkit.request.params.get('type_response_query') == 'json':
+    if request_values.get('type_response_query') == 'json':
         format = "application/json"
-    elif p.toolkit.request.params.get('type_response_query') == 'turtle':
+    elif request_values.get('type_response_query') == 'turtle':
         format = "text/turtle"
-    elif p.toolkit.request.params.get('type_response_query') == 'csv':
+    elif request_values.get('type_response_query') == 'csv':
         # The conversion to csv is made later
         format = "application/json"
-    elif p.toolkit.request.params.get('type_response_query') == 'js':
+    elif request_values.get('type_response_query') == 'js':
         format = "application/javascript"
     else:
         ## Default Format
         format = "application/json"
     logger.debug("Format: " + format)
     params_query = {
-        "query": p.toolkit.request.params.get('query'),
+        "query": request_values.get('query'),
         "debug": "off",
         "timeout": "",
         "format": format,
@@ -195,7 +189,7 @@ def sparqlQuery(data_structure):
     querypart = urllib.parse.urlencode(params_query)
     # logger.debug("querypart: " + querypart)
 
-    server_oauth = p.toolkit.request.params.get('server')
+    server_oauth = request_values.get('server')
     username = 'readonly'  # Replace with your username
     password = 'one2rule4all'  # Replace with your password
     server = f"http://{username}:{password}@{server_oauth}"
@@ -215,7 +209,7 @@ def sparqlQuery(data_structure):
         response_query = temp_response_query.decode("utf-8")
         # logger.debug("response_query: {}".format(response_query))
 
-        if p.toolkit.request.params.get('type_response_query') == 'json':
+        if request_values.get('type_response_query') == 'json':
             data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
             response = make_response(json.dumps(data, separators=(',', ':')))
             response.content_type = 'application/json'
@@ -223,11 +217,11 @@ def sparqlQuery(data_structure):
             return response
             # logger.debug("data: {}".format(data))
             # return data
-        elif p.toolkit.request.params.get('type_response_query') == 'turtle':
+        elif request_values.get('type_response_query') == 'turtle':
             response = make_response(response_query)
             response.content_type = 'text/turtle'
             return response
-        elif p.toolkit.request.params.get('type_response_query') == 'csv':
+        elif request_values.get('type_response_query') == 'csv':
             data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
             output = []
             for result in data["head"]["vars"]:
@@ -256,28 +250,27 @@ def sparqlQuery(data_structure):
             # p.toolkit.response.headers['Content-disposition'] = 'attachment; filename=query.csv'
             response.charset = "utf-8-sig"
             return response
-        elif p.toolkit.request.params.get('type_response_query') == 'js':
+        elif request_values.get('type_response_query') == 'js':
             p.toolkit.response.content_type = "application/javascript"
             return response_query
-        elif p.toolkit.request.params.get('type_response_query') == 'query':
-            return "data.upf.edu/sparql?view_code=" + p.toolkit.request.params.get('query')
+        elif request_values.get('type_response_query') == 'query':
+            return "data.upf.edu/sparql?view_code=" + request_values.get('query')
         else:
             data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
         return data
 
 
 def sparqlQueryold(data_structure):
-    c = p.toolkit.c
-    c.direct_link = p.toolkit.request.params.get('direct_link')
+    request_values = p.toolkit.request.values
 
-    if p.toolkit.request.params.get('type_response_query') == 'json':
+    if request_values.get('type_response_query') == 'json':
         format = "application/json"
-    elif p.toolkit.request.params.get('type_response_query') == 'turtle':
+    elif request_values.get('type_response_query') == 'turtle':
         format = "text/turtle"
-    elif p.toolkit.request.params.get('type_response_query') == 'csv':
+    elif request_values.get('type_response_query') == 'csv':
         # The conversion to csv is made later
         format = "application/json"
-    elif p.toolkit.request.params.get('type_response_query') == 'js':
+    elif request_values.get('type_response_query') == 'js':
         format = "application/javascript"
     else:
         ## Default Format
@@ -286,7 +279,7 @@ def sparqlQueryold(data_structure):
     params_query = {
         "default-graph": "",
         "should-sponge": "soft",
-        "query": p.toolkit.request.params.get('query'),
+        "query": request_values.get('query'),
         "debug": "off",
         "timeout": "",
         "format": format,
@@ -297,7 +290,7 @@ def sparqlQueryold(data_structure):
     querypart = urllib.urlencode(params_query)
     # logger.debug("querypart: " + querypart)
 
-    server = p.toolkit.request.params.get('server')
+    server = request_values.get('server')
     logger.debug("server: " + server)
 
     # Add Credentials for authentication
@@ -312,15 +305,15 @@ def sparqlQueryold(data_structure):
     response_query = temp_result.read()
     # logger.debug("response_query: " + response_query)
 
-    if p.toolkit.request.params.get('type_response_query') == 'json':
+    if request_values.get('type_response_query') == 'json':
         data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
         p.toolkit.response.content_type = 'application/json'
         # response.headers['Content-disposition'] = 'attachment; filename=query.json'
         return json.dumps(data, separators=(',', ':'))
-    elif p.toolkit.request.params.get('type_response_query') == 'turtle':
+    elif request_values.get('type_response_query') == 'turtle':
         p.toolkit.response.content_type = 'text/turtle'
         return response_query
-    elif p.toolkit.request.params.get('type_response_query') == 'csv':
+    elif request_values.get('type_response_query') == 'csv':
         p.toolkit.response.content_type = 'text/plain'
         p.toolkit.response.headers['Content-disposition'] = 'attachment; filename=query.csv'
         p.toolkit.response.charset = "utf-8-sig"
@@ -348,11 +341,11 @@ def sparqlQueryold(data_structure):
                         key += 1
             output.append("\n")
         return "".join(output)
-    elif p.toolkit.request.params.get('type_response_query') == 'js':
+    elif request_values.get('type_response_query') == 'js':
         p.toolkit.response.content_type = "application/javascript"
         return response_query
-    elif p.toolkit.request.params.get('type_response_query') == 'query':
-        return "data.upf.edu/sparql?view_code=" + p.toolkit.request.params.get('query')
+    elif request_values.get('type_response_query') == 'query':
+        return "data.upf.edu/sparql?view_code=" + request_values.get('query')
     else:
         data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
         return data

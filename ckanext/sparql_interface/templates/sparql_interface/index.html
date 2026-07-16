@@ -170,8 +170,6 @@
 {% block scripts %}
 {{ super() }}
 
-{% set current_url = request.environ.CKAN_CURRENT_URL %}
-
 <script src="{% url_for_static '/public_sparql_interface/base.js' %}"></script>
 
 
@@ -201,22 +199,9 @@ $(document).ready(function() {
     window.sparqlInterfaceProxyEndpoint = getCkanProxyEndpoint;
 
     endpointSelect.addEventListener('change', function () {
-        const selectedEndpoint = this.value;
-
         yasgui.getTab().setRequestConfig({
             endpoint: getCkanProxyEndpoint(),
             method: 'POST'
-        });
-
-        // Optional: send selected endpoint to backend
-        fetch('{{ h.url_for("sparql_interface.index") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                endpoint: selectedEndpoint
-            })
         });
     });
 });

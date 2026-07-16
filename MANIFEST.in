@@ -1,4 +1,4 @@
-include README.rst
+include README.md
 include requirements.txt
-recursive-include ckanext/sparql *.html *.json *.js *.less *.css *.mo *.yml *.ini *.py *.mako
-
+include test.ini
+recursive-include ckanext/sparql_interface *.html *.json *.js *.less *.css *.mo *.po *.yml *.ini *.py *.mako *.gif

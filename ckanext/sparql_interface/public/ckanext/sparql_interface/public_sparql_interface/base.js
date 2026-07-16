@@ -286,6 +286,7 @@ $(document).ready(function () {
 const llm_form = document.getElementById("llm"),
       loader = document.querySelector("#loading");
 
+if (llm_form && loader) {
 llm_form.onsubmit = async function (event) {
     event.preventDefault();
     loader.classList.add("display");
@@ -298,19 +299,24 @@ llm_form.onsubmit = async function (event) {
         let response = await fetch("llm", { method: "POST", body: data });
         let query = await response.text();
 
-        // let yasgui = new Yasgui(document.getElementById('yasgui'));
-        if (yasgui) {
+        let llmYasgui = window.sparqlInterfaceYasgui || null;
+        if (llmYasgui) {
             $('#yasgui').empty();
-            yasgui = new Yasgui(document.getElementById('yasgui'), {
-                requestConfig: { endpoint: "{{ h.sparql_endpoint_url() }}", endpointInput: false, method: "POST" },
+            llmYasgui = new Yasgui(document.getElementById('yasgui'), {
+                requestConfig: {
+                    endpoint: window.sparqlInterfaceProxyEndpoint ? window.sparqlInterfaceProxyEndpoint() : $('#field-sparql-server').val(),
+                    endpointInput: false,
+                    method: "POST"
+                },
                 showControlBar: false
             });
+            window.sparqlInterfaceYasgui = llmYasgui;
             }
 //        else {
 //            let yasgui = new Yasgui(document.getElementById('yasgui'));
 //        }
 
-        let tab = yasgui.addTab(true);
+        let tab = llmYasgui.addTab(true);
 
         tab.setName("LLM Query");
         tab.setQuery(query);
@@ -321,14 +327,17 @@ llm_form.onsubmit = async function (event) {
         loader.classList.remove("display");
     }
 };
+}
 
 const question_elem = document.getElementById("question"),
       submit_btn = document.getElementById("llm_submit"),
       questions = document.querySelectorAll('.question');
 
+if (question_elem && submit_btn) {
 questions.forEach(el => {
     el.addEventListener('click', () => {
         question_elem.value = el.textContent || el.innerText;
         submit_btn.click();
     });
 });
+}

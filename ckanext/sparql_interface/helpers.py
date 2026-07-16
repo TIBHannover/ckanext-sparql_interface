@@ -22,13 +22,13 @@ def helper(fn):
 
 @helper
 def get_query():
-    return p.toolkit.request.params.get('query')
+    return p.toolkit.request.values.get('query')
 
 #Returns get/post direct_link param to check whether to return in a specific format the data
 
 @helper
 def check_direct_link():
-    return p.toolkit.request.params.get('direct_link')
+    return p.toolkit.request.values.get('direct_link')
 
 #Used to check whether a string is a url
 
@@ -80,7 +80,6 @@ def default_sparql_endpoint_url():
         'ckanext.sparql_interface.default_endpoint',
         'https://dbpedia.org/sparql'
     )
-
 
 
 

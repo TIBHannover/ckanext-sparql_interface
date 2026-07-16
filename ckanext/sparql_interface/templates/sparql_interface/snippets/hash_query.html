@@ -149,8 +149,6 @@
 {% block scripts %}
 {{ super() }}
 
-{% set current_url = request.environ.CKAN_CURRENT_URL %}
-
 <script src="{% url_for_static '/public_sparql_interface/base.js' %}"></script>
 
 
@@ -175,4 +173,3 @@
 
 
 {% endblock %}
-
