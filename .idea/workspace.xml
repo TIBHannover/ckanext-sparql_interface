@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="add: notificaion for user to execute">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: test.ini for docker-ckan" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,23 +47,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.9160897798059842" />
-      <entry key="MS500" value="5.39066638394532" />
-      <entry key="S2" value="14.760132706592058" />
-      <entry key="S5" value="21.386166483079407" />
-      <entry key="S10" value="24.7372154343753" />
-      <entry key="S30" value="27.463284447677815" />
-      <entry key="S60" value="28.537174671813922" />
-      <entry key="M2" value="32.022848048409735" />
-      <entry key="M5" value="57.471365841302145" />
-      <entry key="M10" value="121.35545515213089" />
-      <entry key="M15" value="175.25182742372658" />
-      <entry key="M30" value="279.0469889736723" />
-      <entry key="H1" value="384.95149794256923" />
-      <entry key="H2" value="473.8611377187978" />
-      <entry key="H4" value="534.5661500995069" />
-      <entry key="D1" value="596.9619255172671" />
-      <entry key="W1" value="608.959613104148" />
+      <entry key="MS100" value="1.6221888971964824" />
+      <entry key="MS500" value="4.427298197818308" />
+      <entry key="S2" value="9.922496035483208" />
+      <entry key="S5" value="12.591918868770787" />
+      <entry key="S10" value="13.721471204977293" />
+      <entry key="S30" value="15.04639996128546" />
+      <entry key="S60" value="19.104997224432832" />
+      <entry key="M2" value="30.523097896711356" />
+      <entry key="M5" value="63.40240989780336" />
+      <entry key="M10" value="126.36227732450749" />
+      <entry key="M15" value="181.74058526157864" />
+      <entry key="M30" value="292.6491167585223" />
+      <entry key="H1" value="407.29321982834364" />
+      <entry key="H2" value="503.7391095622818" />
+      <entry key="H4" value="569.7217314202619" />
+      <entry key="D1" value="637.6868527522915" />
+      <entry key="W1" value="650.7737672900316" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -87,23 +85,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.8195590002726236" />
-      <entry key="MS500" value="5.3351731997364285" />
-      <entry key="S2" value="14.701471777762682" />
-      <entry key="S5" value="21.341139668054794" />
-      <entry key="S10" value="24.708225219810608" />
-      <entry key="S30" value="27.451734881305537" />
-      <entry key="S60" value="28.531068017013446" />
-      <entry key="M2" value="32.01922730332916" />
-      <entry key="M5" value="57.468704329510786" />
-      <entry key="M10" value="121.35324963172337" />
-      <entry key="M15" value="175.24995369934481" />
-      <entry key="M30" value="279.0456725295247" />
-      <entry key="H1" value="384.9506248691285" />
-      <entry key="H2" value="473.8606019023198" />
-      <entry key="H4" value="534.5658464930315" />
-      <entry key="D1" value="596.9618686046446" />
-      <entry key="W1" value="608.9596047976255" />
+      <entry key="MS100" value="1.543520559995005" />
+      <entry key="MS500" value="4.384638574090415" />
+      <entry key="S2" value="9.897990386976792" />
+      <entry key="S5" value="12.579342743923249" />
+      <entry key="S10" value="13.71458826985652" />
+      <entry key="S30" value="15.04323437598478" />
+      <entry key="S60" value="19.101441135224178" />
+      <entry key="M2" value="30.519143989954454" />
+      <entry key="M5" value="63.39890595331157" />
+      <entry key="M10" value="126.35942722693844" />
+      <entry key="M15" value="181.73819102321295" />
+      <entry key="M30" value="292.6474692578743" />
+      <entry key="H1" value="407.29215434027935" />
+      <entry key="H2" value="503.73846775651424" />
+      <entry key="H4" value="569.721371548626" />
+      <entry key="D1" value="637.6867858934053" />
+      <entry key="W1" value="650.7737575467445" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -524,7 +522,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783947696503</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="chg: test.ini for docker-ckan">
+      <option name="closed" value="true" />
+      <created>1784530114134</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1784530114134</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -542,7 +548,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="default query added" />
     <MESSAGE value="css sample query buttons" />
     <MESSAGE value="css submit query button" />
     <MESSAGE value="close button within tab" />
@@ -567,6 +572,7 @@
     <MESSAGE value="chg: new username password" />
     <MESSAGE value="fix: cacheing issue doesn't rerun query" />
     <MESSAGE value="add: notificaion for user to execute" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: notificaion for user to execute" />
+    <MESSAGE value="chg: test.ini for docker-ckan" />
+    <option name="LAST_COMMIT_MESSAGE" value="chg: test.ini for docker-ckan" />
   </component>
 </project>
