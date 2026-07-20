@@ -30,7 +30,11 @@ jobs:
     services:
       solr:
         image: ckan/ckan-solr:2.10-solr9
-        options: --health-cmd='curl --silent --fail http://localhost:8983/solr/admin/ping' --health-interval=10s --health-timeout=5s --health-retries=5
+        options: >-
+          --health-cmd "wget -qO /dev/null http://localhost:8983/solr/"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       postgres:
         image: ckan/ckan-postgres-dev:${{ matrix.ckan-version }}
         env:
@@ -58,6 +62,8 @@ jobs:
         pip install -e . --no-cache-dir
         # Replace default path to CKAN core config file with the one on the container
         sed -i -e 's/use = config:.*/use = config:\/srv\/app\/src\/ckan\/test-core.ini/' test.ini
+        # GitHub Actions service aliases differ from the docker-ckan Compose aliases.
+        sed -i -e 's/@db\//@postgres\//g' test.ini
     - name: Setup extension (CKAN >= 2.9)
       run: |
         ckan -c test.ini db upgrade
