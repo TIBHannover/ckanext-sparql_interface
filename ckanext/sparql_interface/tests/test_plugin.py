@@ -1,3 +1,4 @@
+import base64
 import hashlib
 from urllib.parse import urlparse
 
@@ -64,6 +65,28 @@ def test_legacy_query_route_calls_proxy(app, monkeypatch):
 
     assert response.status_code == 200
     assert response.json["head"]["vars"] == ["s"]
+
+
+@pytest.mark.ckan_config("ckanext.sparql_interface.username", "test-user")
+@pytest.mark.ckan_config("ckanext.sparql_interface.password", "test-password")
+def test_sparql_basic_auth_header_uses_config():
+    from ckanext.sparql_interface.utils import _basic_auth_headers
+
+    expected_auth = base64.b64encode(
+        b"test-user:test-password"
+    ).decode("utf-8")
+
+    assert _basic_auth_headers() == {
+        "Authorization": "Basic {}".format(expected_auth)
+    }
+
+
+@pytest.mark.ckan_config("ckanext.sparql_interface.username", "")
+@pytest.mark.ckan_config("ckanext.sparql_interface.password", "")
+def test_sparql_basic_auth_header_is_empty_without_configured_credentials():
+    from ckanext.sparql_interface.utils import _basic_auth_headers
+
+    assert _basic_auth_headers() == {}
 
 
 @pytest.mark.usefixtures("sparql_migrated_db")

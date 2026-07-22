@@ -43,9 +43,13 @@ Required or commonly used options:
 ckanext.sparql_interface.endpoint_url = https://dbpedia.org/sparql
 ckanext.sparql_interface.endpoints = DBpedia|https://dbpedia.org/sparql,NFDI4Chem|https://example.org/sparql
 ckanext.sparql_interface.hide_endpoint_url = false
+ckanext.sparql_interface.username =
+ckanext.sparql_interface.password =
 ```
 
 `ckanext.sparql_interface.endpoints` is a comma-separated list of `Label|URL` values shown in the endpoint selector. If omitted, DBpedia is used as the default example endpoint.
+
+If the configured SPARQL endpoint requires Basic authentication, set `ckanext.sparql_interface.username` and `ckanext.sparql_interface.password` explicitly in the CKAN config. Leave both values empty for public endpoints. Do not hardcode credentials in `utils.py` or commit real secrets.
 
 The `/llm` route is optional and disabled unless an API key is configured. Do not commit real secrets.
 
