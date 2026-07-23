@@ -138,19 +138,37 @@ WHERE {
 
 
 <textarea id="find_datasets_by_ikey_two_text" style="display:none">
-
-
-PREFIX wiki:  <https://service.tib.eu/sfb1153/wiki/>
-PREFIX prop:  <https://service.tib.eu/sfb1153/wiki/Property-3A>
-
-SELECT DISTINCT ?Samples ?URIgesamt
-WHERE {
-
- #?sub ?pred ?object .
- wiki:PA1LAE0089 prop:CreatedSample ?URIgesamt .
-    
-  # Optional (formatting result)
-
- BIND(STRAFTER(STR(?URIgesamt), "https://service.tib.eu/sfb1153/wiki/") AS ?Samples)
-}
+PREFIX prop: <https://service.tib.eu/sfb1153/wiki/Property-3A>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?property ?value
+  WHERE {
+    BIND(<https://service.tib.eu/sfb1153/wiki/M0046> AS ?sample)
+    {
+      ?sample ?property ?value .
+      FILTER(?property IN (
+        rdfs:label,
+        prop:HasBatchNumber, prop:HasMaterialCombination, prop:CreatedBySubproject,
+        prop:HasSampleMaterial, prop:HasUniqueSampleIdentifier,
+        prop:RepresentsDemonstrator, prop:CreatedByPerson
+      ))
+    }
+    UNION
+    {
+      ?protocol prop:AppliedOnSample ?sample .
+      BIND("relatedProtocol" AS ?property)
+      BIND(STR(?protocol) AS ?value)
+    }
+    UNION
+    {
+      ?protocol prop:AppliedOnSample ?sample .
+      ?protocol prop:DataResourceUrl ?url .
+      FILTER(REGEX(STR(?url), "/dataset/([0-9a-f-]{36})/resource/"))
+      BIND(IRI(CONCAT("https://service.tib.eu/dataset/",
+            REPLACE(STR(?url), "^.*/dataset/([0-9a-f-]{36})/resource/.*$", "$1"))) AS ?datasetIRI)
+      SERVICE <https://service.tib.eu/lablsk-sparql/fuseki/ckan1153-2025/query> {
+        ?datasetIRI ?property ?value .
+        FILTER(?property != <http://www.w3.org/ns/dcat#distribution>)
+      }
+    }
+  }
 </textarea>
