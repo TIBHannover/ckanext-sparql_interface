@@ -13,6 +13,55 @@ from flask import make_response
 logger = getLogger(__name__)
 
 
+def _normalise_endpoint_url(url):
+    """Return a stable representation suitable for endpoint comparisons."""
+    return (url or '').strip().rstrip('/')
+
+
+def _basic_auth_credentials(server_url):
+    """Return configured credentials only for explicitly trusted endpoints.
+
+    Authentication is deliberately controlled by CKAN configuration, not by a
+    request parameter.  This prevents a caller from making the proxy disclose
+    its Authorization header to an endpoint of their choice.
+    """
+    config = p.toolkit.config
+    if not p.toolkit.asbool(config.get(
+            'ckanext.sparql_interface.auth_enabled', False)):
+        return None
+
+    trusted_endpoints = {
+        _normalise_endpoint_url(url)
+        for url in config.get(
+            'ckanext.sparql_interface.auth_endpoints', '').split(',')
+        if url.strip()
+    }
+    if _normalise_endpoint_url(server_url) not in trusted_endpoints:
+        return None
+
+    username = config.get('ckanext.sparql_interface.auth_username')
+    password = config.get('ckanext.sparql_interface.auth_password')
+    if not username or not password:
+        logger.warning(
+            'SPARQL authentication is enabled, but username or password is missing'
+        )
+        return None
+
+    return username, password
+
+
+def _basic_auth_headers(server_url):
+    credentials = _basic_auth_credentials(server_url)
+    if not credentials:
+        return {}
+
+    username, password = credentials
+    token = base64.b64encode(
+        '{}:{}'.format(username, password).encode('utf-8')
+    ).decode('ascii')
+    return {'Authorization': 'Basic {}'.format(token)}
+
+
 def sparql_query_SPARQLWrapper(data_structure):
     logger.debug("Entering sparql_query_SPARQLWrapper")
 
@@ -32,9 +81,10 @@ def sparql_query_SPARQLWrapper(data_structure):
         logger.error("No SPARQL endpoint server URL provided")
         raise ValueError("No SPARQL endpoint server URL provided")
 
-    # TODO: Add Credentials must be removed. Test Purpose only
     sparql = SPARQLWrapper(server_url)
-    sparql.setCredentials("readonly", "one2rule4all")
+    credentials = _basic_auth_credentials(server_url)
+    if credentials:
+        sparql.setCredentials(*credentials)
     sparql.setQuery(query_string)
     sparql.setReturnFormat(JSON)
     sparql.setMethod("POST")
@@ -94,12 +144,7 @@ def sparqlQuery_veryNew(data_structure):
     server = p.toolkit.request.params.get('server')
     logger.debug("server: " + server)
 
-    # Add credentials for basic authentication
-    username = 'readonly'  # Replace with your username
-    password = 'one2rule4all'  # Replace with your password
-    auth = base64.b64encode(f'{username}:{password}'.encode('utf-8')).decode('utf-8')
-    logger.debug(f'auth:{auth}')
-    headers = {'Authorization': f'Basic {auth}'}
+    headers = _basic_auth_headers(server)
 
     request_url = f"{server}?{querypart}"
     request = urllib.request.Request(request_url, headers=headers)
@@ -195,16 +240,17 @@ def sparqlQuery(data_structure):
     querypart = urllib.parse.urlencode(params_query)
     # logger.debug("querypart: " + querypart)
 
-    server_oauth = p.toolkit.request.params.get('server')
-    username = 'readonly'  # Replace with your username
-    password = 'one2rule4all'  # Replace with your password
-    server = f"http://{username}:{password}@{server_oauth}"
+    server = p.toolkit.request.params.get('server')
     logger.debug("server: " + server)
 
     # logger.debug("url: {0}?{1}".format(server, querypart))
 
     try:
-        temp_result = urllib.request.urlopen("{0}?{1}".format(server, querypart))
+        request = urllib.request.Request(
+            "{0}?{1}".format(server, querypart),
+            headers=_basic_auth_headers(server)
+        )
+        temp_result = urllib.request.urlopen(request)
     except urllib.error.HTTPError as excp:
         logger.debug(excp)
         response = make_response(('{0}'.format(server), 418))
@@ -300,12 +346,7 @@ def sparqlQueryold(data_structure):
     server = p.toolkit.request.params.get('server')
     logger.debug("server: " + server)
 
-    # Add Credentials for authentication
-
-    username = 'readonly'
-    password = 'one2rule4all'
-    auth = base64.b64encode(f'{username}:{password}'.encode('utf-8')).decode('utf-8')
-    headers = {'Authorization': f'Basic {auth}'}
+    headers = _basic_auth_headers(server)
 
     req = urllib2.Request(server, querypart, headers)
     temp_result = urllib2.urlopen(req)

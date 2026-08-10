@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="add: notificaion for user to execute" />
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="add: comments to example query">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="175" />
+    <option name="cachedIndexableFilesCount" value="171" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -35,35 +37,35 @@
     &quot;assignee&quot;: &quot;bhavin2897&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/TIBHannover/ckanext-sparql_interface.git",
-    "accountId": "849dcb34-4f2c-4d7e-bd9c-4840c703f903"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TIBHannover/ckanext-sparql_interface.git&quot;,
+    &quot;accountId&quot;: &quot;849dcb34-4f2c-4d7e-bd9c-4840c703f903&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0026432490279433" />
-      <entry key="MS500" value="2.7028788674809894" />
-      <entry key="S2" value="15.371187315718275" />
-      <entry key="S5" value="32.428041157652544" />
-      <entry key="S10" value="46.835786969696244" />
-      <entry key="S30" value="64.80688459634344" />
-      <entry key="S60" value="81.73750375773467" />
-      <entry key="M2" value="122.90793155363444" />
-      <entry key="M5" value="204.078698474907" />
-      <entry key="M10" value="258.8632216640744" />
-      <entry key="M15" value="286.1779332547408" />
-      <entry key="M30" value="337.40660383308864" />
-      <entry key="H1" value="399.0331959919374" />
-      <entry key="H2" value="454.93213234793376" />
-      <entry key="H4" value="493.84707254410216" />
-      <entry key="D1" value="533.9781756765486" />
-      <entry key="W1" value="541.6890915883868" />
+      <entry key="MS100" value="1.022102070175309" />
+      <entry key="MS500" value="1.6275702098330158" />
+      <entry key="S2" value="3.901958074020172" />
+      <entry key="S5" value="5.770832496178815" />
+      <entry key="S10" value="6.746755517537258" />
+      <entry key="S30" value="7.5461491882865825" />
+      <entry key="S60" value="7.768178900148086" />
+      <entry key="M2" value="7.882835885025348" />
+      <entry key="M5" value="8.021867694806556" />
+      <entry key="M10" value="11.640169151477524" />
+      <entry key="M15" value="24.39241984897939" />
+      <entry key="M30" value="97.84406778758905" />
+      <entry key="H1" value="247.33687088079492" />
+      <entry key="H2" value="420.9491163377285" />
+      <entry key="H4" value="560.7769286896081" />
+      <entry key="D1" value="720.8216169901222" />
+      <entry key="W1" value="753.4025126822547" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -85,23 +87,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9752252599938528" />
-      <entry key="MS500" value="2.6879474569450728" />
-      <entry key="S2" value="15.348474236854905" />
-      <entry key="S5" value="32.4069915079941" />
-      <entry key="S10" value="46.81920174692466" />
-      <entry key="S30" value="64.79857480224271" />
-      <entry key="S60" value="81.73211921988943" />
-      <entry key="M2" value="122.90380302783323" />
-      <entry key="M5" value="204.07588365159407" />
-      <entry key="M10" value="258.8614006090313" />
-      <entry key="M15" value="286.1765627555292" />
-      <entry key="M30" value="337.40572390747934" />
-      <entry key="H1" value="399.03261027615275" />
-      <entry key="H2" value="454.93176764266013" />
-      <entry key="H4" value="493.8468643159892" />
-      <entry key="D1" value="533.9781364398973" />
-      <entry key="W1" value="541.6890858576049" />
+      <entry key="MS100" value="0.954234550525556" />
+      <entry key="MS500" value="1.6074516717977863" />
+      <entry key="S2" value="3.88932781504545" />
+      <entry key="S5" value="5.763317774426064" />
+      <entry key="S10" value="6.74236427218685" />
+      <entry key="S30" value="7.54451352788362" />
+      <entry key="S60" value="7.767337275782603" />
+      <entry key="M2" value="7.8824089353858025" />
+      <entry key="M5" value="8.021693139843354" />
+      <entry key="M10" value="11.640019833047896" />
+      <entry key="M15" value="24.39216956211548" />
+      <entry key="M30" value="97.84350333107068" />
+      <entry key="H1" value="247.3361460251891" />
+      <entry key="H2" value="420.94849962568713" />
+      <entry key="H4" value="560.7765184702157" />
+      <entry key="D1" value="720.8215292376727" />
+      <entry key="W1" value="753.4024995830606" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -112,19 +114,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Python.helpers.executor": "Debug",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "sfb1153",
-    "last_opened_file_path": "/usr/lib/ckan/default/src/ckanext-sparql_interface/ckanext/sparql_interface/models",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Python.helpers.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;sfb1153&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/usr/lib/ckan/default/src/ckanext-sparql_interface/ckanext/sparql_interface/models&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ckanext/sparql_interface/models" />
@@ -164,7 +170,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-50341a9f1f9c-c2ffad84badb-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.26222.68" />
+        <option value="bundled-python-sdk-c6d794e1806d-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.8665.309" />
       </set>
     </attachedChunks>
   </component>
@@ -510,7 +516,23 @@
       <option name="project" value="LOCAL" />
       <updated>1783946969714</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="chg: example query as requested">
+      <option name="closed" value="true" />
+      <created>1784805060374</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1784805060374</updated>
+    </task>
+    <task id="LOCAL-00045" summary="add: comments to example query">
+      <option name="closed" value="true" />
+      <created>1784807865683</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1784807865683</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -528,8 +550,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="default query added" />
-    <MESSAGE value="css sample query buttons" />
     <MESSAGE value="css submit query button" />
     <MESSAGE value="close button within tab" />
     <MESSAGE value="&quot;yasqui&quot; compatible" />
@@ -553,6 +573,8 @@
     <MESSAGE value="chg: new username password" />
     <MESSAGE value="fix: cacheing issue doesn't rerun query" />
     <MESSAGE value="add: notificaion for user to execute" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: notificaion for user to execute" />
+    <MESSAGE value="chg: example query as requested" />
+    <MESSAGE value="add: comments to example query" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: comments to example query" />
   </component>
 </project>

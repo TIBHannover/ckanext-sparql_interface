@@ -62,6 +62,25 @@ In your ``ckan.ini`` file set
 	ckanext.sparql_interface.hide_endpoint_url = (true | false)    (defaults to false)
 	ckanext.sparql_interface.openai_api_key = gk_**** (You need to add GROQ API key before using this feature in your conf file)
 ```
+
+### Optional endpoint authentication
+
+Basic authentication can be toggled on in CKAN without exposing credentials in
+the browser or source code. Authentication is off by default. Add the following
+to ``ckan.ini`` and restart CKAN:
+
+```
+ckanext.sparql_interface.auth_enabled = true
+ckanext.sparql_interface.auth_endpoints = https://fuseki.example.org/dataset/sparql
+ckanext.sparql_interface.auth_username = readonly
+ckanext.sparql_interface.auth_password = <secret>
+```
+
+``auth_endpoints`` is a comma-separated allowlist. CKAN only sends the hidden
+Authorization header when the selected endpoint exactly matches an entry in
+that list. Set ``auth_enabled = false`` to query without authentication. Keep
+these settings in the server-side CKAN configuration (or inject them from your
+deployment secrets); they are never rendered into the UI.
   
 ## Use
 Go to:
