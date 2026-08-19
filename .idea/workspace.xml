@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="add: comments to example query">
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="feat: config auth credentials">
+      <change beforePath="$PROJECT_DIR$/.idea/ckanext-sparql_interface.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ckanext-sparql_interface.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,23 +51,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.022102070175309" />
-      <entry key="MS500" value="1.6275702098330158" />
-      <entry key="S2" value="3.901958074020172" />
-      <entry key="S5" value="5.770832496178815" />
-      <entry key="S10" value="6.746755517537258" />
-      <entry key="S30" value="7.5461491882865825" />
-      <entry key="S60" value="7.768178900148086" />
-      <entry key="M2" value="7.882835885025348" />
-      <entry key="M5" value="8.021867694806556" />
-      <entry key="M10" value="11.640169151477524" />
-      <entry key="M15" value="24.39241984897939" />
-      <entry key="M30" value="97.84406778758905" />
-      <entry key="H1" value="247.33687088079492" />
-      <entry key="H2" value="420.9491163377285" />
-      <entry key="H4" value="560.7769286896081" />
-      <entry key="D1" value="720.8216169901222" />
-      <entry key="W1" value="753.4025126822547" />
+      <entry key="MS100" value="1.0001915494559015" />
+      <entry key="MS500" value="1.228399299255738" />
+      <entry key="S2" value="4.677760008714291" />
+      <entry key="S5" value="9.724499590199567" />
+      <entry key="S10" value="13.982299177682037" />
+      <entry key="S30" value="48.079337838567" />
+      <entry key="S60" value="111.28665295205249" />
+      <entry key="M2" value="221.11028140808625" />
+      <entry key="M5" value="461.8867415948543" />
+      <entry key="M10" value="660.0336713151568" />
+      <entry key="M15" value="761.6540405422775" />
+      <entry key="M30" value="933.2082365648677" />
+      <entry key="H1" value="1138.7885676831634" />
+      <entry key="H2" value="1352.352860526036" />
+      <entry key="H4" value="1521.3050110412544" />
+      <entry key="D1" value="1714.726191917043" />
+      <entry key="W1" value="1754.2114865244062" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -87,23 +89,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.954234550525556" />
-      <entry key="MS500" value="1.6074516717977863" />
-      <entry key="S2" value="3.88932781504545" />
-      <entry key="S5" value="5.763317774426064" />
-      <entry key="S10" value="6.74236427218685" />
-      <entry key="S30" value="7.54451352788362" />
-      <entry key="S60" value="7.767337275782603" />
-      <entry key="M2" value="7.8824089353858025" />
-      <entry key="M5" value="8.021693139843354" />
-      <entry key="M10" value="11.640019833047896" />
-      <entry key="M15" value="24.39216956211548" />
-      <entry key="M30" value="97.84350333107068" />
-      <entry key="H1" value="247.3361460251891" />
-      <entry key="H2" value="420.94849962568713" />
-      <entry key="H4" value="560.7765184702157" />
-      <entry key="D1" value="720.8215292376727" />
-      <entry key="W1" value="753.4024995830606" />
+      <entry key="MS100" value="0.9796079050108004" />
+      <entry key="MS500" value="1.223271494768711" />
+      <entry key="S2" value="4.67210732984268" />
+      <entry key="S5" value="9.719404631894891" />
+      <entry key="S10" value="13.978385679813304" />
+      <entry key="S30" value="48.07219989182782" />
+      <entry key="S60" value="111.27646633676962" />
+      <entry key="M2" value="221.09940273498634" />
+      <entry key="M5" value="461.87686624840165" />
+      <entry key="M10" value="660.0261249538524" />
+      <entry key="M15" value="761.6480417075012" />
+      <entry key="M30" value="933.2043415202112" />
+      <entry key="H1" value="1138.7860425709011" />
+      <entry key="H2" value="1352.3512920930573" />
+      <entry key="H4" value="1521.304105325899" />
+      <entry key="D1" value="1714.7260177465575" />
+      <entry key="W1" value="1754.2114609653497" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -124,7 +126,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;sfb1153&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/usr/lib/ckan/default/src/ckanext-sparql_interface/ckanext/sparql_interface/models&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/katabathunib/trr375/extensions/ckanext-resource-custom-metadata&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -170,7 +172,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-c6d794e1806d-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.8665.309" />
+        <option value="bundled-python-sdk-821f704e66d9-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.9437.214" />
       </set>
     </attachedChunks>
   </component>
@@ -532,7 +534,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784807865683</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="feat: config auth credentials">
+      <option name="closed" value="true" />
+      <created>1786350570088</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1786350570088</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -550,7 +560,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="css submit query button" />
     <MESSAGE value="close button within tab" />
     <MESSAGE value="&quot;yasqui&quot; compatible" />
     <MESSAGE value="base css changes" />
@@ -575,6 +584,7 @@
     <MESSAGE value="add: notificaion for user to execute" />
     <MESSAGE value="chg: example query as requested" />
     <MESSAGE value="add: comments to example query" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: comments to example query" />
+    <MESSAGE value="feat: config auth credentials" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: config auth credentials" />
   </component>
 </project>
