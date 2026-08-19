@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="feat: config auth credentials">
-      <change beforePath="$PROJECT_DIR$/.idea/ckanext-sparql_interface.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ckanext-sparql_interface.iml" afterDir="false" />
+    <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: auth function toggle">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/query.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/tests/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/tests/test_utils.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,23 +53,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0001915494559015" />
-      <entry key="MS500" value="1.228399299255738" />
-      <entry key="S2" value="4.677760008714291" />
-      <entry key="S5" value="9.724499590199567" />
-      <entry key="S10" value="13.982299177682037" />
-      <entry key="S30" value="48.079337838567" />
-      <entry key="S60" value="111.28665295205249" />
-      <entry key="M2" value="221.11028140808625" />
-      <entry key="M5" value="461.8867415948543" />
-      <entry key="M10" value="660.0336713151568" />
-      <entry key="M15" value="761.6540405422775" />
-      <entry key="M30" value="933.2082365648677" />
-      <entry key="H1" value="1138.7885676831634" />
-      <entry key="H2" value="1352.352860526036" />
-      <entry key="H4" value="1521.3050110412544" />
-      <entry key="D1" value="1714.726191917043" />
-      <entry key="W1" value="1754.2114865244062" />
+      <entry key="MS100" value="1.8259232559162384" />
+      <entry key="MS500" value="3.6024506225652675" />
+      <entry key="S2" value="11.110351766024124" />
+      <entry key="S5" value="20.095438585589118" />
+      <entry key="S10" value="26.309060678595525" />
+      <entry key="S30" value="32.544892145031405" />
+      <entry key="S60" value="35.65286009146563" />
+      <entry key="M2" value="39.17611323711371" />
+      <entry key="M5" value="78.12011869119668" />
+      <entry key="M10" value="228.03264112330717" />
+      <entry key="M15" value="369.6985036992264" />
+      <entry key="M30" value="654.78593270548" />
+      <entry key="H1" value="965.6816867216785" />
+      <entry key="H2" value="1261.0165399013556" />
+      <entry key="H4" value="1487.5970580239582" />
+      <entry key="D1" value="1744.6132928449892" />
+      <entry key="W1" value="1796.9944499742592" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -89,23 +91,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9796079050108004" />
-      <entry key="MS500" value="1.223271494768711" />
-      <entry key="S2" value="4.67210732984268" />
-      <entry key="S5" value="9.719404631894891" />
-      <entry key="S10" value="13.978385679813304" />
-      <entry key="S30" value="48.07219989182782" />
-      <entry key="S60" value="111.27646633676962" />
-      <entry key="M2" value="221.09940273498634" />
-      <entry key="M5" value="461.87686624840165" />
-      <entry key="M10" value="660.0261249538524" />
-      <entry key="M15" value="761.6480417075012" />
-      <entry key="M30" value="933.2043415202112" />
-      <entry key="H1" value="1138.7860425709011" />
-      <entry key="H2" value="1352.3512920930573" />
-      <entry key="H4" value="1521.304105325899" />
-      <entry key="D1" value="1714.7260177465575" />
-      <entry key="W1" value="1754.2114609653497" />
+      <entry key="MS100" value="1.7613212591831848" />
+      <entry key="MS500" value="3.49908953740263" />
+      <entry key="S2" value="11.038811306134257" />
+      <entry key="S5" value="20.055553447159046" />
+      <entry key="S10" value="26.285855642239603" />
+      <entry key="S30" value="32.53613453989226" />
+      <entry key="S60" value="35.648237830098786" />
+      <entry key="M2" value="39.17366253712829" />
+      <entry key="M5" value="78.11832445737801" />
+      <entry key="M10" value="228.03000849574283" />
+      <entry key="M15" value="369.69558741163013" />
+      <entry key="M30" value="654.7832087233401" />
+      <entry key="H1" value="965.6795560035429" />
+      <entry key="H2" value="1261.0150850350453" />
+      <entry key="H4" value="1487.596176908888" />
+      <entry key="D1" value="1744.613116502566" />
+      <entry key="W1" value="1796.994423918005" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -542,7 +544,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786350570088</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="chg: auth function toggle">
+      <option name="closed" value="true" />
+      <created>1787128687336</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1787128687336</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -560,7 +570,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="close button within tab" />
     <MESSAGE value="&quot;yasqui&quot; compatible" />
     <MESSAGE value="base css changes" />
     <MESSAGE value="added test.yml file for git test" />
@@ -585,6 +594,7 @@
     <MESSAGE value="chg: example query as requested" />
     <MESSAGE value="add: comments to example query" />
     <MESSAGE value="feat: config auth credentials" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: config auth credentials" />
+    <MESSAGE value="chg: auth function toggle" />
+    <option name="LAST_COMMIT_MESSAGE" value="chg: auth function toggle" />
   </component>
 </project>

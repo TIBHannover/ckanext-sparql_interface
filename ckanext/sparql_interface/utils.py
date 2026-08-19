@@ -9,7 +9,6 @@ import base64
 from logging import getLogger
 from ckan.common import json
 from flask import make_response
-from ckanext.sparql_interface.query import localise_self_service_clauses
 
 logger = getLogger(__name__)
 
@@ -81,15 +80,6 @@ def sparql_query_SPARQLWrapper(data_structure):
     if not server_url:
         logger.error("No SPARQL endpoint server URL provided")
         raise ValueError("No SPARQL endpoint server URL provided")
-
-    query_string, localised_services = localise_self_service_clauses(
-        query_string, server_url
-    )
-    if localised_services:
-        logger.debug(
-            "Localized %d self-referencing SPARQL SERVICE clause(s)",
-            localised_services
-        )
 
     sparql = SPARQLWrapper(server_url)
     credentials = _basic_auth_credentials(server_url)
