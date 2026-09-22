@@ -6,8 +6,8 @@ This extension adds a YASGUI-based SPARQL editor to CKAN and proxies query execu
 
 - **Version:** 2.1.0
 - **Status:** Development
-- **Tested CKAN version:** 2.10.7
-- **Python:** 3.9
+- **Tested CKAN versions:** 2.10.7 and 2.11
+- **Python:** 3.9+
 
 The extension has primarily been tested with Virtuoso SPARQL endpoints and is maintained for the NFDI4Chem Search Service.
 
@@ -43,11 +43,14 @@ Required or commonly used options:
 ckanext.sparql_interface.endpoint_url = https://dbpedia.org/sparql
 ckanext.sparql_interface.endpoints = DBpedia|https://dbpedia.org/sparql,NFDI4Chem|https://example.org/sparql
 ckanext.sparql_interface.hide_endpoint_url = false
+ckanext.sparql_interface.project_name = crc1153
 ckanext.sparql_interface.username =
 ckanext.sparql_interface.password =
 ```
 
 `ckanext.sparql_interface.endpoints` is a comma-separated list of `Label|URL` values shown in the endpoint selector. If omitted, DBpedia is used as the default example endpoint.
+
+`ckanext.sparql_interface.project_name` selects the project-specific sample query button. Supported values are `crc1153` and `crc1368`. When omitted, the extension also recognizes either name in `ckan.site_title`.
 
 If the configured SPARQL endpoint requires Basic authentication, set `ckanext.sparql_interface.username` and `ckanext.sparql_interface.password` explicitly in the CKAN config. Leave both values empty for public endpoints. Do not hardcode credentials in `utils.py` or commit real secrets.
 
@@ -70,7 +73,7 @@ The legacy `ckanext.sparql_interface.openai_api_key` key is still read as a fall
 
 ## Development and Tests
 
-The repository includes `test.ini` for CKAN pytest runs. In a CKAN 2.10.7 Docker test environment:
+The repository includes `test.ini` for CKAN pytest runs. In a CKAN 2.10 or 2.11 Docker test environment:
 
 ```bash
 pip install -r requirements.txt
@@ -80,7 +83,7 @@ ckan -c test.ini db pending-migrations --apply
 pytest --ckan-ini=test.ini --cov=ckanext.sparql_interface --disable-warnings ckanext/sparql_interface/tests
 ```
 
-GitHub Actions runs the same extension test target inside `ckan/ckan-dev:2.10.7` with PostgreSQL, Solr, and Redis services.
+GitHub Actions runs the same extension test target against CKAN 2.10.7 and 2.11 with PostgreSQL, Solr, and Redis services.
 
 ## Notes
 

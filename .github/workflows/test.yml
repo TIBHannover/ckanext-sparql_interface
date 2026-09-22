@@ -20,16 +20,21 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        ckan-version: ["2.10.7"]
+        include:
+          - ckan-version: "2.10.7"
+            solr-version: "2.10"
+          - ckan-version: "2.11"
+            solr-version: "2.11"
       fail-fast: false
 
     name: CKAN ${{ matrix.ckan-version }}
     runs-on: ubuntu-latest
     container:
       image: ckan/ckan-dev:${{ matrix.ckan-version }}
+      options: --user root
     services:
       solr:
-        image: ckan/ckan-solr:2.10-solr9
+        image: ckan/ckan-solr:${{ matrix.solr-version }}-solr9
         options: >-
           --health-cmd "wget -qO /dev/null http://localhost:8983/solr/"
           --health-interval 10s

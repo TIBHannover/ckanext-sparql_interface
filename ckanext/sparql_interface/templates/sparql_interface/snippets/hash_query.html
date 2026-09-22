@@ -58,17 +58,17 @@
 
     <br>
 
-    <h4> Sample queries </h4>
-<button type="submit" name="" id="title_with_inchi" class="sample-query-button">
-    Title & Description
-</button>
-    <button type="submit" id="find_datasets_by_ikey" class="sample-query-button">
-        Federated Query with Wiki Data
-    </button>
-
-    <button type="submit" id="nr_of_datasets" class="sample-query-button">
-       Number of Datasets
-    </button>
+    {% set project_name = h.sparql_project_name() %}
+    {% if project_name %}<h4>Sample queries</h4>{% endif %}
+    {% if project_name == 'crc1153' %}
+        <button type="submit" id="crc1153" class="sample-query-button">
+            Summary of Sample Information
+        </button>
+    {% elif project_name == 'crc1368' %}
+        <button type="submit" id="crc1368" class="sample-query-button">
+            Summary of Temperature Parameters
+        </button>
+    {% endif %}
 
     <br>
 

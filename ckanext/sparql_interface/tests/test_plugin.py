@@ -29,6 +29,22 @@ def test_sparql_page_renders_yasgui(app):
     assert 'id="yasgui"' in response.text
 
 
+@pytest.mark.ckan_config("ckanext.sparql_interface.project_name", "crc1153")
+def test_crc1153_page_renders_its_sample_query_button(app):
+    response = app.get("/sparql")
+
+    assert 'id="crc1153"' in response.text
+    assert 'id="crc1368"' not in response.text
+
+
+@pytest.mark.ckan_config("ckanext.sparql_interface.project_name", "crc1368")
+def test_crc1368_page_renders_its_sample_query_button(app):
+    response = app.get("/sparql")
+
+    assert 'id="crc1368"' in response.text
+    assert 'id="crc1153"' not in response.text
+
+
 @pytest.mark.parametrize("path", ["/sparql_interface", "/sparql_interface/query"])
 def test_legacy_routes_redirect(app, path):
     response = app.get(path, status=302)

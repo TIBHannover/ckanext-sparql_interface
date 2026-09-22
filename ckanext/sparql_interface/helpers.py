@@ -22,13 +22,13 @@ def helper(fn):
 
 @helper
 def get_query():
-    return p.toolkit.request.values.get('query')
+    return p.toolkit.request.params.get('query')
 
 #Returns get/post direct_link param to check whether to return in a specific format the data
 
 @helper
 def check_direct_link():
-    return p.toolkit.request.values.get('direct_link')
+    return p.toolkit.request.params.get('direct_link')
 
 #Used to check whether a string is a url
 
@@ -81,6 +81,21 @@ def default_sparql_endpoint_url():
         'https://dbpedia.org/sparql'
     )
 
+
+@helper
+def sparql_project_name():
+    """Return the project whose sample-query buttons should be displayed."""
+    project_name = p.toolkit.config.get(
+        'ckanext.sparql_interface.project_name',
+        p.toolkit.config.get('ckan.site_title', '')
+    ).lower()
+
+    normalized_name = project_name.replace('-', '').replace(' ', '')
+    for supported_project in ('crc1153', 'crc1368'):
+        if supported_project in normalized_name:
+            return supported_project
+
+    return ''
 
 
 

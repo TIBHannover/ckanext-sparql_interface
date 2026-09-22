@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f1d8e39-7a01-4d3b-a222-83f5fdf3a4bd" name="Changes" comment="chg: test.ini for docker-ckan">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_07_26,_13_08_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_07_26__13_08__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/test.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/test.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ckanext-sparql_interface.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ckanext-sparql_interface.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/helpers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/public/ckanext/sparql_interface/public_sparql_interface/base.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/hash_query.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/hash_query.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/sample_query.html" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/templates/sparql_interface/snippets/sample_query.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ckanext/sparql_interface/tests/test_plugin.py" beforeDir="false" afterPath="$PROJECT_DIR$/ckanext/sparql_interface/tests/test_plugin.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,23 +57,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000000001077" />
-      <entry key="MS500" value="1.0039749293401046" />
-      <entry key="S2" value="1.419548854713985" />
-      <entry key="S5" value="2.3170390651995296" />
-      <entry key="S10" value="5.5097564138993125" />
-      <entry key="S30" value="20.326827276164902" />
-      <entry key="S60" value="33.078091096427876" />
-      <entry key="M2" value="49.66127701901847" />
-      <entry key="M5" value="86.78575111096553" />
-      <entry key="M10" value="150.31111127237736" />
-      <entry key="M15" value="206.54389686712835" />
-      <entry key="M30" value="320.83655211628314" />
-      <entry key="H1" value="439.68252983609125" />
-      <entry key="H2" value="539.7952448235815" />
-      <entry key="H4" value="608.3601065596039" />
-      <entry key="D1" value="679.0596436958136" />
-      <entry key="W1" value="692.6823240221313" />
+      <entry key="MS100" value="2.1482233488319658" />
+      <entry key="MS500" value="6.0176990958653995" />
+      <entry key="S2" value="16.61510261665959" />
+      <entry key="S5" value="34.69544591155223" />
+      <entry key="S10" value="62.85391133878358" />
+      <entry key="S30" value="131.8968251287678" />
+      <entry key="S60" value="176.67528604271251" />
+      <entry key="M2" value="216.50261026448416" />
+      <entry key="M5" value="271.3467999498735" />
+      <entry key="M10" value="341.1895210802853" />
+      <entry key="M15" value="399.86973721805197" />
+      <entry key="M30" value="517.7108210168554" />
+      <entry key="H1" value="639.4321054750116" />
+      <entry key="H2" value="741.6703128382876" />
+      <entry key="H4" value="811.6265603304437" />
+      <entry key="D1" value="883.7413189833577" />
+      <entry key="W1" value="897.6360397579494" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -89,23 +95,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.8526348917680509" />
-      <entry key="MS500" value="0.9725062119396868" />
-      <entry key="S2" value="1.4094526679424761" />
-      <entry key="S5" value="2.311168875293151" />
-      <entry key="S10" value="5.503714332082081" />
-      <entry key="S30" value="20.320377010509546" />
-      <entry key="S60" value="33.07275585834363" />
-      <entry key="M2" value="49.65663154234808" />
-      <entry key="M5" value="86.78190221123499" />
-      <entry key="M10" value="150.30801043858597" />
-      <entry key="M15" value="206.5412955489506" />
-      <entry key="M30" value="320.8347670553258" />
-      <entry key="H1" value="439.68138199599946" />
-      <entry key="H2" value="539.7945568625993" />
-      <entry key="H4" value="608.3597219499763" />
-      <entry key="D1" value="679.0595724260631" />
-      <entry key="W1" value="692.6823136407022" />
+      <entry key="MS100" value="2.0894313126017026" />
+      <entry key="MS500" value="5.981752186719296" />
+      <entry key="S2" value="16.589246254895173" />
+      <entry key="S5" value="34.669357001985205" />
+      <entry key="S10" value="62.826837980665374" />
+      <entry key="S30" value="131.8751161197047" />
+      <entry key="S60" value="176.65956039606567" />
+      <entry key="M2" value="216.49180743013207" />
+      <entry key="M5" value="271.3401722246254" />
+      <entry key="M10" value="341.1849454930221" />
+      <entry key="M15" value="399.8661234328031" />
+      <entry key="M30" value="517.7085086128213" />
+      <entry key="H1" value="639.4306863599184" />
+      <entry key="H2" value="741.669486629024" />
+      <entry key="H4" value="811.6261057604395" />
+      <entry key="D1" value="883.7412359122081" />
+      <entry key="W1" value="897.6360276867185" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
