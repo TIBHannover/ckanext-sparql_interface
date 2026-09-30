@@ -1,0 +1,480 @@
+Index: MANIFEST.in
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>include README.md\ninclude requirements.txt\ninclude test.ini\nprune ckanext/sparql_interface/lib\nrecursive-include ckanext/sparql_interface *.html *.json *.js *.less *.css *.mo *.po *.yaml *.ini *.py *.mako *.gif\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/MANIFEST.in b/MANIFEST.in
+--- a/MANIFEST.in	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/MANIFEST.in	(date 1790752154587)
+@@ -2,4 +2,4 @@
+ include requirements.txt
+ include test.ini
+ prune ckanext/sparql_interface/lib
+-recursive-include ckanext/sparql_interface *.html *.json *.js *.less *.css *.mo *.po *.yaml *.ini *.py *.mako *.gif
++recursive-include ckanext/sparql_interface *.html *.json *.js *.less *.css *.mo *.po *.yml *.ini *.py *.mako *.gif
+Index: setup.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from setuptools import setup, find_packages\nfrom os import path\n\nversion = '3.0.1'\n\nhere = path.abspath(path.dirname(__file__))\n\n# Get the long description from the relevant file\nwith open(path.join(here, 'README.md'), encoding='utf-8') as f:\n    long_description = f.read()\n\nsetup(\n    name='ckanext-sparql_interface',\n    version=version,\n    description=\"Sparql_Point\",\n    long_description=long_description,\n    long_description_content_type=\"text/markdown\",\n    classifiers=[\n        'Development Status :: 4 - Beta',\n        'Framework :: CKAN',\n        'Programming Language :: Python :: 3',\n        'Programming Language :: Python :: 3.7',\n        'Programming Language :: Python :: 3.8',\n        'Programming Language :: Python :: 3.9',\n        'Programming Language :: Python :: 3.10',\n        'Programming Language :: Python :: 3.11',\n        'Programming Language :: Python :: 3.12',\n    ],\n    keywords='',\n    author='Jorge Pantoja',\n    author_email='jorgepantojam@gmail.com',\n    url='https://github.com/OpenDataGIS/ckanext_sparql_interface',\n    license='AGPL',\n    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),\n    include_package_data=True,\n    zip_safe=False,\n    python_requires='>=3.7',\n    install_requires=['SPARQLWrapper==2.0.0'],\n    entry_points=\"\"\"\n        [ckan.plugins]\n\t\tsparql_interface = ckanext.sparql_interface.plugin:SparqlInterfacePlugin\n\t\t[babel.extractors]\n\t\tckan = ckan.lib.extract:extract_ckan\n\t\"\"\",\n\n    # If you are changing from the default layout of your extension, you may\n    # have to change the message extractors, you can read more about babel\n    # message extraction at\n    # http://babel.pocoo.org/docs/messages/#extraction-method-mapping-and-configuration\n    message_extractors={\n        'ckanext': [\n            ('**.py', 'python', None),\n            ('**.js', 'javascript', None),\n            ('**/templates/**.html', 'ckan', None),\n        ],\n    }\n)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/setup.py b/setup.py
+--- a/setup.py	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/setup.py	(date 1790752154596)
+@@ -1,7 +1,7 @@
+ from setuptools import setup, find_packages
+ from os import path
+ 
+-version = '3.0.1'
++version = '3.0.0'
+ 
+ here = path.abspath(path.dirname(__file__))
+ 
+@@ -24,7 +24,6 @@
+         'Programming Language :: Python :: 3.9',
+         'Programming Language :: Python :: 3.10',
+         'Programming Language :: Python :: 3.11',
+-        'Programming Language :: Python :: 3.12',
+     ],
+     keywords='',
+     author='Jorge Pantoja',
+Index: .github/workflows/test.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>name: Tests\non: [push, pull_request]\n\njobs:\n  lint:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.9'\n      - name: Install requirements\n        run: pip install flake8 pycodestyle --no-cache-dir\n      #- name: Check syntax\n      #  run: flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics --exclude ckan\n      #- name: Run flake8\n      #  run: flake8 . --count --max-line-length=127 --statistics --exclude ckan\n\n  test:\n    needs: lint\n    strategy:\n      matrix:\n        include:\n          - ckan-version: \"2.9.11\"\n            python-version: \"3.9\"\n            postgres-version: \"2.9\"\n            solr-version: \"2.9-solr8\"\n            pytest-plugins: \"-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures\"\n          - ckan-version: \"2.10.7\"\n            python-version: \"3.10\"\n            postgres-version: \"2.10\"\n            solr-version: \"2.10-solr9\"\n            pytest-plugins: \"-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures\"\n          - ckan-version: \"2.11.6\"\n            python-version: \"3.10\"\n            postgres-version: \"2.11\"\n            solr-version: \"2.11-solr9\"\n            pytest-plugins: \"\"\n      fail-fast: false\n\n    name: CKAN ${{ matrix.ckan-version }}\n    runs-on: ubuntu-latest\n    container:\n      image: ckan/ckan-dev:${{ matrix.ckan-version }}\n      options: --user root\n    services:\n      solr:\n        image: ckan/ckan-solr:${{ matrix.solr-version }}\n        options: >-\n          --health-cmd \"wget -qO /dev/null http://localhost:8983/solr/\"\n          --health-interval 10s\n          --health-timeout 5s\n          --health-retries 5\n      postgres:\n        image: ckan/ckan-postgres-dev:${{ matrix.postgres-version }}\n        env:\n          POSTGRES_USER: postgres\n          POSTGRES_PASSWORD: postgres\n          POSTGRES_DB: postgres\n        options: >-\n          --health-cmd \"pg_isready\"\n          --health-interval 10s\n          --health-timeout 5s\n          --health-retries 5\n      redis:\n        image: redis:3\n        options: >-\n          --health-cmd \"redis-cli ping\"\n          --health-interval 10s\n          --health-timeout 5s\n          --health-retries 5\n\n    env:\n      CKAN_SQLALCHEMY_URL: postgresql://ckan_default:pass@postgres/ckan_test\n      CKAN_DATASTORE_WRITE_URL: postgresql://datastore_write:pass@postgres/datastore_test\n      CKAN_DATASTORE_READ_URL: postgresql://datastore_read:pass@postgres/datastore_test\n      CKAN_SOLR_URL: http://solr:8983/solr/ckan\n      CKAN_REDIS_URL: redis://redis:6379/1\n\n    steps:\n    # CKAN 2.9's Alpine image cannot execute the runner's Node 24 binary.\n    - name: Checkout repository without a JavaScript action\n      env:\n        GH_TOKEN: ${{ github.token }}\n      run: |\n        auth_header=\"$(printf 'x-access-token:%s' \"$GH_TOKEN\" | base64 | tr -d '\\n')\"\n        git config --global --add safe.directory \"$GITHUB_WORKSPACE\"\n        git init .\n        git remote add origin \"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\n        git -c http.extraheader=\"AUTHORIZATION: basic $auth_header\" \\\n          fetch --no-tags --depth=1 origin \"$GITHUB_SHA\"\n        git checkout --detach FETCH_HEAD\n    - name: Install Python dependencies\n      run: |\n        python3 -c \"import sys; assert sys.version_info[:2] == tuple(map(int, '${{ matrix.python-version }}'.split('.')))\"\n        pip install --upgrade pip 'setuptools<81' --no-cache-dir\n        pip install -r requirements.txt\n        pip install -e . --no-cache-dir\n        # Replace default path to CKAN core config file with the one on the container\n        sed -i -e 's/use = config:.*/use = config:\\/srv\\/app\\/src\\/ckan\\/test-core.ini/' test.ini\n        # GitHub Actions service aliases differ from the docker-ckan Compose aliases.\n        sed -i -e 's/@db\\//@postgres\\//g' test.ini\n    - name: Setup extension (CKAN >= 2.9)\n      run: |\n        ckan -c test.ini db upgrade\n        ckan -c test.ini db pending-migrations --apply\n    - name: Run tests\n      run: >-\n        pytest\n        ${{ matrix.pytest-plugins }}\n        --ckan-ini=test.ini\n        --cov=ckanext.sparql_interface\n        --disable-warnings\n        ckanext/sparql_interface/tests\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.github/workflows/test.yml b/.github/workflows/test.yml
+--- a/.github/workflows/test.yml	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/.github/workflows/test.yml	(date 1790752154587)
+@@ -5,7 +5,7 @@
+   lint:
+     runs-on: ubuntu-latest
+     steps:
+-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
++      - uses: actions/checkout@v4
+       - uses: actions/setup-python@v5
+         with:
+           python-version: '3.9'
+@@ -22,20 +22,14 @@
+       matrix:
+         include:
+           - ckan-version: "2.9.11"
+-            python-version: "3.9"
+             postgres-version: "2.9"
+             solr-version: "2.9-solr8"
+-            pytest-plugins: "-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures"
+           - ckan-version: "2.10.7"
+-            python-version: "3.10"
+             postgres-version: "2.10"
+             solr-version: "2.10-solr9"
+-            pytest-plugins: "-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures"
+           - ckan-version: "2.11.6"
+-            python-version: "3.10"
+             postgres-version: "2.11"
+             solr-version: "2.11-solr9"
+-            pytest-plugins: ""
+       fail-fast: false
+ 
+     name: CKAN ${{ matrix.ckan-version }}
+@@ -57,18 +51,10 @@
+           POSTGRES_USER: postgres
+           POSTGRES_PASSWORD: postgres
+           POSTGRES_DB: postgres
+-        options: >-
+-          --health-cmd "pg_isready"
+-          --health-interval 10s
+-          --health-timeout 5s
+-          --health-retries 5
++        options: --health-cmd='pg_isready' --health-interval=10s --health-timeout=5s --health-retries=5
+       redis:
+         image: redis:3
+-        options: >-
+-          --health-cmd "redis-cli ping"
+-          --health-interval 10s
+-          --health-timeout 5s
+-          --health-retries 5
++        options: --health-cmd='redis-cli ping' --health-interval=10s --health-timeout=5s --health-retries=5
+ 
+     env:
+       CKAN_SQLALCHEMY_URL: postgresql://ckan_default:pass@postgres/ckan_test
+@@ -78,22 +64,10 @@
+       CKAN_REDIS_URL: redis://redis:6379/1
+ 
+     steps:
+-    # CKAN 2.9's Alpine image cannot execute the runner's Node 24 binary.
+-    - name: Checkout repository without a JavaScript action
+-      env:
+-        GH_TOKEN: ${{ github.token }}
+-      run: |
+-        auth_header="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+-        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+-        git init .
+-        git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+-        git -c http.extraheader="AUTHORIZATION: basic $auth_header" \
+-          fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+-        git checkout --detach FETCH_HEAD
++    - uses: actions/checkout@v4
+     - name: Install Python dependencies
+       run: |
+-        python3 -c "import sys; assert sys.version_info[:2] == tuple(map(int, '${{ matrix.python-version }}'.split('.')))"
+-        pip install --upgrade pip 'setuptools<81' --no-cache-dir
++        pip install --upgrade pip setuptools --no-cache-dir
+         pip install -r requirements.txt
+         pip install -e . --no-cache-dir
+         # Replace default path to CKAN core config file with the one on the container
+@@ -105,10 +79,4 @@
+         ckan -c test.ini db upgrade
+         ckan -c test.ini db pending-migrations --apply
+     - name: Run tests
+-      run: >-
+-        pytest
+-        ${{ matrix.pytest-plugins }}
+-        --ckan-ini=test.ini
+-        --cov=ckanext.sparql_interface
+-        --disable-warnings
+-        ckanext/sparql_interface/tests
++      run: pytest --ckan-ini=test.ini --cov=ckanext.sparql_interface --disable-warnings ckanext/sparql_interface/tests
+Index: ckanext/sparql_interface/migration/sparql_interface/versions/99e5b6ace0a1_change_spaqrl_hash_timezone.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"change spaqrl hash timezone\n\nRevision ID: 99e5b6ace0a1\nRevises: 6dc8d3d7fdd8\nCreate Date: 2024-09-24 16:51:16.542489\n\n\"\"\"\nfrom alembic import op\nimport sqlalchemy as sa\n\n\n# revision identifiers, used by Alembic.\nrevision = '99e5b6ace0a1'\ndown_revision = '6dc8d3d7fdd8'\nbranch_labels = None\ndepends_on = None\n\n\ndef upgrade():\n    bind = op.get_bind()\n    inspector = sa.inspect(bind)\n    if 'sparql_query_hash' not in inspector.get_table_names():\n        return\n\n    columns = {\n        column['name']: column\n        for column in inspector.get_columns('sparql_query_hash')\n    }\n    timestamp = columns.get('timestamp')\n    if timestamp is None or isinstance(timestamp['type'], sa.TIMESTAMP):\n        return\n\n    op.alter_column('sparql_query_hash', 'timestamp',\n                    existing_type=timestamp['type'],\n                    type_=sa.TIMESTAMP(),\n                    nullable=False,\n                    postgresql_using=\"timestamp::timestamp\")\n\ndef downgrade():\n    pass\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ckanext/sparql_interface/migration/sparql_interface/versions/99e5b6ace0a1_change_spaqrl_hash_timezone.py b/ckanext/sparql_interface/migration/sparql_interface/versions/99e5b6ace0a1_change_spaqrl_hash_timezone.py
+--- a/ckanext/sparql_interface/migration/sparql_interface/versions/99e5b6ace0a1_change_spaqrl_hash_timezone.py	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/ckanext/sparql_interface/migration/sparql_interface/versions/99e5b6ace0a1_change_spaqrl_hash_timezone.py	(date 1790752154590)
+@@ -19,7 +19,7 @@
+ def upgrade():
+     bind = op.get_bind()
+     inspector = sa.inspect(bind)
+-    if 'sparql_query_hash' not in inspector.get_table_names():
++    if not inspector.has_table('sparql_query_hash'):
+         return
+ 
+     columns = {
+Index: ckanext/sparql_interface/migration/sparql_interface/versions/6dc8d3d7fdd8_store_query_hash.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"store query hash\n\nRevision ID: 6dc8d3d7fdd8\nRevises: \nCreate Date: 2024-08-30 10:54:27.671276\n\n\"\"\"\nfrom alembic import op\nimport sqlalchemy as sa\n\n\n# revision identifiers, used by Alembic.\nrevision = '6dc8d3d7fdd8'\ndown_revision = None\nbranch_labels = None\ndepends_on = None\n\n\ndef upgrade():\n    bind = op.get_bind()\n    inspector = sa.inspect(bind)\n    if 'sparql_query_hash' in inspector.get_table_names():\n        return\n\n    op.create_table('sparql_query_hash',\n                    sa.Column('id', sa.Integer, primary_key=True, nullable=False),\n                    sa.Column('timestamp', sa.TIMESTAMP(), nullable=False),\n                    sa.Column('query_long_format', sa.String, nullable=False),\n                    sa.Column('query_hash_format', sa.String, nullable=False),\n                    )\n\ndef downgrade():\n    pass\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ckanext/sparql_interface/migration/sparql_interface/versions/6dc8d3d7fdd8_store_query_hash.py b/ckanext/sparql_interface/migration/sparql_interface/versions/6dc8d3d7fdd8_store_query_hash.py
+--- a/ckanext/sparql_interface/migration/sparql_interface/versions/6dc8d3d7fdd8_store_query_hash.py	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/ckanext/sparql_interface/migration/sparql_interface/versions/6dc8d3d7fdd8_store_query_hash.py	(date 1790752154589)
+@@ -19,7 +19,7 @@
+ def upgrade():
+     bind = op.get_bind()
+     inspector = sa.inspect(bind)
+-    if 'sparql_query_hash' in inspector.get_table_names():
++    if inspector.has_table('sparql_query_hash'):
+         return
+ 
+     op.create_table('sparql_query_hash',
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># CKAN SPARQL Interface\n\nThis extension adds a YASGUI SPARQL editor and a server-side SPARQL proxy to\nCKAN. One codebase supports three deployments through configuration profiles:\n\n| Profile | Historic branch | Project-specific interface |\n| --- | --- | --- |\n| `nfdi4chem` | `master` | NFDI4Chem sample-query buttons |\n| `sfb1153` | `sfb1153` | SFB1153 sample summary query |\n| `sfb1368` | `crc-sfb` | SFB1368 temperature summary query |\n\nThe default profile is `nfdi4chem`, so an existing NFDI4Chem deployment does\nnot acquire either SFB-specific button when upgrading.\n\n## Compatibility\n\n- CKAN 2.9, 2.10, and 2.11\n- Python 3.9 with CKAN 2.9\n- Python 3.10 with CKAN 2.10 and 2.11\n- PostgreSQL-backed CKAN database\n- SPARQL endpoints returning SPARQL JSON results\n\nThe continuous-integration matrix is configured for CKAN 2.9.11, 2.10.7, and\n2.11.6. Treat version 3.0.1 as a production candidate until all three jobs and\nthe two SFB deployment smoke tests pass.\n\n## Installation\n\nInstall the same branch or release in every CKAN instance:\n\n```bash\npip install -r requirements.txt\npip install -e .\n```\n\nIn docker-ckan, add an installation line for the eventual merged branch or\ntag to `ckan/Dockerfile`, and append `sparql_interface` to `CKAN__PLUGINS`:\n\n```dockerfile\nckanext-install.sh <repository-owner>/ckanext-sparql_interface <tag-or-branch>\n```\n\n```dotenv\nCKAN__PLUGINS=\"... sparql_interface\"\n```\n\nAdd `sparql_interface` to `ckan.plugins`, then apply the extension migrations:\n\n```bash\nckan -c /etc/ckan/default/ckan.ini db upgrade -p sparql_interface\n```\n\nThe migration is idempotent. It creates the saved-query table when needed and\nadds a unique constraint to query hashes. Back up a production database before\nrunning any migration.\n\n## Common Configuration\n\nEvery endpoint accepted by the proxy must be listed in `endpoints`. This is a\nsecurity boundary: browsers cannot make CKAN query arbitrary internal URLs.\n\n```ini\nckanext.sparql_interface.endpoint_url = https://example.org/sparql\nckanext.sparql_interface.endpoints = Primary|https://example.org/sparql\nckanext.sparql_interface.hide_endpoint_url = false\nckanext.sparql_interface.allow_custom_endpoints = false\nckanext.sparql_interface.query_timeout = 60\nckanext.sparql_interface.max_query_length = 50000\nckanext.sparql_interface.save_enabled = true\n```\n\nMultiple selector entries use a comma-separated `Label|URL` format:\n\n```ini\nckanext.sparql_interface.endpoints = Main|https://example.org/sparql,Archive|https://archive.example.org/sparql\n```\n\n## Deployment Profiles\n\nUse exactly one profile in each CKAN configuration.\n\n### NFDI4Chem (CKAN 2.9)\n\n```ini\nckanext.sparql_interface.profile = nfdi4chem\nckanext.sparql_interface.endpoint_url = https://your-nfdi4chem-endpoint.example/sparql\nckanext.sparql_interface.endpoints = NFDI4Chem|https://your-nfdi4chem-endpoint.example/sparql\nckanext.sparql_interface.auth_enabled = false\n```\n\n### SFB1153 (CKAN 2.10 or 2.11)\n\n```ini\nckanext.sparql_interface.profile = sfb1153\nckanext.sparql_interface.endpoint_url = https://your-sfb1153-endpoint.example/query\nckanext.sparql_interface.endpoints = SFB1153|https://your-sfb1153-endpoint.example/query\n```\n\n### SFB1368 (CKAN 2.10 or 2.11)\n\n```ini\nckanext.sparql_interface.profile = sfb1368\nckanext.sparql_interface.endpoint_url = https://your-sfb1368-endpoint.example/query\nckanext.sparql_interface.endpoints = SFB1368|https://your-sfb1368-endpoint.example/query\n```\n\nThe historic values `crc1153` and `crc1368` are accepted as aliases, but new\nconfiguration should use `sfb1153` and `sfb1368`.\n\n## Endpoint Authentication\n\nBasic authentication is off by default. When an SFB endpoint requires it, add\nan exact endpoint allowlist and inject the secret through deployment\nconfiguration. Credentials are never rendered into HTML or JavaScript.\n\n```ini\nckanext.sparql_interface.auth_enabled = true\nckanext.sparql_interface.auth_endpoints = https://your-sfb-endpoint.example/query\nckanext.sparql_interface.auth_username = readonly\nckanext.sparql_interface.auth_password = <secret>\n```\n\n`auth_endpoints` is separate from `endpoints` on purpose. An Authorization\nheader is sent only when the requested URL exactly matches both the normal\nendpoint allowlist and the authentication allowlist.\n\nKeep `allow_custom_endpoints = false` in production. Turning it on restores\narbitrary proxy targets and should be limited to isolated development use.\n\nFor docker-ckan, CKAN configuration keys can be supplied with uppercase\nenvironment variables and double underscores in place of dots. For example:\n\n```dotenv\nCKANEXT__SPARQL_INTERFACE__PROFILE=sfb1153\nCKANEXT__SPARQL_INTERFACE__ENDPOINT_URL=https://your-sfb1153-endpoint.example/query\nCKANEXT__SPARQL_INTERFACE__ENDPOINTS=SFB1153|https://your-sfb1153-endpoint.example/query\nCKANEXT__SPARQL_INTERFACE__AUTH_ENABLED=true\nCKANEXT__SPARQL_INTERFACE__AUTH_ENDPOINTS=https://your-sfb1153-endpoint.example/query\nCKANEXT__SPARQL_INTERFACE__AUTH_USERNAME=readonly\nCKANEXT__SPARQL_INTERFACE__AUTH_PASSWORD=<secret>\n```\n\nKeep real usernames and passwords in the deployment's secret store or local\n`.env`, never in this repository.\n\n## Optional LLM Route\n\nThe `/llm` route remains disabled unless a server-side key is configured. The\nclient cannot supply or override this key.\n\n```ini\nckanext.sparql_interface.groq_api_key = <secret>\nckanext.sparql_interface.llm_model = llama-3.3-70b-versatile\n```\n\nInstall the optional `openai` dependency only when this route is used.\n\n## Routes\n\n- `/sparql` renders the editor.\n- `/sparql_interface` redirects to `/sparql` for old links.\n- `/sparql_interface/query` proxies queries to configured endpoints.\n- `/sparql_interface/save` stores a query when saving is enabled.\n- `/sparql/<hash>` opens a stored query.\n\n## Local Verification\n\nAfter placing this extension in each docker-ckan source tree, configure that\ninstance's profile and endpoint, rebuild its CKAN image, apply migrations, and\nrun:\n\n```bash\npytest --ckan-ini=test.ini ckanext/sparql_interface/tests\n```\n\nCKAN 2.9 and 2.10 do not register CKAN's pytest plugins automatically. For\nthose versions, add `-p ckan.tests.pytest_ckan.ckan_setup -p\nckan.tests.pytest_ckan.fixtures` before `--ckan-ini` as shown in the CI matrix.\n\nTest the two SFB instances separately before updating NFDI4Chem. Confirm the\nvisible sample button, endpoint selector, query execution, permanent-link save,\nand authenticated endpoint behavior in each instance.\n\nFor the current `/home/katabathunib/trr375/docker-ckan` checkout, the base image\nis CKAN 2.11.6 on Python 3.10. Its existing comment that this extension is\nPython 2-only no longer applies to this branch. Replace that comment only when\nyou add the install line, plugin name, and SFB1153 profile during local testing.\n\n## Branch Strategy\n\nDevelopment for the consolidated version is based on\n`migration/ckan-2.10` in `production/multi-project`. The older `master`,\n`sfb1153`, and `crc-sfb` branches remain useful as history, but deployments\nshould converge on one merged branch or tagged release and differ only through\nCKAN configuration.\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/README.md	(date 1790752154587)
+@@ -15,13 +15,12 @@
+ ## Compatibility
+ 
+ - CKAN 2.9, 2.10, and 2.11
+-- Python 3.9 with CKAN 2.9
+-- Python 3.10 with CKAN 2.10 and 2.11
++- Python 3.7 or newer
+ - PostgreSQL-backed CKAN database
+ - SPARQL endpoints returning SPARQL JSON results
+ 
+ The continuous-integration matrix is configured for CKAN 2.9.11, 2.10.7, and
+-2.11.6. Treat version 3.0.1 as a production candidate until all three jobs and
++2.11.6. Treat version 3.0.0 as a production candidate until all three jobs and
+ the two SFB deployment smoke tests pass.
+ 
+ ## Installation
+@@ -173,10 +172,6 @@
+ pytest --ckan-ini=test.ini ckanext/sparql_interface/tests
+ ```
+ 
+-CKAN 2.9 and 2.10 do not register CKAN's pytest plugins automatically. For
+-those versions, add `-p ckan.tests.pytest_ckan.ckan_setup -p
+-ckan.tests.pytest_ckan.fixtures` before `--ckan-ini` as shown in the CI matrix.
+-
+ Test the two SFB instances separately before updating NFDI4Chem. Confirm the
+ visible sample button, endpoint selector, query execution, permanent-link save,
+ and authenticated endpoint behavior in each instance.
+Index: ckanext/sparql_interface/tests/test_plugin.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import base64\nimport hashlib\nfrom pathlib import Path\nfrom urllib.parse import urlparse\n\nimport pytest\nimport sqlalchemy as sa\n\n\npytestmark = [\n    pytest.mark.ckan_config(\"ckan.plugins\", \"sparql_interface\"),\n    pytest.mark.ckan_config(\n        \"ckanext.sparql_interface.endpoints\",\n        \"DBpedia|https://dbpedia.org/sparql\"\n    ),\n]\n\n\ndef response_text(response):\n    \"\"\"Return decoded response data across CKAN's test client versions.\"\"\"\n    return response.get_data(as_text=True)\n\n\ndef test_plugin_loads():\n    import ckan.plugins as plugins\n\n    assert plugins.plugin_loaded(\"sparql_interface\")\n\n\ndef test_plugin_registers_routes_and_helpers(app):\n    import ckan.plugins.toolkit as tk\n\n    routes = {rule.rule for rule in app.flask_app.url_map.iter_rules()}\n    assert {\n        \"/sparql\",\n        \"/sparql/<query_hash>\",\n        \"/sparql_interface\",\n        \"/sparql_interface/query\",\n        \"/sparql_interface/save\",\n        \"/llm\",\n    }.issubset(routes)\n    assert tk.h.sparql_endpoint_url() == \"https://dbpedia.org/sparql\"\n    assert tk.h.sparql_project_name() == \"nfdi4chem\"\n\n\ndef test_homepage_renders_with_plugin_enabled(app):\n    response = app.get(\"/\")\n\n    assert response.status_code == 200\n\n\ndef test_sparql_page_renders_yasgui(app):\n    response = app.get(\"/sparql\")\n\n    assert response.status_code == 200\n    contents = response_text(response)\n    assert \"SPARQL Editor\" in contents\n    assert 'id=\"yasgui\"' in contents\n    assert 'id=\"find_datasets_by_ikey\"' in contents\n\n\n@pytest.mark.parametrize(\n    \"path, marker\",\n    [\n        (\"/public_sparql_interface/base_styles.css\", \".sparql_hideme\"),\n        (\"/public_sparql_interface/base.js\", \"sparqlInterfaceYasgui\"),\n        (\"/public_sparql_interface/yasgui/yasgui-4.2.28.min.js\", \"Yasgui\"),\n    ],\n)\ndef test_required_static_assets_are_served(app, path, marker):\n    response = app.get(path)\n\n    assert response.status_code == 200\n    assert marker in response_text(response)\n\n\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.profile\", \"sfb1153\")\ndef test_sfb1153_page_renders_its_sample_query_button(app):\n    response = app.get(\"/sparql\")\n\n    contents = response_text(response)\n    assert 'id=\"sfb1153\"' in contents\n    assert 'id=\"sfb1368\"' not in contents\n    assert 'id=\"find_datasets_by_ikey\"' not in contents\n\n\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.profile\", \"sfb1368\")\ndef test_sfb1368_page_renders_its_sample_query_button(app):\n    response = app.get(\"/sparql\")\n\n    contents = response_text(response)\n    assert 'id=\"sfb1368\"' in contents\n    assert 'id=\"sfb1153\"' not in contents\n    assert 'id=\"find_datasets_by_ikey\"' not in contents\n\n\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.profile\", \"\")\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.project_name\", \"crc1153\")\ndef test_historic_crc_profile_alias_is_supported(app):\n    response = app.get(\"/sparql\")\n\n    assert 'id=\"sfb1153\"' in response_text(response)\n\n\n@pytest.mark.parametrize(\"path\", [\"/sparql_interface\", \"/sparql_interface/query\"])\ndef test_legacy_routes_redirect(app, path):\n    response = app.get(path, status=302, follow_redirects=False)\n\n    assert response.location.endswith(\"/sparql\")\n\n\ndef test_old_query_route_redirects_to_query_endpoint(app):\n    response = app.get(\"/query\", status=302, follow_redirects=False)\n\n    assert response.location.endswith(\"/sparql_interface/query\")\n\n\ndef test_legacy_query_route_calls_proxy(app, monkeypatch):\n    from ckanext.sparql_interface import blueprint\n\n    monkeypatch.setattr(\n        blueprint,\n        \"utils_sparqlQuery\",\n        lambda data_structure: {\n            \"head\": {\"vars\": [\"s\"]},\n            \"results\": {\"bindings\": []},\n        },\n    )\n\n    response = app.post(\n        \"/sparql_interface/query\",\n        params={\n            \"query\": \"SELECT * WHERE { ?s ?p ?o } LIMIT 1\",\n            \"server\": \"https://example.test/sparql\",\n            \"direct_link\": \"1\",\n        },\n    )\n\n    assert response.status_code == 200\n    assert response.json[\"head\"][\"vars\"] == [\"s\"]\n\n\ndef test_query_results_template_renders(app, monkeypatch):\n    from ckanext.sparql_interface import blueprint\n\n    monkeypatch.setattr(\n        blueprint,\n        \"utils_sparqlQuery\",\n        lambda data_structure: {\n            \"head\": {\"vars\": [\"label\"]},\n            \"results\": {\"bindings\": [{\"label\": {\"value\": \"Example\"}}]},\n        },\n    )\n    response = app.post(\n        \"/sparql_interface/query\",\n        params={\n            \"query\": \"SELECT * WHERE { ?s ?p ?o } LIMIT 1\",\n            \"server\": \"https://dbpedia.org/sparql\",\n        },\n    )\n\n    assert response.status_code == 200\n    contents = response_text(response)\n    assert \"SPARQL Results\" in contents\n    assert \"Example\" in contents\n\n\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.auth_enabled\", \"true\")\n@pytest.mark.ckan_config(\n    \"ckanext.sparql_interface.auth_endpoints\",\n    \"https://dbpedia.org/sparql\",\n)\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.auth_username\", \"test-user\")\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.auth_password\", \"test-password\")\ndef test_sparql_basic_auth_header_uses_config():\n    from ckanext.sparql_interface.utils import _basic_auth_headers\n\n    expected_auth = base64.b64encode(\n        b\"test-user:test-password\"\n    ).decode(\"utf-8\")\n\n    assert _basic_auth_headers(\"https://dbpedia.org/sparql/\") == {\n        \"Authorization\": \"Basic {}\".format(expected_auth)\n    }\n\n\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.auth_enabled\", \"true\")\n@pytest.mark.ckan_config(\n    \"ckanext.sparql_interface.auth_endpoints\",\n    \"https://trusted.example/sparql\",\n)\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.auth_username\", \"test-user\")\n@pytest.mark.ckan_config(\"ckanext.sparql_interface.auth_password\", \"test-password\")\ndef test_sparql_basic_auth_is_not_sent_to_other_endpoints():\n    from ckanext.sparql_interface.utils import _basic_auth_headers\n\n    assert _basic_auth_headers(\"https://dbpedia.org/sparql\") == {}\n\n\ndef test_unconfigured_endpoint_is_rejected(app):\n    response = app.post(\n        \"/sparql_interface/query\",\n        params={\n            \"query\": \"SELECT * WHERE { ?s ?p ?o } LIMIT 1\",\n            \"server\": \"http://127.0.0.1:5432/private\",\n            \"direct_link\": \"1\",\n        },\n        status=400,\n    )\n\n    assert response.json[\"error\"] == \"SPARQL endpoint is not configured\"\n\n\ndef test_endpoint_parser_ignores_credentials_and_malformed_entries():\n    from ckanext.sparql_interface.config import normalize_endpoint_url\n\n    assert normalize_endpoint_url(\"https://Example.org/sparql/\") == (\n        \"https://example.org/sparql\"\n    )\n    assert normalize_endpoint_url(\"http://user:secret@example.org/sparql\") == \"\"\n    assert normalize_endpoint_url(\"file:///etc/passwd\") == \"\"\n\n\ndef test_webassets_manifest_defines_frontend_bundle():\n    manifest = (\n        Path(__file__).parents[1]\n        / \"public\"\n        / \"ckanext\"\n        / \"sparql_interface\"\n        / \"webassets.yaml\"\n    )\n\n    assert manifest.is_file()\n    contents = manifest.read_text(encoding=\"utf-8\")\n    assert \"sparql_interface:\" in contents\n    assert \"public_sparql_interface/base_styles.css\" in contents\n    assert \"public_sparql_interface/base.js\" in contents\n\n\n@pytest.mark.usefixtures(\"sparql_migrated_db\")\ndef test_query_save_api_returns_permanent_hash_url(app):\n    query = \"SELECT * WHERE { ?s ?p ?o } LIMIT 1\"\n\n    response = app.post(\"/sparql_interface/save\", json={\"query\": query})\n\n    assert response.status_code == 200\n    parsed = urlparse(response.json[\"hash\"])\n    assert parsed.path == \"/sparql/{}\".format(\n        hashlib.sha256(query.encode(\"utf-8\")).hexdigest()[:32]\n    )\n\n\n@pytest.mark.usefixtures(\"sparql_migrated_db\")\ndef test_query_hash_retrieval_renders_saved_query(app):\n    query = \"SELECT * WHERE { ?s ?p ?o } LIMIT 2\"\n    save_response = app.post(\"/sparql_interface/save\", json={\"query\": query})\n    hash_path = urlparse(save_response.json[\"hash\"]).path\n\n    response = app.get(hash_path)\n\n    assert response.status_code == 200\n    assert query in response_text(response)\n\n\ndef test_invalid_query_hash_returns_not_found(app):\n    response = app.get(\"/sparql/not-a-valid-hash\", status=404)\n\n    assert response.json[\"error\"] == \"Invalid SPARQL query hash.\"\n\n\ndef test_database_migration_initializes_table(clean_db):\n    import ckan.cli.db as db\n    import ckan.model as model\n\n    db._run_migrations('sparql_interface', None, True)\n\n    assert \"sparql_query_hash\" in sa.inspect(\n        model.Session.bind\n    ).get_table_names()\n
+===================================================================
+diff --git a/ckanext/sparql_interface/tests/test_plugin.py b/ckanext/sparql_interface/tests/test_plugin.py
+--- a/ckanext/sparql_interface/tests/test_plugin.py	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/ckanext/sparql_interface/tests/test_plugin.py	(date 1790752154595)
+@@ -1,10 +1,8 @@
+ import base64
+ import hashlib
+-from pathlib import Path
+ from urllib.parse import urlparse
+ 
+ import pytest
+-import sqlalchemy as sa
+ 
+ 
+ pytestmark = [
+@@ -13,12 +11,8 @@
+         "ckanext.sparql_interface.endpoints",
+         "DBpedia|https://dbpedia.org/sparql"
+     ),
++    pytest.mark.usefixtures("with_plugins"),
+ ]
+-
+-
+-def response_text(response):
+-    """Return decoded response data across CKAN's test client versions."""
+-    return response.get_data(as_text=True)
+ 
+ 
+ def test_plugin_loads():
+@@ -27,90 +21,49 @@
+     assert plugins.plugin_loaded("sparql_interface")
+ 
+ 
+-def test_plugin_registers_routes_and_helpers(app):
+-    import ckan.plugins.toolkit as tk
+-
+-    routes = {rule.rule for rule in app.flask_app.url_map.iter_rules()}
+-    assert {
+-        "/sparql",
+-        "/sparql/<query_hash>",
+-        "/sparql_interface",
+-        "/sparql_interface/query",
+-        "/sparql_interface/save",
+-        "/llm",
+-    }.issubset(routes)
+-    assert tk.h.sparql_endpoint_url() == "https://dbpedia.org/sparql"
+-    assert tk.h.sparql_project_name() == "nfdi4chem"
+-
+-
+-def test_homepage_renders_with_plugin_enabled(app):
+-    response = app.get("/")
+-
+-    assert response.status_code == 200
+-
+-
+ def test_sparql_page_renders_yasgui(app):
+     response = app.get("/sparql")
+ 
+     assert response.status_code == 200
+-    contents = response_text(response)
+-    assert "SPARQL Editor" in contents
+-    assert 'id="yasgui"' in contents
+-    assert 'id="find_datasets_by_ikey"' in contents
+-
+-
+-@pytest.mark.parametrize(
+-    "path, marker",
+-    [
+-        ("/public_sparql_interface/base_styles.css", ".sparql_hideme"),
+-        ("/public_sparql_interface/base.js", "sparqlInterfaceYasgui"),
+-        ("/public_sparql_interface/yasgui/yasgui-4.2.28.min.js", "Yasgui"),
+-    ],
+-)
+-def test_required_static_assets_are_served(app, path, marker):
+-    response = app.get(path)
+-
+-    assert response.status_code == 200
+-    assert marker in response_text(response)
++    assert "SPARQL Editor" in response.text
++    assert 'id="yasgui"' in response.text
++    assert 'id="find_datasets_by_ikey"' in response.text
+ 
+ 
+ @pytest.mark.ckan_config("ckanext.sparql_interface.profile", "sfb1153")
+ def test_sfb1153_page_renders_its_sample_query_button(app):
+     response = app.get("/sparql")
+ 
+-    contents = response_text(response)
+-    assert 'id="sfb1153"' in contents
+-    assert 'id="sfb1368"' not in contents
+-    assert 'id="find_datasets_by_ikey"' not in contents
++    assert 'id="sfb1153"' in response.text
++    assert 'id="sfb1368"' not in response.text
++    assert 'id="find_datasets_by_ikey"' not in response.text
+ 
+ 
+ @pytest.mark.ckan_config("ckanext.sparql_interface.profile", "sfb1368")
+ def test_sfb1368_page_renders_its_sample_query_button(app):
+     response = app.get("/sparql")
+ 
+-    contents = response_text(response)
+-    assert 'id="sfb1368"' in contents
+-    assert 'id="sfb1153"' not in contents
+-    assert 'id="find_datasets_by_ikey"' not in contents
++    assert 'id="sfb1368"' in response.text
++    assert 'id="sfb1153"' not in response.text
++    assert 'id="find_datasets_by_ikey"' not in response.text
+ 
+ 
+-@pytest.mark.ckan_config("ckanext.sparql_interface.profile", "")
+ @pytest.mark.ckan_config("ckanext.sparql_interface.project_name", "crc1153")
+ def test_historic_crc_profile_alias_is_supported(app):
+     response = app.get("/sparql")
+ 
+-    assert 'id="sfb1153"' in response_text(response)
++    assert 'id="sfb1153"' in response.text
+ 
+ 
+ @pytest.mark.parametrize("path", ["/sparql_interface", "/sparql_interface/query"])
+ def test_legacy_routes_redirect(app, path):
+-    response = app.get(path, status=302, follow_redirects=False)
++    response = app.get(path, status=302)
+ 
+     assert response.location.endswith("/sparql")
+ 
+ 
+ def test_old_query_route_redirects_to_query_endpoint(app):
+-    response = app.get("/query", status=302, follow_redirects=False)
++    response = app.get("/query", status=302)
+ 
+     assert response.location.endswith("/sparql_interface/query")
+ 
+@@ -140,31 +93,6 @@
+     assert response.json["head"]["vars"] == ["s"]
+ 
+ 
+-def test_query_results_template_renders(app, monkeypatch):
+-    from ckanext.sparql_interface import blueprint
+-
+-    monkeypatch.setattr(
+-        blueprint,
+-        "utils_sparqlQuery",
+-        lambda data_structure: {
+-            "head": {"vars": ["label"]},
+-            "results": {"bindings": [{"label": {"value": "Example"}}]},
+-        },
+-    )
+-    response = app.post(
+-        "/sparql_interface/query",
+-        params={
+-            "query": "SELECT * WHERE { ?s ?p ?o } LIMIT 1",
+-            "server": "https://dbpedia.org/sparql",
+-        },
+-    )
+-
+-    assert response.status_code == 200
+-    contents = response_text(response)
+-    assert "SPARQL Results" in contents
+-    assert "Example" in contents
+-
+-
+ @pytest.mark.ckan_config("ckanext.sparql_interface.auth_enabled", "true")
+ @pytest.mark.ckan_config(
+     "ckanext.sparql_interface.auth_endpoints",
+@@ -221,27 +149,11 @@
+     assert normalize_endpoint_url("file:///etc/passwd") == ""
+ 
+ 
+-def test_webassets_manifest_defines_frontend_bundle():
+-    manifest = (
+-        Path(__file__).parents[1]
+-        / "public"
+-        / "ckanext"
+-        / "sparql_interface"
+-        / "webassets.yaml"
+-    )
+-
+-    assert manifest.is_file()
+-    contents = manifest.read_text(encoding="utf-8")
+-    assert "sparql_interface:" in contents
+-    assert "public_sparql_interface/base_styles.css" in contents
+-    assert "public_sparql_interface/base.js" in contents
+-
+-
+ @pytest.mark.usefixtures("sparql_migrated_db")
+ def test_query_save_api_returns_permanent_hash_url(app):
+     query = "SELECT * WHERE { ?s ?p ?o } LIMIT 1"
+ 
+-    response = app.post("/sparql_interface/save", json={"query": query})
++    response = app.post_json("/sparql_interface/save", {"query": query})
+ 
+     assert response.status_code == 200
+     parsed = urlparse(response.json["hash"])
+@@ -253,13 +165,13 @@
+ @pytest.mark.usefixtures("sparql_migrated_db")
+ def test_query_hash_retrieval_renders_saved_query(app):
+     query = "SELECT * WHERE { ?s ?p ?o } LIMIT 2"
+-    save_response = app.post("/sparql_interface/save", json={"query": query})
++    save_response = app.post_json("/sparql_interface/save", {"query": query})
+     hash_path = urlparse(save_response.json["hash"]).path
+ 
+     response = app.get(hash_path)
+ 
+     assert response.status_code == 200
+-    assert query in response_text(response)
++    assert query in response.text
+ 
+ 
+ def test_invalid_query_hash_returns_not_found(app):
+@@ -274,6 +186,4 @@
+ 
+     db._run_migrations('sparql_interface', None, True)
+ 
+-    assert "sparql_query_hash" in sa.inspect(
+-        model.Session.bind
+-    ).get_table_names()
++    assert model.Session.bind.has_table("sparql_query_hash")
+Index: ckanext/sparql_interface/migration/sparql_interface/versions/3b7a8c1d5e90_unique_query_hash.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"make stored query hashes unique\n\nRevision ID: 3b7a8c1d5e90\nRevises: 99e5b6ace0a1\n\"\"\"\nfrom alembic import op\nimport sqlalchemy as sa\n\n\nrevision = '3b7a8c1d5e90'\ndown_revision = '99e5b6ace0a1'\nbranch_labels = None\ndepends_on = None\n\n\ndef upgrade():\n    bind = op.get_bind()\n    inspector = sa.inspect(bind)\n    if 'sparql_query_hash' not in inspector.get_table_names():\n        return\n\n    unique_constraints = inspector.get_unique_constraints('sparql_query_hash')\n    hash_is_unique = any(\n        constraint.get('column_names') == ['query_hash_format']\n        for constraint in unique_constraints\n    )\n    if not hash_is_unique:\n        op.execute(sa.text(\"\"\"\n            DELETE FROM sparql_query_hash AS duplicate\n            USING sparql_query_hash AS original\n            WHERE duplicate.query_hash_format = original.query_hash_format\n              AND duplicate.id > original.id\n        \"\"\"))\n        op.create_unique_constraint(\n            'uq_sparql_query_hash_format',\n            'sparql_query_hash',\n            ['query_hash_format'],\n        )\n\n\ndef downgrade():\n    inspector = sa.inspect(op.get_bind())\n    unique_names = {\n        constraint['name']\n        for constraint in inspector.get_unique_constraints('sparql_query_hash')\n    }\n    if 'uq_sparql_query_hash_format' in unique_names:\n        op.drop_constraint(\n            'uq_sparql_query_hash_format',\n            'sparql_query_hash',\n            type_='unique',\n        )\n
+===================================================================
+diff --git a/ckanext/sparql_interface/migration/sparql_interface/versions/3b7a8c1d5e90_unique_query_hash.py b/ckanext/sparql_interface/migration/sparql_interface/versions/3b7a8c1d5e90_unique_query_hash.py
+--- a/ckanext/sparql_interface/migration/sparql_interface/versions/3b7a8c1d5e90_unique_query_hash.py	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/ckanext/sparql_interface/migration/sparql_interface/versions/3b7a8c1d5e90_unique_query_hash.py	(date 1790752154588)
+@@ -16,7 +16,7 @@
+ def upgrade():
+     bind = op.get_bind()
+     inspector = sa.inspect(bind)
+-    if 'sparql_query_hash' not in inspector.get_table_names():
++    if not inspector.has_table('sparql_query_hash'):
+         return
+ 
+     unique_constraints = inspector.get_unique_constraints('sparql_query_hash')
+Index: ckanext/sparql_interface/tests/conftest.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import pytest\n\n\n@pytest.fixture(autouse=True)\ndef load_sparql_interface_plugin(with_plugins):\n    \"\"\"Load the plugin before CKAN constructs app and database fixtures.\"\"\"\n    yield\n\n\n@pytest.fixture\ndef sparql_migrated_db(clean_db):\n    import ckan.cli.db as db\n    from ckan.model import Session\n    from ckanext.sparql_interface.models.query_hash import SparqlQueryHash\n\n    db._run_migrations('sparql_interface', None, True)\n    Session.query(SparqlQueryHash).delete()\n    Session.commit()\n    yield\n    Session.query(SparqlQueryHash).delete()\n    Session.commit()\n
+===================================================================
+diff --git a/ckanext/sparql_interface/tests/conftest.py b/ckanext/sparql_interface/tests/conftest.py
+--- a/ckanext/sparql_interface/tests/conftest.py	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ b/ckanext/sparql_interface/tests/conftest.py	(date 1790752154595)
+@@ -1,12 +1,6 @@
+ import pytest
+ 
+ 
+-@pytest.fixture(autouse=True)
+-def load_sparql_interface_plugin(with_plugins):
+-    """Load the plugin before CKAN constructs app and database fixtures."""
+-    yield
+-
+-
+ @pytest.fixture
+ def sparql_migrated_db(clean_db):
+     import ckan.cli.db as db
+@@ -19,3 +13,4 @@
+     yield
+     Session.query(SparqlQueryHash).delete()
+     Session.commit()
++
