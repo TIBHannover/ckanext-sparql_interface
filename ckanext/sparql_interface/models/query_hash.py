@@ -1,16 +1,10 @@
 # encoding: utf-8
 
 from datetime import datetime
-from sqlalchemy import Column, Text, TIMESTAMP
-#from sqlalchemy.dialects.postgresql import TIMESTAMPTZ
-from sqlalchemy import Column, ForeignKey, func, String, distinct
-from sqlalchemy.orm import relationship
-from sqlalchemy import orm
-
-import ckan.model.package as _package
+from sqlalchemy import Column, TIMESTAMP
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import types as _types
 from ckan.model import Session
-from ckan.model import meta
 from .base import Base
 
 class SparqlQueryHash(Base):
@@ -26,7 +20,7 @@ class SparqlQueryHash(Base):
     id = Column(_types.Integer, primary_key=True, autoincrement=True, nullable=False)
     timestamp = Column(TIMESTAMP, nullable=False)
     query_long_format = Column(_types.String, nullable=False)
-    query_hash_format = Column(_types.String, nullable=False)
+    query_hash_format = Column(_types.String(32), nullable=False, unique=True)
 
     @classmethod
     def create(cls, timestamp, query_long_format, query_hash_format):
@@ -52,8 +46,14 @@ class SparqlQueryHash(Base):
                 query_hash_format=query_hash_format,
             )
             Session.add(new_entry)
-            Session.commit()
-            return new_entry
+            try:
+                Session.commit()
+                return new_entry
+            except IntegrityError:
+                Session.rollback()
+                return Session.query(cls).filter_by(
+                    query_hash_format=query_hash_format
+                ).one()
 
     @classmethod
     def get_hash_format(cls, query_long_format=None, query_hash_format=None):
@@ -80,7 +80,6 @@ class SparqlQueryHash(Base):
         else:
             # If neither format is provided, return None
             return None
-
 
 
 

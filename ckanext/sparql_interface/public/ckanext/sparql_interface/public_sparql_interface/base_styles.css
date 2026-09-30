@@ -62,6 +62,15 @@
 .container-yasgui{
 }
 
+.sparql-run-hint {
+    margin: 0 0 8px;
+    padding: 8px 10px;
+    background: #f5f5f5;
+    border-left: 4px solid #777;
+    color: #333;
+    font-size: 14px;
+}
+
 .activeline {
 	background: #f0fcff !important;
 }

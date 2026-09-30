@@ -1,0 +1,9 @@
+sparql_interface:
+  output: ckanext_sparql_interface/%(version)s_sparql_interface.css
+  contents:
+    - public_sparql_interface/base_styles.css
+
+sparql_interface_js:
+  output: ckanext_sparql_interface/%(version)s_sparql_interface.js
+  contents:
+    - public_sparql_interface/base.js

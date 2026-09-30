@@ -1,12 +1,11 @@
-from urllib.parse import urlparse
 import ckan.plugins as p
+from urllib.parse import urlparse
+from ckanext.sparql_interface.config import (
+    default_endpoint_url,
+    endpoint_options,
+    project_profile,
+)
 from ckanext.sparql_interface.utils import sparql_query_SPARQLWrapper as utils_sparqlQuery
-from logging import getLogger
-import hashlib
-
-
-logger = getLogger(__name__)
-
 all_helpers = {}
 
 def helper(fn):
@@ -40,9 +39,7 @@ def check_is_url(strtocheck):
 
 @helper
 def sparql_endpoint_url():
-    endpointUrl = p.toolkit.config.get('ckanext.sparql_interface.endpoint_url', 'http://dbpedia.org/sparql')
-    #logger.debug("endpointUrl: " + endpointUrl)
-    return endpointUrl
+    return default_endpoint_url()
 
 @helper
 def sparql_hide_endpoint_url():
@@ -58,30 +55,22 @@ def sparqlQuery(data_structure):
 
 @helper
 def sparql_endpoint_options():
-    raw = p.toolkit.config.get(
-        'ckanext.sparql_interface.endpoints',
-        'DBpedia|https://dbpedia.org/sparql'
-    )
-
-    endpoints = []
-    for item in raw.split(','):
-        label, url = item.strip().split('|', 1)
-        endpoints.append({
-            'label': label.strip(),
-            'url': url.strip()
-        })
-
-    return endpoints
+    return endpoint_options()
 
 
 @helper
 def default_sparql_endpoint_url():
-    return p.toolkit.config.get(
-        'ckanext.sparql_interface.default_endpoint',
-        'https://dbpedia.org/sparql'
-    )
+    return default_endpoint_url()
 
 
+@helper
+def sparql_project_name():
+    return project_profile()
 
 
+@helper
+def sparql_save_enabled():
+    return p.toolkit.asbool(p.toolkit.config.get(
+        'ckanext.sparql_interface.save_enabled', True
+    ))
 

@@ -5,7 +5,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.9'
@@ -20,27 +20,55 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        ckan-version: ["2.9"]
+        include:
+          - ckan-version: "2.9.11"
+            python-version: "3.9"
+            postgres-version: "2.9"
+            solr-version: "2.9-solr8"
+            pytest-plugins: "-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures"
+          - ckan-version: "2.10.7"
+            python-version: "3.10"
+            postgres-version: "2.10"
+            solr-version: "2.10-solr9"
+            pytest-plugins: "-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures"
+          - ckan-version: "2.11.6"
+            python-version: "3.10"
+            postgres-version: "2.11"
+            solr-version: "2.11-solr9"
+            pytest-plugins: ""
       fail-fast: false
 
     name: CKAN ${{ matrix.ckan-version }}
     runs-on: ubuntu-latest
     container:
       image: ckan/ckan-dev:${{ matrix.ckan-version }}
+      options: --user root
     services:
       solr:
-        image: ckan/ckan-solr:${{ matrix.ckan-version }}-solr9
-        options: --health-cmd='curl --silent --fail http://localhost:8983/solr/admin/ping' --health-interval=10s --health-timeout=5s --health-retries=5
+        image: ckan/ckan-solr:${{ matrix.solr-version }}
+        options: >-
+          --health-cmd "wget -qO /dev/null http://localhost:8983/solr/"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       postgres:
-        image: ckan/ckan-postgres-dev:${{ matrix.ckan-version }}
+        image: ckan/ckan-postgres-dev:${{ matrix.postgres-version }}
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
-        options: --health-cmd='pg_isready' --health-interval=10s --health-timeout=5s --health-retries=5
+        options: >-
+          --health-cmd "pg_isready"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       redis:
         image: redis:3
-        options: --health-cmd='redis-cli ping' --health-interval=10s --health-timeout=5s --health-retries=5
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     env:
       CKAN_SQLALCHEMY_URL: postgresql://ckan_default:pass@postgres/ckan_test
@@ -50,17 +78,37 @@ jobs:
       CKAN_REDIS_URL: redis://redis:6379/1
 
     steps:
-    - uses: actions/checkout@v4
+    # CKAN 2.9's Alpine image cannot execute the runner's Node 24 binary.
+    - name: Checkout repository without a JavaScript action
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        auth_header="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        git init .
+        git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+        git -c http.extraheader="AUTHORIZATION: basic $auth_header" \
+          fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+        git checkout --detach FETCH_HEAD
     - name: Install Python dependencies
       run: |
-        pip install --upgrade pip setuptools --no-cache-dir
+        python3 -c "import sys; assert sys.version_info[:2] == tuple(map(int, '${{ matrix.python-version }}'.split('.')))"
+        pip install --upgrade pip 'setuptools<81' --no-cache-dir
         pip install -r requirements.txt
         pip install -e . --no-cache-dir
         # Replace default path to CKAN core config file with the one on the container
         sed -i -e 's/use = config:.*/use = config:\/srv\/app\/src\/ckan\/test-core.ini/' test.ini
+        # GitHub Actions service aliases differ from the docker-ckan Compose aliases.
+        sed -i -e 's/@db\//@postgres\//g' test.ini
     - name: Setup extension (CKAN >= 2.9)
       run: |
-        ckan -c test.ini db init
+        ckan -c test.ini db upgrade
         ckan -c test.ini db pending-migrations --apply
     - name: Run tests
-      run: pytest --ckan-ini=test.ini --cov=ckanext.harvest --disable-warnings ckanext/harvest/tests
+      run: >-
+        pytest
+        ${{ matrix.pytest-plugins }}
+        --ckan-ini=test.ini
+        --cov=ckanext.sparql_interface
+        --disable-warnings
+        ckanext/sparql_interface/tests

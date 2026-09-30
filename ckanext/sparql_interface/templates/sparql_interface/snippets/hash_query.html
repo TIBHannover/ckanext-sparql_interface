@@ -11,15 +11,6 @@
 <!-- Sparql base CSS/JS and Jquery -->
 
 <link rel="stylesheet" href="{% url_for_static '/public_sparql_interface/base_styles.css' %}">
-<script src="{% url_for_static '/public_sparql_interface/jquery-1.9.1.min.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Code Mirror CSS/JS -->
-
-<!--<link rel="stylesheet" href="{% url_for_static '/public_sparql_interface/codemirror/lib/codemirror.css' %}">-->
-<!--<script src="{% url_for_static '/public_sparql_interface/codemirror/lib/codemirror.js' %}"></script>-->
-<!--<script src="{% url_for_static '/public_sparql_interface/codemirror/lib/mode.sparql.js' %}"></script>-->
-
 <!-- YASGUI CSS/JS -->
 <link rel="stylesheet" href="{{ h.url_for_static('/public_sparql_interface/yasgui/yasgui-4.2.28.min.css') }}">
 <link rel="stylesheet" href="{{ h.url_for_static('/public_sparql_interface/yasgui/yasqe-4.2.28.min.css') }}">
@@ -50,25 +41,33 @@
 <div id="sparql_point_block">
     <h1> SPARQL Editor  </h1>
 <div class="control-group control-full" {% if h.sparql_hide_endpoint_url() %} style="display:none; " {% endif %}>
-       <h4> TEST PURPOSES ONLY</h4>
-       <p> <b> Current SPARQL Server: </b> <a href="{{ h.sparql_endpoint_url() }}">{{ h.sparql_endpoint_url() }} </a> </p>
-           <input id="field-sparql-server" type="hidden" name="sparql-server" value="{{h.sparql_endpoint_url()}}"
-                  placeholder="{{ _('Add the URL of the SPARQL service. For example:') }} {{h.sparql_endpoint_url()}}" >
+       <p><b>{{ _('Current SPARQL Server:') }}</b></p>
+       <select id="field-sparql-server" name="sparql-server">
+       {% for endpoint in h.sparql_endpoint_options() %}
+           <option value="{{ endpoint.url }}" {% if endpoint.url == h.sparql_endpoint_url() %}selected{% endif %}>
+               {{ endpoint.label }}
+           </option>
+       {% endfor %}
+       </select>
    </div>
 
     <br>
 
-    <h4> Sample queries </h4>
-<button type="submit" name="" id="title_with_inchi" class="sample-query-button">
-    Title & Description
-</button>
-    <button type="submit" id="find_datasets_by_ikey" class="sample-query-button">
-        Federated Query with Wiki Data
-    </button>
-
-    <button type="submit" id="nr_of_datasets" class="sample-query-button">
-       Number of Datasets
-    </button>
+    {% set project_name = h.sparql_project_name() %}
+    <h4>{{ _('Sample queries') }}</h4>
+    {% if project_name == 'nfdi4chem' %}
+        <button type="button" id="find_datasets_by_ikey" class="sample-query-button">{{ _('Find datasets by InChIKey') }}</button>
+        <button type="button" id="find_datasets_by_ikey_two" class="sample-query-button">{{ _('Summary of sample information') }}</button>
+        <button type="button" id="nr_of_datasets" class="sample-query-button">{{ _('Number of datasets') }}</button>
+    {% elif project_name == 'sfb1153' %}
+        <button type="button" id="sfb1153" class="sample-query-button">
+            Summary of Sample Information
+        </button>
+    {% elif project_name == 'sfb1368' %}
+        <button type="button" id="sfb1368" class="sample-query-button">
+            Summary of Temperature Parameters
+        </button>
+    {% endif %}
 
     <br>
 
@@ -89,8 +88,11 @@
 
     <br>
 
-     <button title="copy to clipboard" id="saveQuery" class="save-query-button" >{{ _('Save Query') }}
-        <span id="copyTick" style="display: none;">✔️</span></button>
+    {% if h.sparql_save_enabled() %}
+        <button title="{{ _('Copy a permanent query link') }}" id="saveQuery" class="save-query-button">{{ _('Save Query') }}
+            <span id="copyTick" style="display: none;">&#10003;</span>
+        </button>
+    {% endif %}
 
 
 </div>
@@ -149,30 +151,43 @@
 {% block scripts %}
 {{ super() }}
 
-{% set current_url = request.environ.CKAN_CURRENT_URL %}
-
 <script src="{% url_for_static '/public_sparql_interface/base.js' %}"></script>
 
 
 <script type="text/javascript">
 
-    $(document).ready(function() {
-    const yasguiContainer = document.getElementById('yasgui');  // Make sure you have a <div id="yasgui">
+$(document).ready(function() {
+    const yasguiContainer = document.getElementById('yasgui');
+    const endpointSelect = document.getElementById('field-sparql-server');
 
-    // Initialize Yasgui
+    function getCkanProxyEndpoint() {
+        return '{{ h.url_for("sparql_interface.query_page") }}'
+            + '?direct_link=1'
+            + '&server=' + encodeURIComponent(endpointSelect.value);
+    }
+
     const yasgui = new Yasgui(yasguiContainer, {
+        persistenceId: null,
+        populateFromUrl: false,
         requestConfig: {
-            endpoint: "{{ h.sparql_endpoint_url() }}",
-             endpointInput: false
+            endpoint: getCkanProxyEndpoint(),
+            endpointInput: false,
+            method: 'POST'
         },
         showControlBar: false
     });
+    window.sparqlInterfaceYasgui = yasgui;
+    window.sparqlInterfaceProxyEndpoint = getCkanProxyEndpoint;
 
-
+    endpointSelect.addEventListener('change', function () {
+        yasgui.getTab().setRequestConfig({
+            endpoint: getCkanProxyEndpoint(),
+            method: 'POST'
+        });
+    });
 });
 
 </script>
 
 
 {% endblock %}
-
