@@ -20,14 +20,19 @@ $(document).ready(function () {
         openTabWithQuery("Find Datasets by InChiKey (DCAT_AP_PLUS)", $('#find_datasets_by_ikey_text').val());
     });
 
-    $('#crc1153').on('click', function (e) {
+    $('#sfb1153').on('click', function (e) {
         e.preventDefault();
-        openTabWithQuery("Summary of Sample Information", $('#crc1153_text').val());
+        openTabWithQuery("Summary of Sample Information", $('#sfb1153_text').val());
     });
 
-    $('#crc1368').on('click', function (e) {
+    $('#sfb1368').on('click', function (e) {
         e.preventDefault();
-        openTabWithQuery("Summary of Temperature Parameters", $('#crc1368_text').val());
+        openTabWithQuery("Summary of Temperature Parameters", $('#sfb1368_text').val());
+    });
+
+    $('#find_datasets_by_ikey_two').on('click', function (e) {
+        e.preventDefault();
+        openTabWithQuery("Find Datasets by InChiKey", $('#find_datasets_by_ikey_two_text').val());
     });
 
     $('#nr_of_datasets').on('click', function (e) {

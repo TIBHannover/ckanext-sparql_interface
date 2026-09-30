@@ -1,371 +1,94 @@
-import ckan.plugins as p
-import collections
-import urllib.parse
-import urllib.request
-import urllib.error
-import json
-from SPARQLWrapper import SPARQLWrapper, JSON
 import base64
 from logging import getLogger
-from ckan.common import json
-from flask import make_response
+
+import ckan.plugins as p
+from SPARQLWrapper import JSON, POST, SPARQLWrapper
+
+from ckanext.sparql_interface.config import (
+    endpoint_is_allowed,
+    normalize_endpoint_url,
+)
+
 
 logger = getLogger(__name__)
 
-SPARQL_USERNAME_CONFIG = 'ckanext.sparql_interface.username'
-SPARQL_PASSWORD_CONFIG = 'ckanext.sparql_interface.password'
+
+def _configured_auth_endpoints():
+    raw = p.toolkit.config.get(
+        'ckanext.sparql_interface.auth_endpoints', ''
+    )
+    return {
+        normalize_endpoint_url(url)
+        for url in raw.split(',')
+        if normalize_endpoint_url(url)
+    }
 
 
-def _sparql_credentials():
-    username = p.toolkit.config.get(SPARQL_USERNAME_CONFIG)
-    password = p.toolkit.config.get(SPARQL_PASSWORD_CONFIG)
+def _basic_auth_credentials(server_url):
+    """Return credentials only for an explicitly trusted endpoint."""
+    config = p.toolkit.config
+    if not p.toolkit.asbool(config.get(
+            'ckanext.sparql_interface.auth_enabled', False)):
+        return None
 
-    if username and password:
-        return username, password
+    normalized_url = normalize_endpoint_url(server_url)
+    if (not endpoint_is_allowed(normalized_url)
+            or normalized_url not in _configured_auth_endpoints()):
+        return None
 
-    if username or password:
-        logger.warning(
-            "SPARQL credentials are incomplete. Configure both %s and %s.",
-            SPARQL_USERNAME_CONFIG,
-            SPARQL_PASSWORD_CONFIG,
-        )
-
-    return None, None
-
-
-def _basic_auth_headers():
-    username, password = _sparql_credentials()
+    username = config.get('ckanext.sparql_interface.auth_username')
+    password = config.get('ckanext.sparql_interface.auth_password')
     if not username or not password:
-        return {}
+        logger.warning(
+            'SPARQL authentication is enabled for %s, but credentials are incomplete',
+            normalized_url,
+        )
+        return None
+    return username, password
 
-    auth = base64.b64encode(
-        f'{username}:{password}'.encode('utf-8')
-    ).decode('utf-8')
-    return {'Authorization': f'Basic {auth}'}
+
+def _basic_auth_headers(server_url):
+    credentials = _basic_auth_credentials(server_url)
+    if not credentials:
+        return {}
+    token = base64.b64encode(
+        '{}:{}'.format(*credentials).encode('utf-8')
+    ).decode('ascii')
+    return {'Authorization': 'Basic {}'.format(token)}
 
 
 def sparql_query_SPARQLWrapper(data_structure):
-    logger.debug("Entering sparql_query_SPARQLWrapper")
-
+    """Execute a query through a configured endpoint without exposing secrets."""
     request_values = p.toolkit.request.values
-
-    query_string = request_values.get('query')
-    server_url = request_values.get('server')
-    logger.debug("SPARQL proxy server_url: %s", server_url)
+    query_string = request_values.get('query', '').strip()
+    server_url = normalize_endpoint_url(request_values.get('server'))
 
     if not query_string:
-        logger.error("No query provided")
-        raise ValueError("No query provided")
-    if not server_url:
-        logger.error("No SPARQL endpoint server URL provided")
-        raise ValueError("No SPARQL endpoint server URL provided")
+        raise ValueError('No SPARQL query provided')
+    if not endpoint_is_allowed(server_url):
+        raise ValueError('SPARQL endpoint is not configured')
 
+    max_query_length = p.toolkit.asint(p.toolkit.config.get(
+        'ckanext.sparql_interface.max_query_length', 50000
+    ))
+    if len(query_string) > max_query_length:
+        raise ValueError('SPARQL query exceeds the configured size limit')
+
+    timeout = p.toolkit.asint(p.toolkit.config.get(
+        'ckanext.sparql_interface.query_timeout', 60
+    ))
     sparql = SPARQLWrapper(server_url)
-    username, password = _sparql_credentials()
-    if username and password:
-        sparql.setCredentials(username, password)
+    credentials = _basic_auth_credentials(server_url)
+    if credentials:
+        sparql.setCredentials(*credentials)
     sparql.setQuery(query_string)
     sparql.setReturnFormat(JSON)
-    sparql.setMethod("POST")
+    sparql.setMethod(POST)
+    sparql.setTimeout(timeout)
 
-    try:
-        response = sparql.query()
-        # Check the HTTP status code
-        status_code = response.info().get('status')
-        content_type = response.info().get('Content-Type', '')
-
-        if status_code and status_code != '200':
-            logger.error(f"Received non-200 response status: {status_code}")
-            return f"Error: Received status code {status_code}"
-
-        if 'html' in content_type.lower():
-            logger.error(f"Unexpected HTML response: {response.read()[:200]}")
-            return "Error: Received an HTML page instead of JSON data. Check your credentials and endpoint URL."
-
-        results = response.convert()
-        # logger.debug(f'Results from Wrapper: {results}')
-        return results
-    except Exception as e:
-        logger.error(f"Error executing SPARQL query: {e}")
-        raise
+    logger.info('Executing SPARQL query against configured endpoint %s', server_url)
+    return sparql.query().convert()
 
 
-def sparqlQuery_veryNew(data_structure):
-    logger.debug("Entering sparqlQuery")
-    request_values = p.toolkit.request.values
-
-    # Determine the format for the response
-    response_format = request_values.get('type_response_query', 'json')
-    if response_format == 'json':
-        format = "application/json"
-    elif response_format == 'turtle':
-        format = "text/turtle"
-    elif response_format == 'csv':
-        format = "application/json"  # CSV will be converted later
-    elif response_format == 'js':
-        format = "application/javascript"
-    else:
-        format = "application/json"
-    logger.debug("Format: " + format)
-
-    params_query = {
-        "query": request_values.get('query'),
-        "debug": "off",
-        "timeout": "",
-        "format": format,
-        "save": "display",
-        "fname": ""
-    }
-
-    querypart = urllib.parse.urlencode(params_query)
-    server = request_values.get('server')
-    logger.debug("server: " + server)
-
-    request_url = f"{server}?{querypart}"
-    request = urllib.request.Request(request_url, headers=_basic_auth_headers())
-    logger.debug(request)
-
-    try:
-        temp_result = urllib.request.urlopen(request)
-    except urllib.error.HTTPError as excp:
-        logger.debug(excp)
-        response = make_response(f"Error accessing server: {excp}", 418)
-        return response
-    else:
-        temp_response_query = temp_result.read()
-        response_query = temp_response_query.decode("utf-8")
-        logger.debug("response_query: {}".format(response_query))
-
-        if response_format == 'json':
-            data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-            response = make_response(json.dumps(data, separators=(',', ':')))
-            response.content_type = 'application/json'
-            logger.debug("data: {}".format(data))
-            return response
-        elif response_format == 'turtle':
-            response = make_response(response_query)
-            response.content_type = 'text/turtle'
-            return response
-        elif response_format == 'csv':
-            data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-            output = []
-            for result in data["head"]["vars"]:
-                output.append(result + ",")
-            output.append("\n")
-
-            for result in data["results"]["bindings"]:
-                index = 0
-                for attributes, values in result.items():
-                    if attributes == data["head"]["vars"][index]:
-                        output.append("\"" + values['value'] + "\"" + ',')
-                        index += 1
-                    else:
-                        key = 0
-                        for listheader in data["head"]["vars"]:
-                            if listheader != attributes and key >= index:
-                                output.append(',')
-                            elif listheader == attributes:
-                                output.append("\"" + values['value'] + "\"" + ',')
-                                index = key + 1
-                                break
-                            key += 1
-                output.append("\n")
-            response = make_response("".join(output))
-            response.content_type = 'text/csv'
-            response.charset = "utf-8-sig"
-            return response
-        elif response_format == 'js':
-            response = make_response(response_query)
-            response.content_type = "application/javascript"
-            return response
-        elif response_format == 'query':
-            return "data.upf.edu/sparql?view_code=" + request_values.get('query')
-        else:
-            data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-            return data
-
-
-def sparqlQuery(data_structure):
-    logger.debug("Entering sparqlQuery")
-    request_values = p.toolkit.request.values
-
-    if request_values.get('type_response_query') == 'json':
-        format = "application/json"
-    elif request_values.get('type_response_query') == 'turtle':
-        format = "text/turtle"
-    elif request_values.get('type_response_query') == 'csv':
-        # The conversion to csv is made later
-        format = "application/json"
-    elif request_values.get('type_response_query') == 'js':
-        format = "application/javascript"
-    else:
-        ## Default Format
-        format = "application/json"
-    logger.debug("Format: " + format)
-    params_query = {
-        "query": request_values.get('query'),
-        "debug": "off",
-        "timeout": "",
-        "format": format,
-        "save": "display",
-        "fname": ""
-    }
-
-    querypart = urllib.parse.urlencode(params_query)
-    # logger.debug("querypart: " + querypart)
-
-    server = request_values.get('server')
-    logger.debug("server: " + server)
-
-    # logger.debug("url: {0}?{1}".format(server, querypart))
-
-    try:
-        request = urllib.request.Request(
-            "{0}?{1}".format(server, querypart),
-            headers=_basic_auth_headers(),
-        )
-        temp_result = urllib.request.urlopen(request)
-    except urllib.error.HTTPError as excp:
-        logger.debug(excp)
-        response = make_response(('{0}'.format(server), 418))
-        return response
-
-    else:
-        temp_response_query = temp_result.read()
-        response_query = temp_response_query.decode("utf-8")
-        # logger.debug("response_query: {}".format(response_query))
-
-        if request_values.get('type_response_query') == 'json':
-            data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-            response = make_response(json.dumps(data, separators=(',', ':')))
-            response.content_type = 'application/json'
-            # response.headers['Content-disposition'] = 'attachment; filename=query.json'
-            return response
-            # logger.debug("data: {}".format(data))
-            # return data
-        elif request_values.get('type_response_query') == 'turtle':
-            response = make_response(response_query)
-            response.content_type = 'text/turtle'
-            return response
-        elif request_values.get('type_response_query') == 'csv':
-            data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-            output = []
-            for result in data["head"]["vars"]:
-                output.append(result + ",")
-            output.append("\n")
-
-            for result in data["results"]["bindings"]:
-                index = 0
-                for attributes, values in result.items():
-                    if attributes == data["head"]["vars"][index]:
-                        output.append("\"" + values['value'] + "\"" + ',')
-                        index += 1
-                    else:
-                        key = 0
-                        for listheader in data["head"]["vars"]:
-                            if listheader != attributes and key >= index:
-                                output.append(',')
-                            elif listheader == attributes:
-                                output.append("\"" + values['value'] + "\"" + ',')
-                                index = key + 1
-                                break
-                            key += 1
-                output.append("\n")
-            response = make_response("".join(output))
-            response.content_type = 'text/csv'
-            # p.toolkit.response.headers['Content-disposition'] = 'attachment; filename=query.csv'
-            response.charset = "utf-8-sig"
-            return response
-        elif request_values.get('type_response_query') == 'js':
-            p.toolkit.response.content_type = "application/javascript"
-            return response_query
-        elif request_values.get('type_response_query') == 'query':
-            return "data.upf.edu/sparql?view_code=" + request_values.get('query')
-        else:
-            data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-        return data
-
-
-def sparqlQueryold(data_structure):
-    request_values = p.toolkit.request.values
-
-    if request_values.get('type_response_query') == 'json':
-        format = "application/json"
-    elif request_values.get('type_response_query') == 'turtle':
-        format = "text/turtle"
-    elif request_values.get('type_response_query') == 'csv':
-        # The conversion to csv is made later
-        format = "application/json"
-    elif request_values.get('type_response_query') == 'js':
-        format = "application/javascript"
-    else:
-        ## Default Format
-        format = "application/json"
-
-    params_query = {
-        "default-graph": "",
-        "should-sponge": "soft",
-        "query": request_values.get('query'),
-        "debug": "off",
-        "timeout": "",
-        "format": format,
-        "save": "display",
-        "fname": ""
-    }
-
-    querypart = urllib.urlencode(params_query)
-    # logger.debug("querypart: " + querypart)
-
-    server = request_values.get('server')
-    logger.debug("server: " + server)
-
-    headers = _basic_auth_headers()
-    req = urllib2.Request(server, querypart, headers)
-    temp_result = urllib2.urlopen(req)
-    response_query = temp_result.read()
-    # logger.debug("response_query: " + response_query)
-
-    if request_values.get('type_response_query') == 'json':
-        data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-        p.toolkit.response.content_type = 'application/json'
-        # response.headers['Content-disposition'] = 'attachment; filename=query.json'
-        return json.dumps(data, separators=(',', ':'))
-    elif request_values.get('type_response_query') == 'turtle':
-        p.toolkit.response.content_type = 'text/turtle'
-        return response_query
-    elif request_values.get('type_response_query') == 'csv':
-        p.toolkit.response.content_type = 'text/plain'
-        p.toolkit.response.headers['Content-disposition'] = 'attachment; filename=query.csv'
-        p.toolkit.response.charset = "utf-8-sig"
-        data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-        output = []
-        for result in data["head"]["vars"]:
-            output.append(result + ",")
-        output.append("\n")
-
-        for result in data["results"]["bindings"]:
-            index = 0
-            for attributes, values in result.items():
-                if attributes == data["head"]["vars"][index]:
-                    output.append("\"" + values['value'] + "\"" + ',')
-                    index += 1
-                else:
-                    key = 0
-                    for listheader in data["head"]["vars"]:
-                        if listheader != attributes and key >= index:
-                            output.append(',')
-                        elif listheader == attributes:
-                            output.append("\"" + values['value'] + "\"" + ',')
-                            index = key + 1
-                            break
-                        key += 1
-            output.append("\n")
-        return "".join(output)
-    elif request_values.get('type_response_query') == 'js':
-        p.toolkit.response.content_type = "application/javascript"
-        return response_query
-    elif request_values.get('type_response_query') == 'query':
-        return "data.upf.edu/sparql?view_code=" + request_values.get('query')
-    else:
-        data = json.loads(response_query, object_pairs_hook=collections.OrderedDict)
-        return data
+# Kept for extensions or templates that imported the historic helper name.
+sparqlQuery = sparql_query_SPARQLWrapper

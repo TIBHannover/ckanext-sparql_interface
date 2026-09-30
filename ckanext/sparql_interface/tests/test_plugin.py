@@ -27,22 +27,32 @@ def test_sparql_page_renders_yasgui(app):
     assert response.status_code == 200
     assert "SPARQL Editor" in response.text
     assert 'id="yasgui"' in response.text
+    assert 'id="find_datasets_by_ikey"' in response.text
+
+
+@pytest.mark.ckan_config("ckanext.sparql_interface.profile", "sfb1153")
+def test_sfb1153_page_renders_its_sample_query_button(app):
+    response = app.get("/sparql")
+
+    assert 'id="sfb1153"' in response.text
+    assert 'id="sfb1368"' not in response.text
+    assert 'id="find_datasets_by_ikey"' not in response.text
+
+
+@pytest.mark.ckan_config("ckanext.sparql_interface.profile", "sfb1368")
+def test_sfb1368_page_renders_its_sample_query_button(app):
+    response = app.get("/sparql")
+
+    assert 'id="sfb1368"' in response.text
+    assert 'id="sfb1153"' not in response.text
+    assert 'id="find_datasets_by_ikey"' not in response.text
 
 
 @pytest.mark.ckan_config("ckanext.sparql_interface.project_name", "crc1153")
-def test_crc1153_page_renders_its_sample_query_button(app):
+def test_historic_crc_profile_alias_is_supported(app):
     response = app.get("/sparql")
 
-    assert 'id="crc1153"' in response.text
-    assert 'id="crc1368"' not in response.text
-
-
-@pytest.mark.ckan_config("ckanext.sparql_interface.project_name", "crc1368")
-def test_crc1368_page_renders_its_sample_query_button(app):
-    response = app.get("/sparql")
-
-    assert 'id="crc1368"' in response.text
-    assert 'id="crc1153"' not in response.text
+    assert 'id="sfb1153"' in response.text
 
 
 @pytest.mark.parametrize("path", ["/sparql_interface", "/sparql_interface/query"])
@@ -83,8 +93,13 @@ def test_legacy_query_route_calls_proxy(app, monkeypatch):
     assert response.json["head"]["vars"] == ["s"]
 
 
-@pytest.mark.ckan_config("ckanext.sparql_interface.username", "test-user")
-@pytest.mark.ckan_config("ckanext.sparql_interface.password", "test-password")
+@pytest.mark.ckan_config("ckanext.sparql_interface.auth_enabled", "true")
+@pytest.mark.ckan_config(
+    "ckanext.sparql_interface.auth_endpoints",
+    "https://dbpedia.org/sparql",
+)
+@pytest.mark.ckan_config("ckanext.sparql_interface.auth_username", "test-user")
+@pytest.mark.ckan_config("ckanext.sparql_interface.auth_password", "test-password")
 def test_sparql_basic_auth_header_uses_config():
     from ckanext.sparql_interface.utils import _basic_auth_headers
 
@@ -92,17 +107,46 @@ def test_sparql_basic_auth_header_uses_config():
         b"test-user:test-password"
     ).decode("utf-8")
 
-    assert _basic_auth_headers() == {
+    assert _basic_auth_headers("https://dbpedia.org/sparql/") == {
         "Authorization": "Basic {}".format(expected_auth)
     }
 
 
-@pytest.mark.ckan_config("ckanext.sparql_interface.username", "")
-@pytest.mark.ckan_config("ckanext.sparql_interface.password", "")
-def test_sparql_basic_auth_header_is_empty_without_configured_credentials():
+@pytest.mark.ckan_config("ckanext.sparql_interface.auth_enabled", "true")
+@pytest.mark.ckan_config(
+    "ckanext.sparql_interface.auth_endpoints",
+    "https://trusted.example/sparql",
+)
+@pytest.mark.ckan_config("ckanext.sparql_interface.auth_username", "test-user")
+@pytest.mark.ckan_config("ckanext.sparql_interface.auth_password", "test-password")
+def test_sparql_basic_auth_is_not_sent_to_other_endpoints():
     from ckanext.sparql_interface.utils import _basic_auth_headers
 
-    assert _basic_auth_headers() == {}
+    assert _basic_auth_headers("https://dbpedia.org/sparql") == {}
+
+
+def test_unconfigured_endpoint_is_rejected(app):
+    response = app.post(
+        "/sparql_interface/query",
+        params={
+            "query": "SELECT * WHERE { ?s ?p ?o } LIMIT 1",
+            "server": "http://127.0.0.1:5432/private",
+            "direct_link": "1",
+        },
+        status=400,
+    )
+
+    assert response.json["error"] == "SPARQL endpoint is not configured"
+
+
+def test_endpoint_parser_ignores_credentials_and_malformed_entries():
+    from ckanext.sparql_interface.config import normalize_endpoint_url
+
+    assert normalize_endpoint_url("https://Example.org/sparql/") == (
+        "https://example.org/sparql"
+    )
+    assert normalize_endpoint_url("http://user:secret@example.org/sparql") == ""
+    assert normalize_endpoint_url("file:///etc/passwd") == ""
 
 
 @pytest.mark.usefixtures("sparql_migrated_db")
@@ -128,6 +172,12 @@ def test_query_hash_retrieval_renders_saved_query(app):
 
     assert response.status_code == 200
     assert query in response.text
+
+
+def test_invalid_query_hash_returns_not_found(app):
+    response = app.get("/sparql/not-a-valid-hash", status=404)
+
+    assert response.json["error"] == "Invalid SPARQL query hash."
 
 
 def test_database_migration_initializes_table(clean_db):

@@ -1,13 +1,14 @@
+import hashlib
+from logging import getLogger
+
 import requests
-from flask import Blueprint, redirect, url_for, jsonify, render_template, make_response, request
+from flask import Blueprint, jsonify, make_response, redirect, request, url_for
 from datetime import datetime
-from ckan.plugins.toolkit import render
 import ckan.plugins.toolkit as tk
+from ckan.plugins.toolkit import render
 from ckanext.sparql_interface.utils import sparql_query_SPARQLWrapper as utils_sparqlQuery
 from ckanext.sparql_interface.models.query_hash import SparqlQueryHash as sparql_db_table
 from flask import Response
-import hashlib
-from logging import getLogger
 
 logger = getLogger(__name__)
 
@@ -39,7 +40,15 @@ def query_page():
     if not request.values.get('query') and not request.values.get('server'):
         return redirect(url_for('sparql_interface.index'))
 
-    respuesta = utils_sparqlQuery('')
+    try:
+        respuesta = utils_sparqlQuery('')
+    except ValueError as error:
+        return _disable_cache(jsonify({'error': str(error)})), 400
+    except Exception:
+        logger.exception('SPARQL endpoint request failed')
+        return _disable_cache(jsonify({
+            'error': 'The configured SPARQL endpoint request failed.'
+        })), 502
 
     if request.values.get('direct_link') == '1':
         return _disable_cache(jsonify(respuesta))
@@ -57,29 +66,37 @@ def query_page():
 #to save the query when "Save Query" button is clicked
 @sparql.route(u'/sparql_interface/save', methods=['POST'])
 def save_sparql_query():
+    if not tk.asbool(tk.config.get(
+            'ckanext.sparql_interface.save_enabled', True)):
+        return jsonify({'error': 'Saving SPARQL queries is disabled.'}), 404
+
     data = request.get_json(silent=True) or {}
-    sparql_query = data.get('query')
+    sparql_query = (data.get('query') or '').strip()
 
     if not sparql_query:
         return jsonify({"error": "No SPARQL query provided"}), 400
 
-    query_hash = hashlib.sha256(sparql_query.encode('utf-8')).hexdigest()[:32]
-    url_query_hash = url_for(
-        'sparql_interface.retrieve_sparql_query_template',
-        query_hash=query_hash,
-        _external=True
-    )
-    timestamp = datetime.now()
+    max_query_length = tk.asint(tk.config.get(
+        'ckanext.sparql_interface.max_query_length', 50000
+    ))
+    if len(sparql_query) > max_query_length:
+        return jsonify({'error': 'SPARQL query exceeds the configured size limit'}), 413
 
-    sparql_db_table.create(timestamp, sparql_query, query_hash )
-    logger.info(f'sending it to Database')
     try:
-
+        query_hash = hashlib.sha256(
+            sparql_query.encode('utf-8')
+        ).hexdigest()[:32]
+        url_query_hash = url_for(
+            'sparql_interface.retrieve_sparql_query_template',
+            query_hash=query_hash,
+            _external=True
+        )
+        sparql_db_table.create(datetime.utcnow(), sparql_query, query_hash)
+        logger.info('Saved SPARQL query %s', query_hash)
         return jsonify({"hash": url_query_hash}), 200
-
-    except Exception as e:
-        # Handle any errors that occur during saving
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        logger.exception('Failed to save SPARQL query')
+        return jsonify({'error': 'Failed to save SPARQL query.'}), 500
 
 
 # Retrieve the SPARQL query from the database when URL hash is given
@@ -95,15 +112,22 @@ def retrieve_sparql_query(query_hash):
         # Return the data in the response
         return sparql_record
 
-    except Exception as e:
-        # Handle any errors that occur during retrieval
-        return jsonify({"error": str(e)}), 500
+    except Exception:
+        logger.exception('Failed to retrieve SPARQL query %s', query_hash)
+        return jsonify({'error': 'Failed to retrieve SPARQL query.'}), 500
 
 @sparql.route(u'/sparql/<query_hash>', methods=['GET'])
 def retrieve_sparql_query_template(query_hash):
-    sparql_record_json = retrieve_sparql_query(query_hash)
-    logger.debug(f"{sparql_record_json}")
-    return render_template('sparql_interface/snippets/hash_query.html', query_hash=sparql_record_json)
+    if len(query_hash) != 32 or any(
+            char not in '0123456789abcdef' for char in query_hash.lower()):
+        return jsonify({'error': 'Invalid SPARQL query hash.'}), 404
+    sparql_record = retrieve_sparql_query(query_hash)
+    if isinstance(sparql_record, tuple):
+        return sparql_record
+    return render(
+        'sparql_interface/snippets/hash_query.html',
+        extra_vars={'query_hash': sparql_record},
+    )
 
 
 # LLM Feature
@@ -130,7 +154,7 @@ def llm():
     if len(question) > 128:
         return jsonify({"error": "Your question exceeds 128 characters."}), 400
 
-    api_key = request.values.get('apikey') or tk.config.get(
+    api_key = tk.config.get(
         'ckanext.sparql_interface.groq_api_key'
     ) or tk.config.get('ckanext.sparql_interface.openai_api_key')
     if not api_key:

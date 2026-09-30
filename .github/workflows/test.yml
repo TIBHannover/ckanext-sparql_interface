@@ -21,9 +21,11 @@ jobs:
     strategy:
       matrix:
         include:
+          - ckan-version: "2.9.11"
+            solr-version: "2.9-solr8"
           - ckan-version: "2.10.7"
             solr-version: "2.10"
-          - ckan-version: "2.11"
+          - ckan-version: "2.11.6"
             solr-version: "2.11"
       fail-fast: false
 

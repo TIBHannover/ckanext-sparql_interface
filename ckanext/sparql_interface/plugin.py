@@ -1,16 +1,11 @@
-import ckanext.sparql_interface.helpers as sparql_helpers
-from logging import getLogger
-from ckanext.sparql_interface import blueprint
-from ckan.lib.plugins import DefaultTranslation
 import ckan.plugins as p
-import collections
-import csv
-
-log = getLogger(__name__)
+from ckan.lib.plugins import DefaultTranslation
+from ckanext.sparql_interface import blueprint
+import ckanext.sparql_interface.helpers as sparql_helpers
 
 
 class SparqlInterfacePlugin(p.SingletonPlugin, DefaultTranslation):
-    '''Sparql plugin.'''
+    """SPARQL interface plugin."""
 
     p.implements(p.IBlueprint)
     p.implements(p.IConfigurer, inherit=True)
@@ -25,11 +20,5 @@ class SparqlInterfacePlugin(p.SingletonPlugin, DefaultTranslation):
         p.toolkit.add_public_directory(config, 'public/ckanext/sparql_interface')
         p.toolkit.add_resource('public/ckanext/sparql_interface', 'ckanext_sparql_interface')
 
-    ## TEMPLATE FUNCTIONS ##
-
     def get_helpers(self):
-        # logger.debug('Getting helpers...')
-
-        response = dict(sparql_helpers.all_helpers)
-        # log.debug(f'response: {response}')
-        return response
+        return dict(sparql_helpers.all_helpers)

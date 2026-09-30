@@ -11,23 +11,9 @@
 <!-- Sparql base CSS/JS and Jquery -->
 
 <link rel="stylesheet" href="{% url_for_static '/public_sparql_interface/base_styles.css' %}">
-<script src="{% url_for_static '/public_sparql_interface/jquery-1.9.1.min.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-<!-- Code Mirror CSS/JS -->
-
-<!--<link rel="stylesheet" href="{% url_for_static '/public_sparql_interface/codemirror/lib/codemirror.css' %}">-->
-<!--<script src="{% url_for_static '/public_sparql_interface/codemirror/lib/codemirror.js' %}"></script>-->
-<!--<script src="{% url_for_static '/public_sparql_interface/codemirror/lib/mode.sparql.js' %}"></script>-->
-
 <!-- YASGUI CSS/JS -->
 <link rel="stylesheet" href="{{ h.url_for_static('/public_sparql_interface/yasgui/yasgui-4.2.28.min.css') }}">
 <link rel="stylesheet" href="{{ h.url_for_static('/public_sparql_interface/yasgui/yasqe-4.2.28.min.css') }}">
-<!-- Correct YASGUI CDN -->
-<link rel="stylesheet" href="https://unpkg.com/yasgui/build/yasgui.min.css" />
-<script src="https://unpkg.com/yasgui/build/yasgui.min.js"></script>
-
 <script src="{{ h.url_for_static('/public_sparql_interface/yasgui/yasqe-4.2.28.min.js') }}"></script>
 <script src="{{ h.url_for_static('/public_sparql_interface/yasgui/yasgui-4.2.28.min.js') }}"></script>
 
@@ -74,27 +60,26 @@
     <br>
 
     {% set project_name = h.sparql_project_name() %}
-    {% if project_name %}<h4>Sample</h4>{% endif %}
-<!--<button type="submit" name="" id="title_with_inchi" class="sample-query-button">-->
-<!--    Title & Description-->
-<!--</button>-->
-<!--    <button type="submit" id="find_datasets_by_ikey" class="sample-query-button">-->
-<!--    Find datasets by InChIKey (DCAT-AP-PLUS)-->
-<!--    </button>-->
-
-    {% if project_name == 'crc1153' %}
-        <button type="submit" id="crc1153" class="sample-query-button">
+    <h4>{{ _('Sample queries') }}</h4>
+    {% if project_name == 'nfdi4chem' %}
+        <button type="button" id="find_datasets_by_ikey" class="sample-query-button">
+            {{ _('Find datasets by InChIKey') }}
+        </button>
+        <button type="button" id="find_datasets_by_ikey_two" class="sample-query-button">
+            {{ _('Summary of sample information') }}
+        </button>
+        <button type="button" id="nr_of_datasets" class="sample-query-button">
+            {{ _('Number of datasets') }}
+        </button>
+    {% elif project_name == 'sfb1153' %}
+        <button type="button" id="sfb1153" class="sample-query-button">
             Summary of Sample Information
         </button>
-    {% elif project_name == 'crc1368' %}
-        <button type="submit" id="crc1368" class="sample-query-button">
+    {% elif project_name == 'sfb1368' %}
+        <button type="button" id="sfb1368" class="sample-query-button">
             Summary of Temperature Parameters
         </button>
     {% endif %}
-
-<!--    <button type="submit" id="nr_of_datasets" class="sample-query-button">-->
-<!--       Number of Datasets-->
-<!--    </button>-->
 
 
 
@@ -116,8 +101,11 @@
 
     <br>
 
-    <button title="copy to clipboard" id="saveQuery" class="save-query-button" >{{ _('Save Query') }}
-        <span id="copyTick" style="display: none;">✔️</span></button>
+    {% if h.sparql_save_enabled() %}
+        <button title="{{ _('Copy a permanent query link') }}" id="saveQuery" class="save-query-button">{{ _('Save Query') }}
+            <span id="copyTick" style="display: none;">&#10003;</span>
+        </button>
+    {% endif %}
 
 </div>
 
@@ -164,7 +152,7 @@
     <br>
 
 <div id="clipboard-notification" style="display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background-color: green; color: white; padding: 10px; border-radius: 5px; z-index: 1000;">
-    Query Save & Copied to clipboard!
+    Query saved and copied to clipboard.
 </div>
 
 

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 from os import path
 
-version = '2.2'
+version = '3.0.0'
 
 here = path.abspath(path.dirname(__file__))
 
@@ -19,7 +19,11 @@ setup(
         'Development Status :: 4 - Beta',
         'Framework :: CKAN',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     keywords='',
     author='Jorge Pantoja',
@@ -29,10 +33,8 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     zip_safe=False,
-    python_requires='>=3.9',
-    install_requires=[
-        # -*- Extra requirements: -*-
-    ],
+    python_requires='>=3.7',
+    install_requires=['SPARQLWrapper==2.0.0'],
     entry_points="""
         [ckan.plugins]
 		sparql_interface = ckanext.sparql_interface.plugin:SparqlInterfacePlugin

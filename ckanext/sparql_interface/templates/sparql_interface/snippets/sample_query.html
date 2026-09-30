@@ -10,6 +10,8 @@ SELECT * WHERE {
 } LIMIT 25
 </textarea>
 
+{% set project_name = h.sparql_project_name() %}
+{% if project_name == 'nfdi4chem' %}
 <!--TITLE, Description and inchi as Keyword -->
 <textarea id="title_with_inchi_text" style="display: none;">
 PREFIX void: <http://rdfs.org/ns/void#>
@@ -137,25 +139,84 @@ WHERE {
 </textarea>
 
 
-<textarea id="crc1153_text" style="display:none">
+<textarea id="find_datasets_by_ikey_two_text" style="display:none">
+PREFIX dcat:    <http://www.w3.org/ns/dcat#>
+PREFIX dct:     <http://purl.org/dc/terms/>
+PREFIX prov:    <http://www.w3.org/ns/prov#>
+PREFIX cheminf: <http://semanticscience.org/resource/CHEMINF_>
+PREFIX bfo:     <http://purl.obolibrary.org/obo/BFO_>
+PREFIX sio:     <http://semanticscience.org/resource/SIO_>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
 
-
-PREFIX wiki:  <https://service.tib.eu/sfb1153/wiki/>
-PREFIX prop:  <https://service.tib.eu/sfb1153/wiki/Property-3A>
-
-SELECT DISTINCT ?Samples ?URIgesamt
+SELECT DISTINCT ?ds ?title ?publisherName ?formula
 WHERE {
+  VALUES (?annType ?identifier) {
+    (cheminf:000059 "WJCNZQLZVWNLKY-UHFFFAOYSA-N")
+  }
 
- #?sub ?pred ?object .
- wiki:PA1LAE0089 prop:CreatedSample ?URIgesamt .
-    
-  # Optional (formatting result)
+  ?ds a dcat:Dataset ;
+      dct:title ?title ;
+      dct:publisher ?publisher ;
+      dct:subject ?sample .
 
- BIND(STRAFTER(STR(?URIgesamt), "https://service.tib.eu/sfb1153/wiki/") AS ?Samples)
+  ?publisher foaf:name ?publisherName .
+  ?sample bfo:0000051 ?molecule .
+  ?molecule sio:000008 ?ann .
+  ?ann a ?annType ;
+       prov:value ?identifier .
+
+  OPTIONAL {
+    ?molecule sio:000008 ?annFormula .
+    ?annFormula a cheminf:000042 ;
+                prov:value ?formula .
+  }
+}
+LIMIT 100
+</textarea>
+
+{% elif project_name == 'sfb1153' %}
+<textarea id="sfb1153_text" style="display:none">
+# Summary of sample M0046 with related information
+PREFIX prop: <https://service.tib.eu/sfb1153/wiki/Property-3A>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?property ?value
+WHERE {
+  BIND(<https://service.tib.eu/sfb1153/wiki/M0046> AS ?sample)
+  {
+    ?sample ?property ?value .
+    FILTER(?property IN (
+      rdfs:label,
+      prop:HasBatchNumber, prop:HasMaterialCombination, prop:CreatedBySubproject,
+      prop:HasSampleMaterial, prop:HasUniqueSampleIdentifier,
+      prop:RepresentsDemonstrator, prop:CreatedByPerson
+    ))
+  }
+  UNION
+  {
+    ?protocol prop:AppliedOnSample ?sample .
+    BIND("relatedProtocol" AS ?property)
+    BIND(STR(?protocol) AS ?value)
+  }
+  UNION
+  {
+    ?protocol prop:AppliedOnSample ?sample .
+    ?protocol prop:DataResourceUrl ?url .
+    FILTER(REGEX(STR(?url), "/dataset/([0-9a-f-]{36})/resource/"))
+    BIND(IRI(CONCAT(
+      "https://service.tib.eu/dataset/",
+      REPLACE(STR(?url), "^.*/dataset/([0-9a-f-]{36})/resource/.*$", "$1")
+    )) AS ?datasetIRI)
+    SERVICE <https://service.tib.eu/lablsk-sparql/fuseki/ckan1153-2025/query> {
+      ?datasetIRI ?property ?value .
+      FILTER(?property != <http://www.w3.org/ns/dcat#distribution>)
+    }
+  }
 }
 </textarea>
 
-<textarea id="crc1368_text" style="display:none;">
+{% elif project_name == 'sfb1368' %}
+<textarea id="sfb1368_text" style="display:none;">
 PREFIX prop: <https://service.tib.eu/sfb1368/wiki/Property-3A>
 PREFIX swivt: <http://semantic-mediawiki.org/swivt/1.0#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -195,3 +256,4 @@ WHERE {
 }
 ORDER BY ?ProtocolType ?Parameter
 </textarea>
+{% endif %}
