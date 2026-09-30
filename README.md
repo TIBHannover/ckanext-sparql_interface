@@ -67,7 +67,12 @@ ckanext.sparql_interface.allow_custom_endpoints = false
 ckanext.sparql_interface.query_timeout = 60
 ckanext.sparql_interface.max_query_length = 50000
 ckanext.sparql_interface.save_enabled = true
+ckanext.sparql_interface.save_requires_login = false
 ```
+
+Set `save_requires_login = true` on public production instances when permanent
+query links should only be created by authenticated CKAN users. Leaving it
+`false` preserves the existing anonymous save behavior.
 
 Multiple selector entries use a comma-separated `Label|URL` format:
 

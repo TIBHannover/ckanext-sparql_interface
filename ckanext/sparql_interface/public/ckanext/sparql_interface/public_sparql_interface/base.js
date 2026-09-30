@@ -145,13 +145,14 @@ $(document).ready(function () {
 
     // Get the current SPARQL query
     function get_sparql_string() {
-        // Check if currentTabId is defined and there is an editor for it
-        if (currentTabId && editors[currentTabId]) {
-            return editors[currentTabId].yasgui.getTab().yasqe.getValue();
-        } else {
-            console.error('Editor for the current tab is not defined');
-            return ''; // Return an empty string if no editor exists
+        yasgui = window.sparqlInterfaceYasgui || yasgui;
+        var activeTab = yasgui && yasgui.getTab ? yasgui.getTab() : null;
+        if (activeTab && activeTab.yasqe) {
+            return activeTab.yasqe.getValue();
         }
+
+        console.error('The active SPARQL editor is not available');
+        return '';
     }
 
     // Utility functions
@@ -186,12 +187,6 @@ $(document).ready(function () {
     }
 
     function saveQuery() {
-    // Ensure the currentTabId is defined and there is an editor for it
-    if (!currentTabId || !editors[currentTabId]) {
-        showError("No active editor for the current tab.");
-        return;
-    }
-
     // Get the current SPARQL query
     let sparqlQuery = get_sparql_string();
 

@@ -26,7 +26,7 @@
                     {%- set urlschema = h.check_is_url(datos_celda['value']) %}
                 <td>
                     {% if  urlschema == "http" or urlschema == "https" -%}
-                  <a href="" onClick="view_resource('{{ datos_celda['value'] }}'); return false;">{{ datos_celda['value'] }}</a>
+                  <a href="{{ datos_celda['value'] }}" target="_blank" rel="noopener noreferrer">{{ datos_celda['value'] }}</a>
                     {%- else -%}
                 {{ datos_celda['value'] }}
                     {%- endif %}

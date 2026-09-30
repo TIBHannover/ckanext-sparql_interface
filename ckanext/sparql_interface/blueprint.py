@@ -33,7 +33,10 @@ def old_index():
 
 @sparql.route(u'/query')
 def old_query():
-    return redirect(url_for('sparql_interface.query_page'))
+    return redirect(url_for(
+        'sparql_interface.query_page',
+        **request.args.to_dict(flat=True)
+    ))
 
 @sparql.route(u'/sparql_interface/query', methods=['GET', 'POST'])
 def query_page():
@@ -69,6 +72,11 @@ def save_sparql_query():
     if not tk.asbool(tk.config.get(
             'ckanext.sparql_interface.save_enabled', True)):
         return jsonify({'error': 'Saving SPARQL queries is disabled.'}), 404
+
+    if (tk.asbool(tk.config.get(
+            'ckanext.sparql_interface.save_requires_login', False))
+            and not tk.g.user):
+        return jsonify({'error': 'Login is required to save SPARQL queries.'}), 403
 
     data = request.get_json(silent=True) or {}
     sparql_query = data.get('query')
