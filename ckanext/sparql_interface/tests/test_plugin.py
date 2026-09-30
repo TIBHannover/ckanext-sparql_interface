@@ -11,7 +11,6 @@ pytestmark = [
         "ckanext.sparql_interface.endpoints",
         "DBpedia|https://dbpedia.org/sparql"
     ),
-    pytest.mark.usefixtures("with_plugins"),
 ]
 
 
@@ -48,6 +47,7 @@ def test_sfb1368_page_renders_its_sample_query_button(app):
     assert 'id="find_datasets_by_ikey"' not in response.text
 
 
+@pytest.mark.ckan_config("ckanext.sparql_interface.profile", "")
 @pytest.mark.ckan_config("ckanext.sparql_interface.project_name", "crc1153")
 def test_historic_crc_profile_alias_is_supported(app):
     response = app.get("/sparql")
@@ -57,13 +57,13 @@ def test_historic_crc_profile_alias_is_supported(app):
 
 @pytest.mark.parametrize("path", ["/sparql_interface", "/sparql_interface/query"])
 def test_legacy_routes_redirect(app, path):
-    response = app.get(path, status=302)
+    response = app.get(path, status=302, follow_redirects=False)
 
     assert response.location.endswith("/sparql")
 
 
 def test_old_query_route_redirects_to_query_endpoint(app):
-    response = app.get("/query", status=302)
+    response = app.get("/query", status=302, follow_redirects=False)
 
     assert response.location.endswith("/sparql_interface/query")
 
@@ -153,7 +153,7 @@ def test_endpoint_parser_ignores_credentials_and_malformed_entries():
 def test_query_save_api_returns_permanent_hash_url(app):
     query = "SELECT * WHERE { ?s ?p ?o } LIMIT 1"
 
-    response = app.post_json("/sparql_interface/save", {"query": query})
+    response = app.post("/sparql_interface/save", json={"query": query})
 
     assert response.status_code == 200
     parsed = urlparse(response.json["hash"])
@@ -165,7 +165,7 @@ def test_query_save_api_returns_permanent_hash_url(app):
 @pytest.mark.usefixtures("sparql_migrated_db")
 def test_query_hash_retrieval_renders_saved_query(app):
     query = "SELECT * WHERE { ?s ?p ?o } LIMIT 2"
-    save_response = app.post_json("/sparql_interface/save", {"query": query})
+    save_response = app.post("/sparql_interface/save", json={"query": query})
     hash_path = urlparse(save_response.json["hash"]).path
 
     response = app.get(hash_path)

@@ -1,6 +1,12 @@
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def load_sparql_interface_plugin(with_plugins):
+    """Load the plugin before CKAN constructs app and database fixtures."""
+    yield
+
+
 @pytest.fixture
 def sparql_migrated_db(clean_db):
     import ckan.cli.db as db
@@ -13,4 +19,3 @@ def sparql_migrated_db(clean_db):
     yield
     Session.query(SparqlQueryHash).delete()
     Session.commit()
-
