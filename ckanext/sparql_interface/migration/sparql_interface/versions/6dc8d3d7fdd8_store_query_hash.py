@@ -19,7 +19,7 @@ depends_on = None
 def upgrade():
     bind = op.get_bind()
     inspector = sa.inspect(bind)
-    if inspector.has_table('sparql_query_hash'):
+    if 'sparql_query_hash' in inspector.get_table_names():
         return
 
     op.create_table('sparql_query_hash',

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 from os import path
 
-version = '3.0.0'
+version = '3.0.1'
 
 here = path.abspath(path.dirname(__file__))
 
@@ -24,6 +24,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
     keywords='',
     author='Jorge Pantoja',

@@ -15,12 +15,13 @@ not acquire either SFB-specific button when upgrading.
 ## Compatibility
 
 - CKAN 2.9, 2.10, and 2.11
-- Python 3.7 or newer
+- Python 3.9 with CKAN 2.9
+- Python 3.10 with CKAN 2.10 and 2.11
 - PostgreSQL-backed CKAN database
 - SPARQL endpoints returning SPARQL JSON results
 
 The continuous-integration matrix is configured for CKAN 2.9.11, 2.10.7, and
-2.11.6. Treat version 3.0.0 as a production candidate until all three jobs and
+2.11.6. Treat version 3.0.1 as a production candidate until all three jobs and
 the two SFB deployment smoke tests pass.
 
 ## Installation
@@ -171,6 +172,10 @@ run:
 ```bash
 pytest --ckan-ini=test.ini ckanext/sparql_interface/tests
 ```
+
+CKAN 2.9 and 2.10 do not register CKAN's pytest plugins automatically. For
+those versions, add `-p ckan.tests.pytest_ckan.ckan_setup -p
+ckan.tests.pytest_ckan.fixtures` before `--ckan-ini` as shown in the CI matrix.
 
 Test the two SFB instances separately before updating NFDI4Chem. Confirm the
 visible sample button, endpoint selector, query execution, permanent-link save,

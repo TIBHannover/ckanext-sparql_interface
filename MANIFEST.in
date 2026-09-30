@@ -2,4 +2,4 @@ include README.md
 include requirements.txt
 include test.ini
 prune ckanext/sparql_interface/lib
-recursive-include ckanext/sparql_interface *.html *.json *.js *.less *.css *.mo *.po *.yml *.ini *.py *.mako *.gif
+recursive-include ckanext/sparql_interface *.html *.json *.js *.less *.css *.mo *.po *.yaml *.ini *.py *.mako *.gif

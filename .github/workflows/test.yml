@@ -22,14 +22,20 @@ jobs:
       matrix:
         include:
           - ckan-version: "2.9.11"
+            python-version: "3.9"
             postgres-version: "2.9"
             solr-version: "2.9-solr8"
+            pytest-plugins: "-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures"
           - ckan-version: "2.10.7"
+            python-version: "3.10"
             postgres-version: "2.10"
             solr-version: "2.10-solr9"
+            pytest-plugins: "-p ckan.tests.pytest_ckan.ckan_setup -p ckan.tests.pytest_ckan.fixtures"
           - ckan-version: "2.11.6"
+            python-version: "3.10"
             postgres-version: "2.11"
             solr-version: "2.11-solr9"
+            pytest-plugins: ""
       fail-fast: false
 
     name: CKAN ${{ matrix.ckan-version }}
@@ -86,6 +92,7 @@ jobs:
         git checkout --detach FETCH_HEAD
     - name: Install Python dependencies
       run: |
+        python3 -c "import sys; assert sys.version_info[:2] == tuple(map(int, '${{ matrix.python-version }}'.split('.')))"
         pip install --upgrade pip 'setuptools<81' --no-cache-dir
         pip install -r requirements.txt
         pip install -e . --no-cache-dir
@@ -98,4 +105,10 @@ jobs:
         ckan -c test.ini db upgrade
         ckan -c test.ini db pending-migrations --apply
     - name: Run tests
-      run: pytest --ckan-ini=test.ini --cov=ckanext.sparql_interface --disable-warnings ckanext/sparql_interface/tests
+      run: >-
+        pytest
+        ${{ matrix.pytest-plugins }}
+        --ckan-ini=test.ini
+        --cov=ckanext.sparql_interface
+        --disable-warnings
+        ckanext/sparql_interface/tests
