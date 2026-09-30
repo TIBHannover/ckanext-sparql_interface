@@ -78,6 +78,7 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         auth_header="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
         git init .
         git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
         git -c http.extraheader="AUTHORIZATION: basic $auth_header" \
