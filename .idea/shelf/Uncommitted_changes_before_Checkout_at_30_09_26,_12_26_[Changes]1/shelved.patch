@@ -1,0 +1,16 @@
+Index: ckanext/sparql_interface/public/ckanext/sparql_interface/webassets.yaml
+===================================================================
+diff --git a/ckanext/sparql_interface/public/ckanext/sparql_interface/webassets.yaml b/ckanext/sparql_interface/public/ckanext/sparql_interface/webassets.yaml
+deleted file mode 100644
+--- a/ckanext/sparql_interface/public/ckanext/sparql_interface/webassets.yaml	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
++++ /dev/null	(revision 5c70f82c64fa6fab7a7bc0f4e06e815a1791069a)
+@@ -1,9 +0,0 @@
+-sparql_interface:
+-  output: ckanext_sparql_interface/%(version)s_sparql_interface.css
+-  contents:
+-    - public_sparql_interface/base_styles.css
+-
+-sparql_interface_js:
+-  output: ckanext_sparql_interface/%(version)s_sparql_interface.js
+-  contents:
+-    - public_sparql_interface/base.js

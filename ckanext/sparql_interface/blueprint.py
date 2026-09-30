@@ -71,9 +71,9 @@ def save_sparql_query():
         return jsonify({'error': 'Saving SPARQL queries is disabled.'}), 404
 
     data = request.get_json(silent=True) or {}
-    sparql_query = (data.get('query') or '').strip()
+    sparql_query = data.get('query')
 
-    if not sparql_query:
+    if not isinstance(sparql_query, str) or not sparql_query.strip():
         return jsonify({"error": "No SPARQL query provided"}), 400
 
     max_query_length = tk.asint(tk.config.get(

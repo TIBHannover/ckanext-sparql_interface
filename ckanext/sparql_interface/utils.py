@@ -60,10 +60,10 @@ def _basic_auth_headers(server_url):
 def sparql_query_SPARQLWrapper(data_structure):
     """Execute a query through a configured endpoint without exposing secrets."""
     request_values = p.toolkit.request.values
-    query_string = request_values.get('query', '').strip()
+    query_string = request_values.get('query')
     server_url = normalize_endpoint_url(request_values.get('server'))
 
-    if not query_string:
+    if not isinstance(query_string, str) or not query_string.strip():
         raise ValueError('No SPARQL query provided')
     if not endpoint_is_allowed(server_url):
         raise ValueError('SPARQL endpoint is not configured')
