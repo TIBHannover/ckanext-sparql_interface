@@ -22,11 +22,14 @@ jobs:
       matrix:
         include:
           - ckan-version: "2.9.11"
+            postgres-version: "2.9"
             solr-version: "2.9-solr8"
           - ckan-version: "2.10.7"
-            solr-version: "2.10"
+            postgres-version: "2.10"
+            solr-version: "2.10-solr9"
           - ckan-version: "2.11.6"
-            solr-version: "2.11"
+            postgres-version: "2.11"
+            solr-version: "2.11-solr9"
       fail-fast: false
 
     name: CKAN ${{ matrix.ckan-version }}
@@ -36,14 +39,14 @@ jobs:
       options: --user root
     services:
       solr:
-        image: ckan/ckan-solr:${{ matrix.solr-version }}-solr9
+        image: ckan/ckan-solr:${{ matrix.solr-version }}
         options: >-
           --health-cmd "wget -qO /dev/null http://localhost:8983/solr/"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
       postgres:
-        image: ckan/ckan-postgres-dev:${{ matrix.ckan-version }}
+        image: ckan/ckan-postgres-dev:${{ matrix.postgres-version }}
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
