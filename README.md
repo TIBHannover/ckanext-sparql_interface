@@ -4,9 +4,10 @@ This extension adds a YASGUI SPARQL editor and a server-side SPARQL proxy to
 CKAN. One codebase supports three deployments through configuration profiles:
 
 When enabled, the extension adds a `SPARQL` link between `Groups` and `About`
-in CKAN's primary navigation. If the optional `user_manual` plugin is enabled,
-its `Help` link remains after `About`. Project-specific themes can still
-override the standard `header_site_navigation_tabs` template block if needed.
+in CKAN's primary navigation. 
+
+The extension registers its header override with priority over project themes,
+so the navigation link does not depend on the order of `ckan.plugins`.
 
 | Profile | Historic branch | Project-specific interface |
 | --- | --- | --- |

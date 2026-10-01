@@ -77,5 +77,5 @@ def sparql_save_enabled():
 
 @helper
 def sparql_interface_enabled():
-    """Return whether the SPARQL interface plugin is loaded."""
+    """Return whether the optional Help navigation route is available."""
     return p.plugin_loaded('sparql_interface')
