@@ -41,6 +41,9 @@ def test_plugin_registers_routes_and_helpers(app):
     }.issubset(routes)
     assert tk.h.sparql_endpoint_url() == "https://dbpedia.org/sparql"
     assert tk.h.sparql_project_name() == "nfdi4chem"
+    assert tk.config["extra_template_paths"].split(",")[0].endswith(
+        "ckanext/sparql_interface/templates"
+    )
 
 
 def test_homepage_renders_with_plugin_enabled(app):
@@ -67,16 +70,16 @@ def test_sparql_navigation_link_is_active_on_editor_page(app):
 
 
 @pytest.mark.parametrize("enabled", [True, False])
-def test_sparql_interface_navigation_detection(monkeypatch, enabled):
+def test_user_manual_navigation_detection(monkeypatch, enabled):
     import ckanext.sparql_interface.helpers as helpers
 
     monkeypatch.setattr(
         helpers.p,
         "plugin_loaded",
-        lambda plugin: enabled and plugin == "sparql_interface",
+        lambda plugin: enabled and plugin == "user_manual",
     )
 
-    assert helpers.sparql_interface_enabled() is enabled
+    assert helpers.sparql_user_manual_enabled() is enabled
 
 
 def test_sparql_page_renders_yasgui(app):
@@ -86,6 +89,9 @@ def test_sparql_page_renders_yasgui(app):
     contents = response_text(response)
     assert "SPARQL Editor" in contents
     assert 'id="yasgui"' in contents
+    assert 'data-query-endpoint="/sparql_interface/query"' in contents
+    assert "ckanext_sparql_interface" in contents
+    assert "yasqe-4.2.28.min.js" not in contents
     assert 'id="find_datasets_by_ikey"' in contents
 
 

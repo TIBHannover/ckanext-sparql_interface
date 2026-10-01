@@ -2,8 +2,11 @@ sparql_interface:
   output: ckanext_sparql_interface/%(version)s_sparql_interface.css
   contents:
     - public_sparql_interface/base_styles.css
+    - public_sparql_interface/yasgui/yasgui-4.2.28.min.css
+    - public_sparql_interface/yasgui/yasqe-4.2.28.min.css
 
 sparql_interface_js:
   output: ckanext_sparql_interface/%(version)s_sparql_interface.js
   contents:
+    - public_sparql_interface/yasgui/yasgui-4.2.28.min.js
     - public_sparql_interface/base.js

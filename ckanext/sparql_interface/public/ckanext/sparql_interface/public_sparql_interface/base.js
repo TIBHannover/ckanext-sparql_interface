@@ -1,11 +1,42 @@
 var $ = jQuery.noConflict();
 
 $(document).ready(function () {
-    var yasgui = null; // ✅ Declare globally to avoid multiple instances
+    var yasgui = null;
     var editorCount = 0;
     var editors = {};
     var currentTabId = null;
     var prefixes = "PREFIX void: <http://rdfs.org/ns/void#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX dcat: <http://www.w3.org/ns/dcat#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>";
+
+    var yasguiContainer = document.getElementById('yasgui');
+    var endpointSelect = document.getElementById('field-sparql-server');
+
+    function getCkanProxyEndpoint() {
+        return yasguiContainer.dataset.queryEndpoint
+            + '?direct_link=1'
+            + '&server=' + encodeURIComponent(endpointSelect.value);
+    }
+
+    if (yasguiContainer && endpointSelect) {
+        yasgui = new Yasgui(yasguiContainer, {
+            persistenceId: null,
+            populateFromUrl: false,
+            requestConfig: {
+                endpoint: getCkanProxyEndpoint(),
+                endpointInput: false,
+                method: 'POST'
+            },
+            showControlBar: false
+        });
+        window.sparqlInterfaceYasgui = yasgui;
+        window.sparqlInterfaceProxyEndpoint = getCkanProxyEndpoint;
+
+        endpointSelect.addEventListener('change', function () {
+            yasgui.getTab().setRequestConfig({
+                endpoint: getCkanProxyEndpoint(),
+                method: 'POST'
+            });
+        });
+    }
 
     $('#sparql_results, #sparql_link_query, #loading_image').hide();
 

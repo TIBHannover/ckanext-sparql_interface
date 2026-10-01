@@ -1,26 +1,13 @@
 {% extends "page.html" %}
 
+{% block styles %}
+  {{ super() }}
+  {% asset 'ckanext_sparql_interface/sparql_interface' %}
+{% endblock %}
+
 {% block head_extras %}
-
-<meta name="description" content="Sparql EndPoint Interface.">
-
-<!--<header class="sparql_hideme">-->
-<!--    <p>{{ _('Interface SPARQL') }}</p>-->
-<!--</header>-->
-
-<!-- Sparql base CSS/JS and Jquery -->
-
-<link rel="stylesheet" href="{% url_for_static '/public_sparql_interface/base_styles.css' %}">
-<!-- YASGUI CSS/JS -->
-<link rel="stylesheet" href="{{ h.url_for_static('/public_sparql_interface/yasgui/yasgui-4.2.28.min.css') }}">
-<link rel="stylesheet" href="{{ h.url_for_static('/public_sparql_interface/yasgui/yasqe-4.2.28.min.css') }}">
-
-<script src="{{ h.url_for_static('/public_sparql_interface/yasgui/yasqe-4.2.28.min.js') }}"></script>
-<script src="{{ h.url_for_static('/public_sparql_interface/yasgui/yasgui-4.2.28.min.js') }}"></script>
-
-
-<!--<link rel="stylesheet" href="{% url_for_static '/public_sparql_interface/codemirror/themes/default.css' %}">-->
-
+  {{ super() }}
+  <meta name="description" content="SPARQL endpoint interface.">
 {% endblock %}
 
 
@@ -80,7 +67,11 @@
     <br>
 
     <div class="container-yasgui">
-        <div class="mt-2" id="yasgui"></div>
+        <div
+            class="mt-2"
+            id="yasgui"
+            data-query-endpoint="{{ h.url_for('sparql_interface.query_page') }}"
+        ></div>
             <textarea id="fetched_hash_query_text" style="display:none;">{{ query_hash }}</textarea>
         {% snippet 'sparql_interface/snippets/sample_query.html' %}
 
@@ -149,45 +140,6 @@
 
 
 {% block scripts %}
-{{ super() }}
-
-<script src="{% url_for_static '/public_sparql_interface/base.js' %}"></script>
-
-
-<script type="text/javascript">
-
-$(document).ready(function() {
-    const yasguiContainer = document.getElementById('yasgui');
-    const endpointSelect = document.getElementById('field-sparql-server');
-
-    function getCkanProxyEndpoint() {
-        return '{{ h.url_for("sparql_interface.query_page") }}'
-            + '?direct_link=1'
-            + '&server=' + encodeURIComponent(endpointSelect.value);
-    }
-
-    const yasgui = new Yasgui(yasguiContainer, {
-        persistenceId: null,
-        populateFromUrl: false,
-        requestConfig: {
-            endpoint: getCkanProxyEndpoint(),
-            endpointInput: false,
-            method: 'POST'
-        },
-        showControlBar: false
-    });
-    window.sparqlInterfaceYasgui = yasgui;
-    window.sparqlInterfaceProxyEndpoint = getCkanProxyEndpoint;
-
-    endpointSelect.addEventListener('change', function () {
-        yasgui.getTab().setRequestConfig({
-            endpoint: getCkanProxyEndpoint(),
-            method: 'POST'
-        });
-    });
-});
-
-</script>
-
-
+  {{ super() }}
+  {% asset 'ckanext_sparql_interface/sparql_interface_js' %}
 {% endblock %}
