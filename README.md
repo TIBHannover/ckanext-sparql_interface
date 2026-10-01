@@ -3,6 +3,11 @@
 This extension adds a YASGUI SPARQL editor and a server-side SPARQL proxy to
 CKAN. One codebase supports three deployments through configuration profiles:
 
+When enabled, the extension also adds a `SPARQL` link to CKAN's primary
+navigation. Project-specific themes can override the standard
+`header_site_navigation_tabs` template block if they need a different label or
+position.
+
 | Profile | Historic branch | Project-specific interface |
 | --- | --- | --- |
 | `nfdi4chem` | `master` | NFDI4Chem sample-query buttons |

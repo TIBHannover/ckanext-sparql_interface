@@ -49,6 +49,21 @@ def test_homepage_renders_with_plugin_enabled(app):
     assert response.status_code == 200
 
 
+def test_header_contains_sparql_navigation_link(app):
+    response = app.get("/")
+
+    contents = response_text(response)
+    assert 'href="/sparql"' in contents
+    assert ">SPARQL</a>" in contents
+
+
+def test_sparql_navigation_link_is_active_on_editor_page(app):
+    response = app.get("/sparql")
+
+    contents = response_text(response)
+    assert 'class="active"><a href="/sparql"' in contents
+
+
 def test_sparql_page_renders_yasgui(app):
     response = app.get("/sparql")
 
