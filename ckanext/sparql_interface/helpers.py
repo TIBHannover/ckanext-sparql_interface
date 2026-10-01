@@ -74,3 +74,8 @@ def sparql_save_enabled():
         'ckanext.sparql_interface.save_enabled', True
     ))
 
+
+@helper
+def sparql_interface_enabled():
+    """Return whether the SPARQL interface plugin is loaded."""
+    return p.plugin_loaded('sparql_interface')

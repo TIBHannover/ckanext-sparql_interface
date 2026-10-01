@@ -55,6 +55,8 @@ def test_header_contains_sparql_navigation_link(app):
     contents = response_text(response)
     assert 'href="/sparql"' in contents
     assert ">SPARQL</a>" in contents
+    assert contents.index(">Groups</a>") < contents.index(">SPARQL</a>")
+    assert contents.index(">SPARQL</a>") < contents.index(">About</a>")
 
 
 def test_sparql_navigation_link_is_active_on_editor_page(app):
@@ -62,6 +64,19 @@ def test_sparql_navigation_link_is_active_on_editor_page(app):
 
     contents = response_text(response)
     assert 'class="active"><a href="/sparql"' in contents
+
+
+@pytest.mark.parametrize("enabled", [True, False])
+def test_sparql_interface_navigation_detection(monkeypatch, enabled):
+    import ckanext.sparql_interface.helpers as helpers
+
+    monkeypatch.setattr(
+        helpers.p,
+        "plugin_loaded",
+        lambda plugin: enabled and plugin == "sparql_interface",
+    )
+
+    assert helpers.sparql_interface_enabled() is enabled
 
 
 def test_sparql_page_renders_yasgui(app):
